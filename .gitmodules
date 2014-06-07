@@ -1,0 +1,9 @@
+[submodule "sqlite"]
+	path = sqlite
+	url = https://github.com/jamesg/sqlite.git
+[submodule "json"]
+	path = json
+	url = https://github.com/jamesg/json.git
+[submodule "commandline"]
+	path = commandline
+	url = https://github.com/jamesg/commandline.git

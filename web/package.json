@@ -1,0 +1,12 @@
+{
+    "name": "photograph-album",
+    "description": "Photograph Album web application",
+    "repository": {
+    },
+    "dependencies": {
+        "domjs": "latest",
+        "marked": "latest",
+        "webmake": "latest"
+    }
+}
+

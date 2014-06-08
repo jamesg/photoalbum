@@ -23,11 +23,10 @@ exports.Filters.prototype._template = function() {
     var filtersCollapsable = new Collapsable('Filters', null);
     this._element(filtersCollapsable.element());
     var filters = new PhotographFilter(
-            function(apiFunction, params) {
+            function(apiFunction) {
                 console.log('apiFunction ' + apiFunction);
                 api.passThrough(
                     apiFunction,
-                    params,
                     function(err, list) {
                         photographList.setList(list);
                     }

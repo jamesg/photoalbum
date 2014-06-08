@@ -30,8 +30,9 @@ void photograph::api::recent_photographs(
 {
     json::list photographs;
     int limit = 36;
-    sqlite::select<photograph_t>(db,
-            "SELECT DISTINCT photograph_id, title, caption, location, taken "
+    sqlite::select<photograph_t>(
+            db,
+            "SELECT DISTINCT photograph_id, title, caption, filename, location, taken "
             "FROM photograph "
             "ORDER BY taken DESC "
             "LIMIT ? "

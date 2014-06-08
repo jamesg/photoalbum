@@ -5,6 +5,8 @@
 
 #include "server.hpp"
 
+#include <iostream>
+
 #include <boost/bind.hpp>
 
 #include "mongoose.h"
@@ -55,8 +57,21 @@ int photograph::server::serve(mg_connection *conn, mg_event ev) const
         return MG_FALSE;
     auto uri_it = m_uri.find(std::string(conn->uri));
     if(uri_it == m_uri.end())
+    {
         return MG_FALSE;
+    }
     else
-        return uri_it->second(conn, ev);
+    {
+        try
+        {
+            return uri_it->second(conn, ev);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << "error serving URI " << conn->uri << ": " << e.what() <<
+                std::endl;
+            return MG_FALSE;
+        }
+    }
 }
 

@@ -18,7 +18,7 @@ exports.PhotographFilter.prototype._template = function() {
     this._element(li(
                 {
                     onclick: this._callback.bind(
-                                 this, 'uncategorised_photographs', []
+                                 this, 'uncategorised_photographs'
                                  )
                 },
                 'Photographs Without Album'
@@ -26,7 +26,7 @@ exports.PhotographFilter.prototype._template = function() {
     this._element(li(
                 {
                     onclick: this._callback.bind(
-                                 this, 'recent_photographs', []
+                                 this, 'recent_photographs'
                                  )
                 },
                 'Recently Taken'

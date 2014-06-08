@@ -16,6 +16,8 @@ namespace photograph
     {
         struct fill_container_fusion
         {
+            typedef int result_type;
+
             fill_container_fusion(const std::vector<json::object>& source) :
                 m_source(source)
             {

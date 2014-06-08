@@ -1,0 +1,113 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <script type="text/javascript" src="bundle.js"></script>
+
+    <title>Photograph Album</title>
+
+    <style type="text/css">
+    body {
+        background-color: #e6eff8;
+        font-family:      sans;
+    }
+    button, input, select {
+        background-color: #fff;
+        border:           1px solid #acacac;
+        margin:           4px;
+    }
+    h1 {
+        color:       #000;
+        font-family: serif;
+    }
+
+    .collapsable        {
+        background-color: #848c53;
+        margin-bottom:    1em;
+    }
+    .collapsable h2     { color:       #fff; }
+    .collapsable-inner h2 {
+        color: #000;
+        font-family: serif;
+    }
+    .collapsable-inner  { background-color: #d7ddb9; }
+    .collapsable-footer { padding: 2px; }
+
+    .editable {
+        display: block;
+    }
+
+    .smallalbumlist     {
+        list-style-type: none;
+        padding:         5px;
+        line-height:     1.5;
+    }
+
+    .albumlist          {
+        list-style-type:   none;
+        -moz-column-count: 3;
+        padding:           5px;
+        line-height:       1.5;
+        <!--background-color:  #c6d8ee;-->
+    }
+    .albumlist li       { cursor: pointer; }
+    .albumlist li:hover { color: white; }
+    .filterlist          {
+        list-style-type:   none;
+        -moz-column-count: 3;
+        padding:           5px;
+        line-height:       1.5;
+        <!--background-color:  #c6d8ee;-->
+    }
+    .filterlist li       { cursor: pointer; }
+    .filterlist li:hover { color: white; }
+
+    .photographlist {
+        list-style-type:  none;
+        padding:          0px;
+        text-align:       center;
+    }
+    .photographlist .smallli {
+        width:            140px;
+        height:           140px;
+        line-height:      140px;
+        <!--background-color: #f8f8f8;-->
+        margin:           5px;
+        text-align:       center;
+        display:          inline-block;
+    }
+    .photographlist .detailli {
+        left:             0;
+        right:            0;
+        background-color: #fff;
+        text-align:       center;
+        display:          block;
+        font-size:        10pt;
+        padding:          10px;
+    }
+    .photographlist img {
+        vertical-align: middle;
+    }
+
+    .mainmenu {
+        list-style-type:  none;
+        padding:          0px;
+        text-align:       center;
+    }
+    .mainmenu li {
+        background-color: #fff;
+        display: inline-block;
+        width: 200px;
+        height: 100px;
+    }
+
+    .notetable {
+        width: 100%;
+    }
+    </style>
+</head>
+<body>
+    <div id="template_content"></div>
+</body>
+</html>
+

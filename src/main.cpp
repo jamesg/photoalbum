@@ -226,9 +226,6 @@ int main(int argc, const char* argv[])
         "note_phase_version",
         boost::bind(photograph::api::note_phase_version, _1, _2, boost::ref(db))
         );
-    //api_server.install("insert_note",
-    //boost::bind(photograph::api::insert_note, _1, _2, boost::ref(db))
-    //);
     api_server.install(
             "create_draft_note",
             boost::bind(photograph::api::create_draft_note, _1, _2, boost::ref(db))
@@ -278,11 +275,11 @@ int main(int argc, const char* argv[])
 
     s.install(
             "/jpeg_image",
-            boost::bind(&photograph::uri::jpeg_image, s, _1, _2)
+            boost::bind(&photograph::uri::jpeg_image, boost::ref(s), _1, _2)
             );
     s.install(
             "/jpeg_image_fullsize",
-            boost::bind(&photograph::uri::jpeg_image_fullsize, s, _1, _2)
+            boost::bind(&photograph::uri::jpeg_image_fullsize, boost::ref(s), _1, _2)
             );
     s.install("/insert_photograph", &photograph::uri::insert_photograph);
     s.install("/api_call", boost::bind(&api_call, api_server, _1, _2));

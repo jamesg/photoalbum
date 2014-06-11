@@ -21,7 +21,7 @@ exports.Application = function() {
 var _editButton;
 
 exports.Application.prototype._template = function() {
-    this._element = div({ style: 'padding: 20px; padding-top: 0px;' });
+    this._element = div();
 
     _editButton = button(
             { onclick: this._toggleEdit.bind(this) },

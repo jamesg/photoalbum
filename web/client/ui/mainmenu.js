@@ -19,59 +19,68 @@ exports.MainMenu.prototype.element = function() {
 }
 
 exports.MainMenu.prototype._template = function() {
-    this._element = ul({ 'class': 'mainmenu' });
+    this._element = div({ 'class': 'mainmenu' });
+}
+
+exports.MainMenu.prototype._buttonTemplate = function(text, callback) {
+    return button({ 'onclick': callback }, text);
+}
+
+exports.MainMenu.prototype._sectionTemplate = function(title, subtitle, buttons) {
+    return div(
+            h2(title, ' ', small(subtitle)),
+            buttons
+            );
 }
 
 exports.MainMenu.prototype._buttonsTemplate = function(features) {
     if(features['photographs']) {
         this._element(
+            this._sectionTemplate(
+                'Photographs',
+                'Browse and upload photographs.',
+                [
                 this._buttonTemplate(
                     'Albums',
                     this._application.showAlbums.bind(this._application)
-                    )
-                );
-        this._element(
+                    ),
                 this._buttonTemplate(
                     'Locations',
                     this._application.showLocations.bind(this._application)
-                    )
-                );
-        this._element(
+                    ),
                 this._buttonTemplate(
                     'Tags',
                     this._application.showTags.bind(this._application)
-                    )
-                );
-        this._element(
+                    ),
                 this._buttonTemplate(
                     'Filters',
                     this._application.showFilters.bind(this._application)
-                    )
-                );
-        this._element(
+                    ),
                 this._buttonTemplate(
-                    'New Photograph',
+                    'Upload',
                     this._application.showNewPhotograph.bind(this._application)
-                    )
-                );
-        this._element(
+                    ),
                 this._buttonTemplate(
                     'Statistics',
                     this._application.showStatistics.bind(this._application)
                     )
-                );
-        this._element(
+                ]
+                ),
+            this._sectionTemplate(
+                'Notes',
+                'Read and edit textual notes.',
+                [
                 this._buttonTemplate(
                     'Notes',
                     this._application.showNotes.bind(this._application)
-                    )
-                );
-        this._element(
+                    ),
                 this._buttonTemplate(
                     'Note Editor',
                     this._application.showNoteEditor.bind(this._application)
                     )
-                );
+                ]
+                )
+            );
     }
     if(features['gazetteer']) {
         this._element(
@@ -81,9 +90,5 @@ exports.MainMenu.prototype._buttonsTemplate = function(features) {
                     )
                 );
     }
-}
-
-exports.MainMenu.prototype._buttonTemplate = function(text, callback) {
-    return li(button({ 'onclick': callback }, text));
 }
 

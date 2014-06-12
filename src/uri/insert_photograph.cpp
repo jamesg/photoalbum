@@ -7,7 +7,10 @@
 
 #include <cstring>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/tokenizer.hpp>
+
+#include <exiv2/exiv2.hpp>
 
 #include "json/json.hpp"
 
@@ -16,6 +19,58 @@
 #include "db/photograph.hpp"
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
+
+namespace
+{
+    std::string photograph_date(
+            const unsigned char* jpeg_data,
+            const int            jpeg_data_len
+            )
+    {
+        try
+        {
+            auto image = Exiv2::ImageFactory::open(
+                    reinterpret_cast<const unsigned char*>(jpeg_data),
+                    jpeg_data_len
+                    );
+            image->readMetadata();
+            Exiv2::ExifKey key("Exif.Photo.DateTimeOriginal");
+
+            // Try to find the date key
+            Exiv2::ExifData::iterator pos = image->exifData().findKey(
+                    Exiv2::ExifKey("Exif.Image.DateTimeOriginal")
+                    );
+            if( pos == image->exifData().end() )
+                pos = image->exifData().findKey(
+                        Exiv2::ExifKey("Exif.Image.DateTime")
+                        );
+
+            // If an acceptable key was found
+            if( pos != image->exifData().end() )
+            {
+                std::string date = pos->getValue()->toString();
+
+                // Exif date format
+                auto *df = new boost::date_time::time_input_facet<
+                    boost::posix_time::ptime,
+                    char
+                    >("%Y:%m:%d %H:%M:%S");
+
+                std::stringstream date_stream(date);
+                date_stream.imbue(std::locale(date_stream.getloc(), df));
+                boost::posix_time::ptime taken;
+                date_stream >> taken;
+
+                return boost::posix_time::to_iso_extended_string(taken);
+            }
+        }
+        catch(const std::exception&)
+        {
+            // No error handling, caller expects empty string.
+        }
+        return "";
+    }
+}
 
 int photograph::uri::insert_photograph(mg_connection *conn, mg_event ev)
 {
@@ -51,11 +106,17 @@ int photograph::uri::insert_photograph(mg_connection *conn, mg_event ev)
         if(strcmp(var_name, "tags") == 0)
             tags = std::string(data, data_len);
         if(strcmp(var_name, "file") == 0)
+        {
+            photo.taken() = photograph_date(
+                    reinterpret_cast<const unsigned char*>(data),
+                    data_len
+                    );
             data_db.data.insert(
                     data_db.data.end(),
                     reinterpret_cast<const unsigned char*>(data),
                     reinterpret_cast<const unsigned char*>(data)+data_len
                     );
+        }
     }
 
     int photo_id = db::insert(

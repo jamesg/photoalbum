@@ -281,7 +281,7 @@ exports.PhotographLi.prototype._detailTemplate = function(photograph) {
                 (new ConfirmButton(
                     'Delete',
                     (function() {
-                        api.deletePhotograph(photograph.photograph_id);
+                        api.deletePhotograph(photograph.photograph_id, function() {});
                     }).bind(this)
                     )
                 ).element()

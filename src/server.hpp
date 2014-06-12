@@ -7,6 +7,7 @@
  */
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/utility.hpp>
 
 #include "mongoose.h"
 
@@ -15,7 +16,7 @@
 
 namespace photograph
 {
-    class server
+    class server : boost::noncopyable
     {
     public:
         server(

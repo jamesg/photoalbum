@@ -24,7 +24,7 @@ photograph::server::server(
 
 photograph::server::~server()
 {
-    //mg_destroy_server(&m_server);
+    mg_destroy_server(&m_server);
 }
 
 void photograph::server::listen()

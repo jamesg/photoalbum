@@ -5,6 +5,7 @@
 
 #include "api.hpp"
 
+#include <exception>
 #include <locale>
 
 #include <boost/fusion/include/vector.hpp>
@@ -12,6 +13,7 @@
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
 #include "sqlite/insert.hpp"
+#include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
 #include "photograph_db.hpp"
@@ -22,21 +24,31 @@ void photograph::api::add_photograph_to_album(
         sqlite::connection& db
         )
 {
+    int photograph_id, album_id;
+
     try
     {
-        int photograph_id = request.params().get<int>(0);
-        int album_id      = request.params().get<int>(1);
+        photograph_id = request.params().get<int>(0);
+        album_id      = request.params().get<int>(1);
+    }
+    catch(const std::exception&)
+    {
+        result.error() = "Reading parameters";
+        std::rethrow_exception(std::current_exception());
+    }
+    try
+    {
         sqlite::insert(
                 "photograph_in_album",
                 { "photograph_id", "album_id" },
-                boost::fusion::vector<int, int>(photograph_id, album_id),
+                sqlite::row<int, int>(photograph_id, album_id),
                 db
                 );
     }
-    catch( const std::exception& e )
+    catch(const std::exception&)
     {
         result.error() = "Database error";
-        throw e;
+        std::rethrow_exception(std::current_exception());
     }
 }
 

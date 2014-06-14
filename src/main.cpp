@@ -101,6 +101,18 @@ int main(int argc, const char* argv[])
 
     sqlite::connection& db = photograph::db::get_database(photograph::db::database_photograph, db_file);
     sqlite::connection& map_db = photograph::db::get_database(photograph::db::database_map, map_db_file);
+    sqlite::connection cache_db = sqlite::connection::in_memory_database();
+    sqlite::devoid(
+            "CREATE TABLE jpeg_cache ( "
+            " photograph_id INTEGER, "
+            " width INTEGER, "
+            " height INTEGER, "
+            " data BLOB, "
+            " PRIMARY KEY(photograph_id, width, height) "
+            " ) ",
+            boost::fusion::vector<>(),
+            cache_db
+            );
 
     jsonrpc::server api_server;
 
@@ -275,7 +287,7 @@ int main(int argc, const char* argv[])
 
     s.install(
             "/jpeg_image",
-            boost::bind(&photograph::uri::jpeg_image, boost::ref(s), _1, _2)
+            boost::bind(&photograph::uri::jpeg_image, boost::ref(s), _1, _2, boost::ref(cache_db))
             );
     s.install(
             "/jpeg_image_fullsize",

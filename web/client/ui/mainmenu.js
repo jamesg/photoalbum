@@ -19,15 +19,16 @@ exports.MainMenu.prototype.element = function() {
 }
 
 exports.MainMenu.prototype._template = function() {
-    this._element = div({ 'class': 'mainmenu' });
+    this._element = div({ class: 'mainmenu pure-g' });
 }
 
 exports.MainMenu.prototype._buttonTemplate = function(text, callback) {
-    return button({ 'onclick': callback }, text);
+    return button({ 'onclick': callback, class: 'pure-button' }, text);
 }
 
 exports.MainMenu.prototype._sectionTemplate = function(title, subtitle, buttons) {
     return div(
+            { class: 'pure-u-1-1' },
             h2(title, ' ', small(subtitle)),
             buttons
             );

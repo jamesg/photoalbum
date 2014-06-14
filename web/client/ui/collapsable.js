@@ -19,7 +19,7 @@ exports.Collapsable.prototype.element = function() {
 }
 
 exports.Collapsable.prototype.setContent = function(content) {
-    //this._contentDiv().clear();
+    this._contentDiv().innerHTML = '';
     this._contentDiv(content);
 }
 
@@ -39,7 +39,7 @@ exports.template = function(title, content) {
 
     // Header and button above the content.
     var _h2 = h2({ style: 'float: left; margin: 0 0 0 0' }, title);
-    this._button = button({ style: 'float: right' });
+    this._button = button({ class: 'pure-button', style: 'float: right' });
 
     // Content div.
     this._contentDiv = div({ style: 'clear: both; width: 100%' });

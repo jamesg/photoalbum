@@ -34,7 +34,8 @@ void jsonrpc::server::serve(request& req, result& res) const
     }
     catch(const std::exception& e)
     {
-        res.error() = "Unknown error";
+        if(res.error().empty())
+            res.error() = "Unknown error";
         std::cerr << "error in api function " << req.method() << ": " <<
             e.what() << std::endl;
     }

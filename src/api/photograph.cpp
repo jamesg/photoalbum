@@ -11,6 +11,8 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/fusion/include/vector.hpp>
 
+#include "sqlite/row.hpp"
+
 namespace
 {
     typedef photograph::photograph photograph_t;
@@ -129,7 +131,10 @@ void photograph::api::remove_photograph_from_album(
         sqlite::devoid(
                 "DELETE FROM photograph_in_album "
                 "WHERE photograph_id = ? AND album_id = ?",
-                photograph_in_album(request.params()[0]),
+                sqlite::row<int, int>(
+                    request.params().get<int>(0),
+                    request.params().get<int>(1)
+                    ),
                 db
                 );
     }

@@ -18,10 +18,10 @@ exports.Filters.prototype.element = function() {
 }
 
 exports.Filters.prototype._template = function() {
-    this._element = div();
+    this._element = div({ class: 'pure-g' });
 
-    var filtersCollapsable = new Collapsable('Filters', null);
-    this._element(filtersCollapsable.element());
+    var filtersCollapsable = div({ class: 'pure-u-1-5' });//new Collapsable('Filters', null);
+    this._element(filtersCollapsable);
     var filters = new PhotographFilter(
             function(apiFunction) {
                 console.log('apiFunction ' + apiFunction);
@@ -33,11 +33,11 @@ exports.Filters.prototype._template = function() {
                     );
             }
             );
-    filtersCollapsable.setContent(filters.element());
+    filtersCollapsable(filters.element());
 
     // Create the photograph list.
-    var photographListCollapsable = new Collapsable('Photographs', null);
-    this._element(photographListCollapsable.element());
+    var photographListCollapsable = div({ class: 'pure-u-4-5' });//new Collapsable('Photographs', null);
+    this._element(photographListCollapsable);
 
     var photographList = new PhotographList(
             function(photograph) {
@@ -45,6 +45,6 @@ exports.Filters.prototype._template = function() {
             }
             );
     photographList.setList([]);
-    photographListCollapsable.setContent(photographList.element());
+    photographListCollapsable(photographList.element());
 }
 

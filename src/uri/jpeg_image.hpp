@@ -8,13 +8,23 @@
 
 #include "mongoose.h"
 
+namespace sqlite
+{
+    class connection;
+}
+
 namespace photograph
 {
     class server;
 
     namespace uri
     {
-        int jpeg_image(const server&, mg_connection*, mg_event);
+        int jpeg_image(
+                const server&,
+                mg_connection*,
+                mg_event,
+                sqlite::connection& cache_db
+                );
     }
 }
 

@@ -49,7 +49,8 @@ OBJS=\
 	${OBJDIR}/uri/http_date.o \
 	${OBJDIR}/uri/insert_photograph.o \
 	${OBJDIR}/uri/jpeg_image.o \
-	${OBJDIR}/uri/jpeg_image_fullsize.o
+	${OBJDIR}/uri/jpeg_image_fullsize.o \
+	${OBJDIR}/util/scale.o
 
 clean:
 	rm -f ${OBJS} objs/main.o objs/os/gazetteer.o objs/os/streetmap.o
@@ -65,6 +66,9 @@ sqlite/libsqlite.a:
 
 bin/main:	${OBJS} ${OBJDIR}/main.o json/libjson.a sqlite/libsqlite.a
 	${CXX} ${OBJS} ${OBJDIR}/main.o ${LIBS} -o $@
+
+bin/exports: ${OBJS} ${OBJDIR}/exports/exports.o json/libjson.a sqlite/libsqlite.a
+	${CXX} ${OBJS} ${OBJDIR}/exports/exports.o ${LIBS} -o $@
 
 bin/gazetteer: ${OBJS} ${OBJDIR}/os/gazetteer.o json/libjson.a sqlite/libsqlite.a
 	${CXX} ${OBJS} ${OBJDIR}/os/gazetteer.o ${LIBS} -o $@

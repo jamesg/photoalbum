@@ -13,6 +13,7 @@
 
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
+#include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
 #include "photograph_db.hpp"
@@ -68,10 +69,11 @@ void photograph::api::tags(
         )
 {
     json::list list;
-    sqlite::get_list< ::photograph::tag>(
+    sqlite::select< ::photograph::tag>(
             db,
-            "photograph_tagged",
-            { "tag" },
+            "SELECT DISTINCT tag FROM photograph_tagged "
+            "ORDER BY tag ",
+            sqlite::empty_row(),
             list
             );
     result.data() = list;

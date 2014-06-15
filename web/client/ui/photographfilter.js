@@ -13,21 +13,23 @@ exports.PhotographFilter.prototype.element = function() {
 }
 
 exports.PhotographFilter.prototype._template = function() {
-    this._element = ul();
+    this._element = div({ class: 'pure-menu pure-menu-open pure-menu-horizontal' });
 
     this._element(
-            li(
+        ul(
+            li(a(
                 {
                     onclick: this._callback.bind(this, 'uncategorised_photographs')
                 },
                 'Photographs Without Album'
-                ),
-            li(
+                )),
+            li(a(
                 {
                     onclick: this._callback.bind(this, 'recent_photographs')
                 },
                 'Recently Taken'
-                )
-            );
+                ))
+            )
+        );
 }
 

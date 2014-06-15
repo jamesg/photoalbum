@@ -41,12 +41,12 @@ void photograph::api::insert_jpeg_data(
         Exiv2::ExifKey key("Exif.Photo.DateTimeOriginal");
 
         // Try to find the date key
-        Exiv2::ExifData::iterator pos = image->exifData().findKey(key);
-                //Exiv2::ExifKey( "Exif.Image.DateTimeOriginal")
-                //);
+        Exiv2::ExifData::iterator pos = image->exifData().findKey(
+                Exiv2::ExifKey("Exif.Image.DateTimeOriginal")
+                );
         if( pos == image->exifData().end() )
             pos = image->exifData().findKey(
-                    Exiv2::ExifKey( "Exif.Image.DateTime" )
+                    Exiv2::ExifKey("Exif.Image.DateTime")
                     );
 
         // If an acceptable key was found

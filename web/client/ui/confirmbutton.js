@@ -17,6 +17,7 @@ exports.ConfirmButton.prototype._firstTemplate = function() {
     this._element(
             button(
                 {
+                    class: 'pure-button',
                     onclick: this._buildSecond.bind(this)
                 },
                 this._text
@@ -34,6 +35,7 @@ exports.ConfirmButton.prototype._secondTemplate = function() {
     this._element(
             button(
                 {
+                    class: 'pure-button pure-button-primary',
                     onclick: (function() {
                         this._callback();
                         this._buildFirst();
@@ -45,6 +47,7 @@ exports.ConfirmButton.prototype._secondTemplate = function() {
     this._element(
             button(
                 {
+                    class: 'pure-button',
                     onclick: this._buildFirst.bind(this)
                 },
                 'No'

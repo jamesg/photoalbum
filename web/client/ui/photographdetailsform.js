@@ -74,12 +74,25 @@ exports.PhotographDetailsForm.prototype._template = function(photograph) {
                 }
             },
             div(
+                    h3(
+                        'Photograph Details ',
+                        small('Change basic details')
+                        ),
                     inlineInput(inputs.title, 'Title'),
                     inlineInput(inputs.location, 'Location'),
                     inlineInput(inputs.caption, 'Caption'),
                     inlineInput(inputs.taken, 'Taken'),
                     inlineInput(inputs.tags, 'Tags'),
-                    inlineInput(input({ type: 'submit', value: 'Save' }), '')
+                    inlineInput(
+                        input(
+                            {
+                                class: 'pure-button pure-button-primary',
+                                type: 'submit',
+                                value: 'Save'
+                            }
+                            ),
+                        ''
+                        )
                     )
             );
 

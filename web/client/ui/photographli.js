@@ -69,7 +69,7 @@ exports.PhotographLi.prototype._template = function() {
     this._element = li();
 }
 
-exports.PhotographLi.prototype._scalesTemplate = function(photographId) {
+exports.PhotographLi.prototype._scalesTemplate = function(photograph) {
     var scales = [
         { width: 400, height: 300 },
         { width: 640, height: 480 },
@@ -81,15 +81,25 @@ exports.PhotographLi.prototype._scalesTemplate = function(photographId) {
     var _ul = ul();
     for(scale in scales) {
         var params = scales[scale];
-        params.photograph_id = photographId;
+        params.photograph_id = photograph.photograph_id;
         _ul(li(a(
             {
-                href: '/jpeg_image' + util.queryString(params)
+                href: '/jpeg_image' + util.queryString(params),
+                download: photograph.title + '.jpg'
             },
             params.width, 'x', params.height
             )));
     }
-    return div({ class: 'pure-menu pure-menu-open' }, _ul);
+    return div(
+            h3(
+                'Download Image ',
+                small('Save a scaled or full size copy of the image')
+                ),
+            div(
+                { class: 'pure-menu pure-menu-open' },
+                _ul
+                )
+            );
 }
 
 /*
@@ -114,11 +124,11 @@ exports.PhotographLi.prototype._detailTemplate = function(photograph) {
         { class: 'detailli' },
         div(
             { class: 'pure-g' },
-            div({ class: 'pure-u-20-24', style: 'text-align: center' }, photographView.element()),
-            div({ class: 'pure-u-4-24', style: 'text-align: right' }, closeButton),
-            div({ class: 'pure-u-8-24' }, photographDetailsForm.element()),
-            div({ class: 'pure-u-8-24' }, albumsForm.element()),
-            div({ class: 'pure-u-8-24' }, this._scalesTemplate(photograph.photograph_id))
+            div({ class: 'pure-u-21-24', style: 'text-align: center' }, photographView.element()),
+            div({ class: 'pure-u-3-24', style: 'text-align: right' }, closeButton),
+            div({ class: 'pure-u-7-24' }, photographDetailsForm.element()),
+            div({ class: 'pure-u-10-24' }, albumsForm.element()),
+            div({ class: 'pure-u-7-24' }, this._scalesTemplate(photograph))
            )
         );
 }

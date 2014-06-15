@@ -31,7 +31,8 @@ exports.AlbumsForm.prototype._template = function() {
 }
 
 exports.AlbumsForm.prototype._liTemplate = function(album) {
-    return li(
+    return div(
+        { class: 'pure-u-1-1' },
         album.name,
         (new ConfirmButton(
                    'Remove',
@@ -48,7 +49,7 @@ exports.AlbumsForm.prototype._liTemplate = function(album) {
 }
 
 exports.AlbumsForm.prototype._listTemplate = function(albums) {
-    var _ul = ul();
+    var _ul = div({ class: 'pure-g' });
     for(album in albums)
         _ul(this._liTemplate(albums[album]));
     return _ul;
@@ -69,20 +70,37 @@ exports.AlbumsForm.prototype._selectTemplate = function(albumList) {
 exports.AlbumsForm.prototype._formTemplate = function(albums, photographAlbums) {
     var _select = this._selectTemplate(albums);
     var submit = function() {
-        api.addPhotographToAlbum(this._photographId, _select().value, function() {});
+        api.addPhotographToAlbum(
+                this._photographId,
+                _select().value,
+                function() {}
+                );
         this._rebuild();
         return false;
     };
     this._element().innerHTML = '';
     this._element(
             div(
+                h3(
+                    'Albums ',
+                    small('Add the photograph to appropriate albums')
+                    ),
                 this._listTemplate(photographAlbums),
                 form(
-                    { onclick: submit.bind(this) },
+                    {
+                        class: 'pure-form',
+                        onsubmit: submit.bind(this)
+                    },
                     _select,
-                    input({ type: 'submit', value: 'Add' })
+                    input(
+                        {
+                            class: 'pure-button pure-button-primary',
+                            type: 'submit',
+                            value: 'Add'
+                        }
+                        )
                     )
-            )
+                )
         );
 }
 

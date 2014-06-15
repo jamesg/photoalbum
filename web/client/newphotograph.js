@@ -1,10 +1,5 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api = require('./api');
-var util = require('./util');
-
-// Ui
-var Collapsable    = require('./ui/collapsable').Collapsable;
 var PhotographForm = require('./ui/photographform').PhotographForm;
 
 exports.NewPhotograph = function() {
@@ -18,15 +13,8 @@ exports.NewPhotograph.prototype.element = function() {
 }
 
 exports.NewPhotograph.prototype._template = function() {
-    this._element = div();
-
-    // Create the new photograph form.
-    var newPhotographForm = new PhotographForm();
-    var photographFormCollapsable = new Collapsable(
-        'New Photograph',
-        newPhotographForm.element()
+    this._element = div(
+        (new PhotographForm()).element()
         );
-
-    this._element(photographFormCollapsable.element());
 }
 

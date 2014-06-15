@@ -29,6 +29,7 @@ exports.PublishedNoteList.prototype.reload = function() {
 exports.PublishedNoteList.prototype._setNoteList = function(notes) {
     this._element().innerHTML = '';
     this._element(
+            { class: 'pure-table' },
             domjs.build(
                 this._listTemplate.bind(this, notes)
                 )
@@ -40,16 +41,27 @@ exports.PublishedNoteList.prototype.element = function() {
 }
 
 exports.PublishedNoteList.prototype._listTemplate = function(notes) {
-    this._element(tr(td('Date'), td('Title')));
+    this._element(thead(tr(td('Date'), td('Title'), td('Action'))));
+    var _tbody = tbody();
+    this._element(_tbody);
     for(n in notes) {
         var _tr = tr(
-                {
-                    onclick: this._callback.bind(this, notes[n].note_id)
-                },
                 td(notes[n].created),
                 td(notes[n].title)
                 );
-        this._element(_tr);
+        if(this._callback)
+            _tr(
+                td(
+                    button(
+                        {
+                            class: 'pure-button',
+                            onclick: this._callback.bind(this, notes[n].note_id)
+                        },
+                        'View'
+                        )
+                  )
+                );
+        _tbody(_tr);
     }
 }
 

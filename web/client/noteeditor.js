@@ -25,10 +25,7 @@ exports.NoteEditor.prototype._template = function() {
     var publishedNoteListCollapsable = new Collapsable('Published Notes', null);
     this._element(publishedNoteListCollapsable.element());
 
-    var publishedNoteList = new PublishedNoteList(
-            function(noteId) {
-            }
-            );
+    var publishedNoteList = new PublishedNoteList();
     publishedNoteListCollapsable.setContent(publishedNoteList.element());
 
     var noteListCollapsable = new Collapsable('Notes', null);

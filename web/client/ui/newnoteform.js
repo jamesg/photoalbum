@@ -23,6 +23,7 @@ exports.NewNoteForm.prototype._template = function() {
     var message = p();
     var _form = form(
             {
+                class: 'pure-form',
                 onsubmit: (function() {
                     api.createDraftNote(
                         titleInput().value,
@@ -40,7 +41,13 @@ exports.NewNoteForm.prototype._template = function() {
                 }).bind(this)
             },
             titleInput,
-            input({ 'type': 'submit', 'value': 'Create Draft' })
+            input(
+                {
+                    class: 'pure-button pure-button-primary',
+                    type: 'submit',
+                    value: 'Create Draft'
+                }
+                )
             );
     _form();
     this._element = _form;

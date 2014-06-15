@@ -41,6 +41,9 @@ exports.NoteList.prototype.reload = function() {
 exports.NoteList.prototype._setNoteList = function(notes) {
     this._element().innerHTML = '';
     this._element(
+            {
+                class: 'pure-table'
+            },
             domjs.build(
                 this._listTemplate.bind(this, notes)
                 )
@@ -52,7 +55,9 @@ exports.NoteList.prototype.element = function() {
 }
 
 exports.NoteList.prototype._listTemplate = function(notes) {
-    this._element(tr(td('Date'), td('Title'), td('Action')));
+    this._element(thead(tr(td('Date'), td('Title'), td('Action'))));
+    var _tbody = tbody();
+    this._element(_tbody);
     for(n in notes) {
         var deleteFunction = function(noteList, noteId) {
             var noteList = noteList, noteId = noteId;
@@ -78,6 +83,7 @@ exports.NoteList.prototype._listTemplate = function(notes) {
                         )).element(),
                     button(
                         {
+                            class: 'pure-button',
                             onclick: this._callback.bind(this, notes[n].note_id)
                         },
                         'Edit'
@@ -96,7 +102,7 @@ exports.NoteList.prototype._listTemplate = function(notes) {
                         )).element()
                     )
                 );
-        this._element(_tr);
+        _tbody(_tr);
     }
 }
 

@@ -89,7 +89,13 @@ exports.NoteEdit.prototype._editorTemplate = function(title, markdown) {
         p('Title: ' + title),
         markdownTextarea,
         br(),
-        input({ 'type': 'submit', 'value': 'Save' })
+        input(
+            {
+                class: 'pure-button pure-button-primary',
+                type: 'submit',
+                value: 'Save'
+            }
+            )
         );
 }
 

@@ -1,0 +1,69 @@
+/*
+ * Photoalbum - a photograph album web application.
+ * Copyright (C) 2014 James Goode.
+ */
+
+#include "api/auth.hpp"
+
+#include <boost/nondet_random.hpp>
+#include <boost/random/variate_generator.hpp>
+#include <boost/random/uniform_int.hpp>
+
+#include "db/auth.hpp"
+#include "jsonrpc/request.hpp"
+#include "jsonrpc/result.hpp"
+
+void photograph::api::auth::login(
+    jsonrpc::request& request,
+    jsonrpc::result& result,
+    sqlite::connection& conn
+    )
+{
+    const std::string
+        username = request.params().get<std::string>(0),
+        password = request.params().get<std::string>(1);
+
+    if(username == "root" && password == "root")
+    {
+        // Generate a token.
+        std::ostringstream oss;
+        boost::random_device rng;
+        static const std::string chars = 
+             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+             "abcdefghijklmnopqrstuvwxyz"
+             "0123456789+/";
+        boost::variate_generator<boost::random_device&, boost::uniform_int<>>
+            gen(rng, boost::uniform_int<>(0, chars.size()));
+        for(int i = 0; i < 64; ++i)
+            oss << chars[gen()];
+        const std::string token = oss.str();
+        // Store the token.
+        db::auth::issue_token(token, conn);
+        result.data() = token;
+    }
+    else
+    {
+        result.error() = "Incorrect username or password.";
+    }
+}
+
+void photograph::api::auth::logout(
+    jsonrpc::request& request,
+    jsonrpc::result&,
+    sqlite::connection& conn
+    )
+{
+    const std::string token = request.params().get<std::string>(0);
+    db::auth::invalidate(token, conn);
+}
+
+void photograph::api::auth::token_valid(
+    jsonrpc::request& request,
+    jsonrpc::result& result,
+    sqlite::connection& conn
+    )
+{
+    const std::string token = request.params().get<std::string>(0);
+    result.data() = db::auth::token_valid(token, conn);
+}
+

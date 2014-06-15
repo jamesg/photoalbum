@@ -15,6 +15,7 @@ LIBS=\
 	 -lboost_date_time \
 	 -lboost_filesystem \
 	 -lboost_program_options \
+	 -lboost_random \
 	 -lboost_regex \
 	 -lboost_system \
 	 -lboost_thread \
@@ -27,6 +28,7 @@ OBJDIR=objs
 
 OBJS=\
 	${OBJDIR}/api/album.o \
+	${OBJDIR}/api/auth.o \
 	${OBJDIR}/api/features.o \
 	${OBJDIR}/api/jpeg_data.o \
 	${OBJDIR}/api/map.o \
@@ -35,12 +37,14 @@ OBJS=\
 	${OBJDIR}/api/statistics.o \
 	${OBJDIR}/base64/base64.o \
 	${OBJDIR}/db/album.o \
+	${OBJDIR}/db/auth.o \
 	${OBJDIR}/db/get_database.o \
 	${OBJDIR}/db/jpeg_data.o \
 	${OBJDIR}/db/map.o \
 	${OBJDIR}/db/note.o \
 	${OBJDIR}/db/photograph.o \
 	${OBJDIR}/db/statistics.o \
+	${OBJDIR}/jsonrpc/auth.o \
 	${OBJDIR}/jsonrpc/server.o \
 	${OBJDIR}/mongoose.o \
 	${OBJDIR}/photograph_api.o \

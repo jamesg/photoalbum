@@ -44,7 +44,8 @@ exports.passThrough = function() {
     var requestContent = JSON.stringify(
         {
             'method': api_function,
-            'params': params
+            'params': params,
+            token: localStorage.getItem('token')
         }
         );
 
@@ -120,7 +121,11 @@ var passthroughFunctions = {
     'statistics':                'statistics',
 
     'getTile':                   'get_tile',
-    'searchGazetteer':           'search_gazetteer'
+    'searchGazetteer':           'search_gazetteer',
+
+    'login':                     'login',
+    'logout':                    'logout',
+    'tokenValid':                'token_valid'
 };
 
 for(f in passthroughFunctions)

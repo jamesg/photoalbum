@@ -8,6 +8,8 @@
 
 #include <map>
 
+#include <boost/function.hpp>
+
 #include "jsonrpc/method_type.hpp"
 
 namespace jsonrpc
@@ -15,14 +17,28 @@ namespace jsonrpc
     struct request;
     struct result;
 
+    namespace detail
+    {
+        struct method
+        {
+            method_type serve;
+            boost::function<bool(const request&)> check_auth;
+        };
+    }
+
     class server
     {
     public:
         server();
         void install(const std::string&, method_type);
+        void install(
+            const std::string&,
+            method_type,
+            boost::function<bool(const request&)>
+            );
         void serve(request&, result&) const;
     private:
-        std::map<std::string, method_type> m_methods;
+        std::map<std::string, detail::method> m_methods;
     };
 }
 

@@ -22,9 +22,8 @@ namespace jsonrpc
         }
 
         std::string& method() const { return get_string("method"); }
-        std::string& method() { return get_string("method"); }
         json::list& params() const { return get_list("params"); }
-        json::list& params() { return get_list("params"); }
+        std::string& token() const { return get_string("token"); }
     };
 }
 

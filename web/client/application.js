@@ -1,10 +1,12 @@
 var domjs = require('domjs/lib/html5')(document);
 
+var api = require('./api');
 var css = require('./css').css;
 
 var Albums        = require('./albums').Albums;
 var Filters       = require('./filters').Filters;
 var Locations     = require('./locations').Locations;
+var LoginForm     = require('./loginform').LoginForm;
 var MainMenu      = require('./ui/mainmenu').MainMenu;
 var Map           = require('./map').Map;
 var NewPhotograph = require('./newphotograph').NewPhotograph;
@@ -15,7 +17,15 @@ var Tags          = require('./tags').Tags;
 
 exports.Application = function() {
     this._documentFragment = domjs.build(this._template.bind(this));
-    this.showMainMenu();
+    api.tokenValid(
+            localStorage.getItem('token'),
+            (function(err, result) {
+                if(result) 
+                    this.showMainMenu();
+                else
+                    this.showLoginForm();
+            }).bind(this)
+            );
 }
 
 var _editButton;
@@ -74,6 +84,10 @@ exports.Application.prototype.showAlbums = function() {
 
 exports.Application.prototype.showLocations = function() {
     this._showElement((new Locations()).element());
+}
+
+exports.Application.prototype.showLoginForm = function() {
+    this._showElement((new LoginForm(this.showMainMenu.bind(this))).element());
 }
 
 exports.Application.prototype.showTags = function() {

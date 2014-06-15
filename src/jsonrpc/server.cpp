@@ -19,18 +19,47 @@ void jsonrpc::server::install(
         method_type method
         )
 {
-    m_methods[name] = method;
+    m_methods[name] = detail::method{method, [](...) { return true; }};
+}
+
+void jsonrpc::server::install(
+        const std::string& name,
+        method_type method,
+        boost::function<bool(const request&)> auth_function
+        )
+{
+    m_methods[name] = detail::method{method, auth_function};
 }
 
 void jsonrpc::server::serve(request& req, result& res) const
 {
+    auto method_it = m_methods.find(req.method());
+    if(method_it == m_methods.end())
+    {
+        std::cerr << "jsonrpc request for unknown method: " << req.method() <<
+            std::endl;
+        res.error() = "Method unknown";
+        return;
+    }
+
     try
     {
-        auto method_it = m_methods.find(req.method());
-        if(method_it == m_methods.end())
-            res.error() = "Method unknown";
-        else
-            method_it->second(req, res);
+        const bool authed = method_it->second.check_auth(req);
+        if(!authed)
+        {
+            res.error() = "Not authorised";
+            return;
+        }
+    }
+    catch(const std::exception& e)
+    {
+        res.error() = "Checking authentication";
+        return;
+    }
+
+    try
+    {
+        method_it->second.serve(req, res);
     }
     catch(const std::exception& e)
     {

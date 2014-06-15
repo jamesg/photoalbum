@@ -20,6 +20,7 @@
 #include "sqlite/update.hpp"
 
 #include "album.hpp"
+#include "auth.hpp"
 #include "features.hpp"
 #include "jpeg_data.hpp"
 #include "map.hpp"

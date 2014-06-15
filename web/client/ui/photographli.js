@@ -69,6 +69,18 @@ exports.PhotographLi.prototype._template = function() {
     this._element = li();
 }
 
+exports.PhotographLi.prototype._deleteTemplate = function(photographId) {
+    return div(
+            h3('Delete'),
+            (new ConfirmButton(
+                'Delete',
+                (function(photographId) {
+                    api.deletePhotograph(photographId, function() {});
+                }).bind(this, photographId)
+                )).element()
+            );
+}
+
 exports.PhotographLi.prototype._scalesTemplate = function(photograph) {
     var scales = [
         { width: 400, height: 300 },
@@ -128,7 +140,13 @@ exports.PhotographLi.prototype._detailTemplate = function(photograph) {
             div({ class: 'pure-u-3-24', style: 'text-align: right' }, closeButton),
             div({ class: 'pure-u-7-24' }, photographDetailsForm.element()),
             div({ class: 'pure-u-10-24' }, albumsForm.element()),
-            div({ class: 'pure-u-7-24' }, this._scalesTemplate(photograph))
+            div(
+                { class: 'pure-u-7-24' },
+                div(
+                    this._scalesTemplate(photograph),
+                    this._deleteTemplate(photograph.photograph_id)
+                    )
+                )
            )
         );
 }

@@ -72,15 +72,19 @@ int photograph::exports::main(int argc, const char* argv[])
             );
     for(const sqlite::row<int, std::string> album : albums)
     {
-        std::cerr << "exporting album " << sqlite::column<0>(album) << std::endl;
         boost::filesystem::path album_dir = out_dir/sqlite::column<1>(album);
+        std::cerr << "exporting to directory " << album_dir << std::endl;
         boost::filesystem::create_directory(album_dir);
-        sqlite::rowset<std::string, std::vector<unsigned char>> photographs;
+
+        sqlite::rowset<int> photographs;
         sqlite::select(
                 conn,
-                "SELECT taken, data "
-                "FROM album NATURAL JOIN photograph NATURAL JOIN jpeg_data "
-                "WHERE album_id = ? "
+                "SELECT photograph.photograph_id "
+                "FROM album JOIN photograph_in_album "
+                "ON album.album_id = photograph_in_album.album_id "
+                "JOIN photograph "
+                "ON photograph_in_album.photograph_id = photograph.photograph_id "
+                "WHERE album.album_id = ? "
                 "ORDER BY taken ASC ",
                 sqlite::row<int>(sqlite::column<0>(album)),
                 photographs
@@ -89,11 +93,30 @@ int photograph::exports::main(int argc, const char* argv[])
         static const char *unknown_string = "unknown";
         std::string last_taken = unknown_string;
         int count = 0;
-        for(const sqlite::row<std::string, std::vector<unsigned char>> p : photographs)
+        for(const sqlite::row<int> photo_id : photographs)
         {
+            sqlite::row<std::string, std::vector<unsigned char>> photo_data;
+            {
+                sqlite::rowset<std::string, std::vector<unsigned char>> data_list;
+                sqlite::select(
+                    conn,
+                    "SELECT taken, data "
+                    "FROM photograph NATURAL JOIN jpeg_data "
+                    "WHERE photograph_id = ? ",
+                    photo_id,
+                    data_list
+                    );
+                if(!data_list.size())
+                {
+                    std::cerr << "no photograph with id " << sqlite::column<0>(photo_id) << std::endl;
+                    continue;
+                }
+                photo_data = std::move(data_list[0]);
+            }
+
             // Write out the photograph.
-            const std::string taken = sqlite::column<0>(p).length()?
-                    std::string(sqlite::column<0>(p), 0, 10):unknown_string;
+            const std::string taken = sqlite::column<0>(photo_data).length()?
+                    std::string(sqlite::column<0>(photo_data), 0, 10):unknown_string;
             if(taken == last_taken)
                 count++;
             else
@@ -105,24 +128,27 @@ int photograph::exports::main(int argc, const char* argv[])
             std::ostringstream out_filename;
             out_filename << taken << "_" << std::setfill('0') <<
                 std::setw(4) << count << ".jpg";
-            std::cerr << "export photograph " << out_filename.str() << std::endl;
 
-            boost::filesystem::ofstream os(album_dir/out_filename.str());
+            const boost::filesystem::path jpeg_file = album_dir/out_filename.str();
+            std::cerr << "export photograph to " << jpeg_file << std::endl;
+            boost::filesystem::ofstream os(jpeg_file);
+
             if(fullsize)
             {
-                const std::vector<unsigned char>& data = sqlite::column<1>(p);
+                const std::vector<unsigned char>& data = sqlite::column<1>(photo_data);
                 os << std::string((const char*)(&(data[0])), data.size());
             }
             else
             {
                 std::vector<unsigned char> data;
                 util::scale(
-                        sqlite::column<1>(p),
+                        sqlite::column<1>(photo_data),
                         geometry,
                         data
                         );
                 os << std::string((const char*)(&(data[0])), data.size());
             }
+            os.close();
         }
     }
 }

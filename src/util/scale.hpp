@@ -21,7 +21,7 @@ namespace photograph
         void scale(
                 const std::vector<unsigned char> image,
                 const std::string& geometry,
-                std::vector<unsigned char> scaled_image
+                std::vector<unsigned char>& scaled_image
                 );
 
         /*
@@ -34,7 +34,7 @@ namespace photograph
                 const std::vector<unsigned char> image,
                 const int width,
                 const int height,
-                std::vector<unsigned char> scaled_image
+                std::vector<unsigned char>& scaled_image
                 );
     }
 }

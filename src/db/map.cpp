@@ -13,6 +13,7 @@
 #include "sqlite/devoid.hpp"
 #include "sqlite/get_by_id.hpp"
 #include "sqlite/insert.hpp"
+#include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 #include "sqlite/step.hpp"
 #include "sqlite/temporary_table.hpp"
@@ -25,16 +26,75 @@ namespace photograph
     }
 }
 
+void photograph::db::map::create(sqlite::connection& conn)
+{
+    /*
+     * Table for Ordnance Survey Street Map data.  Images are stored in PNG
+     * format.
+     */
+    sqlite::devoid(
+        "CREATE TABLE IF NOT EXISTS tile_data ( "
+        "    region    VARCHAR, "
+        "    eastings  INTEGER, "
+        "    northings INTEGER, "
+        "    data      BLOB NOT NULL, "
+        "    PRIMARY KEY(region, eastings, northings) "
+        ") ",
+        sqlite::empty_row(),
+        conn
+        );
+    /*
+     * Create a view for obtaining tile information without the image data to
+     * speed up queries where image data is not required.
+     */
+    sqlite::devoid(
+        "CREATE VIEW IF NOT EXISTS tile AS "
+        "SELECT region, eastings, northings FROM tile_data ",
+        sqlite::empty_row(),
+        conn
+        );
+    /*
+     * Data for the OS 50k Gazetteer data set.  Field names are identical to
+     * those in the documentation for the data set.
+     */
+    sqlite::devoid(
+        "CREATE TABLE IF NOT EXISTS gazetteer ( "
+        "    seq         INTEGER, "
+        "    km_ref      VARCHAR, "
+        "    def_nam     VARCHAR, "
+        "    tile_ref    VARCHAR, "
+        "    lat_deg     INTEGER, "
+        "    lat_min     FLOAT, "
+        "    long_deg    INTEGER, "
+        "    long_min    FLOAT, "
+        "    north       INTEGER, "
+        "    east        INTEGER, "
+        "    gmt         VARCHAR, "
+        "    co_code     VARCHAR, "
+        "    county      VARCHAR, "
+        "    full_county VARCHAR, "
+        "    f_code      VARCHAR, "
+        "    e_date      VARCHAR, "
+        "    update_co   VARCHAR, "
+        "    sheet_1     INTEGER, "
+        "    sheet_2     INTEGER, "
+        "    sheet_3     INTEGER "
+        ") ",
+        sqlite::empty_row(),
+        conn
+        );
+}
+
 void photograph::db::get(
     sqlite::connection& conn,
     const std::string& region,
     int eastings,
     int northings,
-    const map::tile& out
+    const photograph::map::tile& out
     )
 {
     json::list l;
-    sqlite::select<map::tile>(
+    sqlite::select<photograph::map::tile>(
             conn,
             "SELECT region, eastings, northings "
             "FROM tile "
@@ -53,11 +113,11 @@ void photograph::db::get(
     const std::string& region,
     int eastings,
     int northings,
-    map::tile_data_db& data
+    photograph::map::tile_data_db& data
     )
 {
-    std::vector<map::tile_data_db> l;
-    sqlite::select<map::tile_data_db>(
+    std::vector<photograph::map::tile_data_db> l;
+    sqlite::select<photograph::map::tile_data_db>(
             conn,
             "SELECT region, eastings, northings, data "
             "FROM tile_data "
@@ -76,10 +136,10 @@ void photograph::db::get(
         const std::string& region,
         int eastings,
         int northings,
-        const map::tile_data& out
+        const photograph::map::tile_data& out
         )
 {
-    map::tile_data_db data;
+    photograph::map::tile_data_db data;
     get(conn, region, eastings, northings, data);
     out.region() = data.region;
     out.eastings() = data.eastings;
@@ -133,7 +193,7 @@ void photograph::db::insert(
 void photograph::db::get(
         sqlite::connection&          conn,
         int                          seq,
-        const map::gazetteer_record& out
+        const photograph::map::gazetteer_record& out
         )
 {
     sqlite::get_by_id(
@@ -167,7 +227,7 @@ void photograph::db::get(
 }
 
 void photograph::db::insert(
-        const map::gazetteer_record& in,
+        const photograph::map::gazetteer_record& in,
         sqlite::connection&          conn
         )
 {
@@ -205,7 +265,7 @@ void photograph::db::insert_gazetteer_records(
         sqlite::connection& conn
         )
 {
-    sqlite::insert<map::gazetteer_record>(
+    sqlite::insert<photograph::map::gazetteer_record>(
             "gazetteer",
             {
                 "seq",
@@ -295,7 +355,7 @@ void photograph::db::search_gazetteer(
 {
     std::ostringstream oss;
     oss << "%" << search_term << "%";
-    sqlite::select<map::gazetteer_record>(
+    sqlite::select<photograph::map::gazetteer_record>(
             conn,
             "SELECT seq, km_ref, def_nam, lat_deg, lat_min, long_deg, "
             "long_min, north, east, gmt, co_code, county, full_county, f_code, "

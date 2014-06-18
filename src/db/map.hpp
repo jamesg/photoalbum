@@ -96,6 +96,19 @@ namespace photograph
     namespace db
     {
         /*
+         * Database functions specific to the maps component.
+         */
+        namespace map
+        {
+            /*
+             * Create tables for map data if they do not exist in the database.
+             * This database stores map information and images from the
+             * Ordnance Survey Open Data archive.  When the database is used
+             * from the photograph album server it is read only.
+             */
+            void create(sqlite::connection&);
+        }
+        /*
          * Get metadata about a tile.
          */
         void get(
@@ -103,7 +116,7 @@ namespace photograph
                 const std::string& region,
                 int eastings,
                 int northings,
-                const map::tile&
+                const ::photograph::map::tile&
                 );
         /*
          * Get image data for a tile.
@@ -115,7 +128,7 @@ namespace photograph
                 const std::string& region,
                 int eastings,
                 int northings,
-                map::tile_data_db&
+                ::photograph::map::tile_data_db&
                 );
         /*
          * Get image data for a tile.
@@ -126,27 +139,27 @@ namespace photograph
                 const std::string& region,
                 int eastings,
                 int northings,
-                const map::tile_data&
+                const ::photograph::map::tile_data&
                 );
 
         void insert(
-                const map::tile_data&,
+                const ::photograph::map::tile_data&,
                 sqlite::connection&
                 );
 
         void insert(
-                map::tile_data_db&,
+                ::photograph::map::tile_data_db&,
                 sqlite::connection&
                 );
 
         void get(
                 sqlite::connection&,
                 int seq,
-                const map::gazetteer_record&
+                const ::photograph::map::gazetteer_record&
                 );
 
         void insert(
-                const map::gazetteer_record&,
+                const ::photograph::map::gazetteer_record&,
                 sqlite::connection&
                 );
 
@@ -180,14 +193,14 @@ namespace photograph
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::map::tile,
+        ::photograph::map::tile,
         (std::string&, region())
         (int&, eastings())
         (int&, northings())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::map::tile_data,
+        ::photograph::map::tile_data,
         (std::string&, region())
         (int&, eastings())
         (int&, northings())
@@ -195,7 +208,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::map::tile_data_db,
+        ::photograph::map::tile_data_db,
         (std::string, region)
         (int, eastings)
         (int, northings)
@@ -203,7 +216,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::map::gazetteer_record,
+        ::photograph::map::gazetteer_record,
         (int&, seq())
         (std::string&, km_ref())
         (std::string&, def_nam())

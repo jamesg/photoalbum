@@ -61,6 +61,7 @@ int photograph::os::gazetteer(int argc, const char *argv[])
     }
 
     sqlite::connection conn(mapdb);
+    db::map::create(conn);
 
     // Ready to start importing gazetteer data.
     // Assume we are replacing regions on the command line.

@@ -52,6 +52,7 @@ int photograph::os::streetmap(int argc, const char* argv[])
     }
 
     sqlite::connection conn(mapdb);
+    db::map::create(conn);
 
     if(file_list.empty())
         std::cerr << "warning: no files specified" << std::endl;

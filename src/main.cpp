@@ -29,6 +29,7 @@
 #include "db/auth.hpp"
 #include "db/get_database.hpp"
 #include "db/jpeg_data.hpp"
+#include "db/map.hpp"
 #include "db/photograph.hpp"
 #include "jsonrpc/auth.hpp"
 #include "jsonrpc/server.hpp"
@@ -36,6 +37,7 @@
 #include "uri/insert_photograph.hpp"
 #include "uri/jpeg_image.hpp"
 #include "uri/jpeg_image_fullsize.hpp"
+#include "uri/map_tile_km.hpp"
 #include "photograph_api.hpp"
 #include "photograph_db.hpp"
 
@@ -109,6 +111,7 @@ int main(int argc, const char* argv[])
 
     sqlite::connection& db = photograph::db::get_database(photograph::db::database_photograph, db_file);
     sqlite::connection& map_db = photograph::db::get_database(photograph::db::database_map, map_db_file);
+    photograph::db::map::create(map_db);
     sqlite::connection auth_db = 
         auth_db_file.length()?
         sqlite::connection(auth_db_file):
@@ -358,6 +361,10 @@ int main(int argc, const char* argv[])
     s.install(
             "/jpeg_image_fullsize",
             boost::bind(&photograph::uri::jpeg_image_fullsize, boost::ref(s), _1, _2)
+            );
+    s.install(
+            "/map_tile_km",
+            boost::bind(&photograph::uri::map_tile_km, boost::ref(s), _1, _2, boost::ref(map_db))
             );
     s.install("/insert_photograph", &photograph::uri::insert_photograph);
     s.install("/api_call", boost::bind(&api_call, api_server, _1, _2));

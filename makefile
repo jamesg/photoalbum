@@ -54,6 +54,7 @@ OBJS=\
 	${OBJDIR}/uri/insert_photograph.o \
 	${OBJDIR}/uri/jpeg_image.o \
 	${OBJDIR}/uri/jpeg_image_fullsize.o \
+	${OBJDIR}/uri/map_tile_km.o \
 	${OBJDIR}/util/scale.o
 
 clean:

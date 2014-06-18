@@ -28,7 +28,21 @@ var tileImageUrl = function(kmRef) {
 exports.KmTileView.prototype._mapTemplate = function() {
     this._element().innerHTML = '';
     this._element(
-            img({ 'style': 'max-width:100%', 'alt': this._kmRef, 'src': tileImageUrl(this._kmRef) })
+            div(
+                { class: 'pure-g' },
+                div({ class: 'pure-u-1-5' }),
+                div(
+                    { class: 'pure-u-3-5' },
+                    img(
+                        {
+                            style: 'max-width:100%',
+                            alt: this._kmRef,
+                            src: tileImageUrl(this._kmRef)
+                        }
+                        )
+                   ),
+                div({ class: 'pure-u-1-5' })
+                )
             );
 }
 

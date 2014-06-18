@@ -85,11 +85,17 @@ exports.MainMenu.prototype._buttonsTemplate = function(features) {
     }
     if(features['gazetteer']) {
         this._element(
+            this._sectionTemplate(
+                'Maps',
+                'Search for Ordnance Survey maps.',
+                [
                 this._buttonTemplate(
                     'Gazetteer',
                     this._application.showMap.bind(this._application)
                     )
-                );
+                ]
+                )
+            );
     }
 }
 

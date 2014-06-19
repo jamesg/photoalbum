@@ -11,6 +11,10 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/fusion/include/vector.hpp>
 
+#include "sqlite/devoid.hpp"
+
+#include "db/note.hpp"
+
 void photograph::api::markdown_data(
         jsonrpc::request& request,
         jsonrpc::result& result,

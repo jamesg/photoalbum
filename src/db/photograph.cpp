@@ -5,6 +5,7 @@
 
 #include "photograph.hpp"
 
+#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/optional.hpp>
 
@@ -16,7 +17,29 @@
 #include "sqlite/select.hpp"
 #include "sqlite/update.hpp"
 
-#include "photograph_db.hpp"
+#include "db/album.hpp"
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::photograph,
+        (int&,         id())
+        (std::string&, title())
+        (std::string&, caption())
+        (std::string&, filename())
+        (std::string&, location())
+        (std::string&, taken())
+        )
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::photograph_in_album,
+        (int&,         photograph_id())
+        (int&,         album_id())
+        )
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::photograph_tagged,
+        (int&,         photograph_id())
+        (std::string&, tag())
+        )
 
 namespace photograph
 {
@@ -156,6 +179,38 @@ void photograph::db::get_photograph_list(
                 "location",
                 "taken"
             },
+            list
+            );
+}
+
+int photograph::db::insert(
+        const photograph_in_album& photo_in_al,
+        sqlite::connection& db
+        )
+{
+    return sqlite::insert(
+            "photograph_in_album",
+            { "photograph_id", "album_id" },
+            photo_in_al,
+            db
+            );
+}
+
+void photograph::db::get_photographs_by_album(
+        sqlite::connection& db,
+        const int album_id,
+        json::list& list
+        )
+{
+    boost::fusion::vector<int> params(album_id);
+    sqlite::select<photograph>(
+            db,
+            "SELECT DISTINCT "
+            "photograph_id, title, caption, filename, location, taken "
+            "FROM photograph NATURAL JOIN photograph_in_album "
+            "WHERE album_id = ? "
+            "ORDER BY taken ASC ",
+            params,
             list
             );
 }

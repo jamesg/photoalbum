@@ -6,8 +6,6 @@
  * Copyright (C) 2014 James Goode.
  */
 
-#include <boost/fusion/include/adapt_struct.hpp>
-
 #include "json/json.hpp"
 
 #include "has_id.hpp"
@@ -59,16 +57,6 @@ namespace photograph
     };
 }
 
-BOOST_FUSION_ADAPT_STRUCT(
-        photograph::photograph,
-        (int&,         id())
-        (std::string&, title())
-        (std::string&, caption())
-        (std::string&, filename())
-        (std::string&, location())
-        (std::string&, taken())
-        )
-
 namespace sqlite
 {
     class connection;
@@ -82,6 +70,12 @@ namespace photograph
         void update(const photograph&, sqlite::connection& db);
         void get_by_id(int id, sqlite::connection& db, const photograph& photo);
         void get_photograph_list(sqlite::connection& db, json::list& list);
+        int insert(const photograph_in_album&, sqlite::connection& db);
+        void get_photographs_by_album(
+                sqlite::connection& db,
+                const int album_id,
+                json::list& list
+                );
     }
 }
 

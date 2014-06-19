@@ -11,12 +11,27 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/fusion/include/vector.hpp>
 
+#include "sqlite/devoid.hpp"
 #include "sqlite/row.hpp"
+#include "sqlite/select.hpp"
+
+#include "db/album.hpp"
+#include "db/photograph.hpp"
 
 namespace
 {
     typedef photograph::photograph photograph_t;
 }
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::photograph,
+        (int&,         id())
+        (std::string&, title())
+        (std::string&, caption())
+        (std::string&, filename())
+        (std::string&, location())
+        (std::string&, taken())
+        )
 
 void photograph::api::photograph(
         jsonrpc::request&   request,

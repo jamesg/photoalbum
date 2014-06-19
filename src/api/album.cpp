@@ -8,15 +8,28 @@
 #include <exception>
 #include <locale>
 
+#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/vector.hpp>
 
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
+#include "sqlite/devoid.hpp"
 #include "sqlite/insert.hpp"
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
-#include "photograph_db.hpp"
+#include "db/album.hpp"
+#include "db/photograph.hpp"
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::photograph,
+        (int&,         id())
+        (std::string&, title())
+        (std::string&, caption())
+        (std::string&, filename())
+        (std::string&, location())
+        (std::string&, taken())
+        )
 
 void photograph::api::add_photograph_to_album(
         jsonrpc::request&   request,

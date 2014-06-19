@@ -7,14 +7,6 @@
  */
 
 #include "jsonrpc/method_type.hpp"
-#include "sqlite/connection.hpp"
-#include "sqlite/bind_values.hpp"
-#include "sqlite/devoid.hpp"
-#include "sqlite/get_by_id.hpp"
-#include "sqlite/get_list.hpp"
-#include "sqlite/insert.hpp"
-#include "sqlite/select.hpp"
-#include "photograph_db.hpp"
 
 #include "sqlite/bind_values.hpp"
 #include "sqlite/update.hpp"
@@ -43,11 +35,6 @@ namespace photograph
 {
     namespace api
     {
-        void photograph(
-                jsonrpc::request&,
-                jsonrpc::result&,
-                sqlite::connection& db
-                );
         void recent_photographs(
                 jsonrpc::request&,
                 jsonrpc::result&,

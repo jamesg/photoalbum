@@ -31,6 +31,7 @@ OBJS=\
 	${OBJDIR}/api/auth.o \
 	${OBJDIR}/api/features.o \
 	${OBJDIR}/api/jpeg_data.o \
+	${OBJDIR}/api/api.o \
 	${OBJDIR}/api/map.o \
 	${OBJDIR}/api/note.o \
 	${OBJDIR}/api/photograph.o \
@@ -47,8 +48,6 @@ OBJS=\
 	${OBJDIR}/jsonrpc/auth.o \
 	${OBJDIR}/jsonrpc/server.o \
 	${OBJDIR}/mongoose.o \
-	${OBJDIR}/photograph_api.o \
-	${OBJDIR}/photograph_db.o \
 	${OBJDIR}/server.o \
 	${OBJDIR}/uri/http_date.o \
 	${OBJDIR}/uri/insert_photograph.o \

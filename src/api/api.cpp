@@ -3,25 +3,64 @@
  * Copyright (C) 2014 James Goode.
  */
 
-#include "photograph_api.hpp"
+#include "api.hpp"
 
 #include <locale>
 
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/vector.hpp>
 
-#include "jsonrpc/request.hpp"
-#include "jsonrpc/result.hpp"
+#include "json/map_accessor.hpp"
+#include "sqlite/connection.hpp"
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
-#include "photograph_db.hpp"
+#include "db/photograph.hpp"
+#include "jsonrpc/request.hpp"
+#include "jsonrpc/result.hpp"
 
 namespace
 {
     typedef photograph::photograph photograph_t;
+
+    struct location : json::map_accessor
+    {
+        location(json::object& o) : map_accessor(o)
+        {
+        }
+        std::string& str() const { return get_string("location"); }
+    };
+
+    struct tag : json::map_accessor
+    {
+        tag(json::object& o) : map_accessor(o)
+        {
+        }
+        std::string& str() const { return get_string("tag"); }
+    };
 }
+
+BOOST_FUSION_ADAPT_STRUCT(
+        ::location,
+        (std::string&, str())
+        )
+
+BOOST_FUSION_ADAPT_STRUCT(
+        ::tag,
+        (std::string&, str())
+        )
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::photograph,
+        (int&,         id())
+        (std::string&, title())
+        (std::string&, caption())
+        (std::string&, filename())
+        (std::string&, location())
+        (std::string&, taken())
+        )
 
 void photograph::api::recent_photographs(
         jsonrpc::request& request,
@@ -51,7 +90,7 @@ void photograph::api::locations(
         )
 {
     json::list list;
-    sqlite::select< ::photograph::location>(
+    sqlite::select< ::location>(
            db,
            "SELECT DISTINCT location "
            "FROM photograph "
@@ -69,7 +108,7 @@ void photograph::api::tags(
         )
 {
     json::list list;
-    sqlite::select< ::photograph::tag>(
+    sqlite::select< ::tag>(
             db,
             "SELECT DISTINCT tag FROM photograph_tagged "
             "ORDER BY tag ",

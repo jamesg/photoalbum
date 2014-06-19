@@ -26,9 +26,9 @@
 #include "sqlite/insert.hpp"
 #include "sqlite/select.hpp"
 
+#include "api/api.hpp"
 #include "db/auth.hpp"
 #include "db/get_database.hpp"
-#include "db/jpeg_data.hpp"
 #include "db/map.hpp"
 #include "db/photograph.hpp"
 #include "jsonrpc/auth.hpp"
@@ -38,16 +38,6 @@
 #include "uri/jpeg_image.hpp"
 #include "uri/jpeg_image_fullsize.hpp"
 #include "uri/map_tile_km.hpp"
-#include "photograph_api.hpp"
-#include "photograph_db.hpp"
-
-//temp
-#include <exiv2/exiv2.hpp>
-#include <Magick++.h>
-#include <sqlite3.h>
-#include "sqlite/bind_values.hpp"
-#include "sqlite/update.hpp"
-#include "base64/base64.hpp"
 
 namespace
 {

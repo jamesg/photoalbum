@@ -8,6 +8,7 @@
 #include <boost/fusion/include/at_c.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include "sqlite/connection.hpp"
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 

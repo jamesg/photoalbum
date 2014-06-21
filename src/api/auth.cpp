@@ -23,7 +23,11 @@ void photograph::api::auth::login(
         username = request.params().get<std::string>(0),
         password = request.params().get<std::string>(1);
 
-    if(username == "root" && password == "root")
+    json::object user_o;
+    photograph::auth::user user(user_o);
+    db::auth::username_user(conn, username, user);
+
+    if(user.id() && user.password() == password)
     {
         // Generate a token.
         std::ostringstream oss;
@@ -37,13 +41,18 @@ void photograph::api::auth::login(
         for(int i = 0; i < 64; ++i)
             oss << chars[gen()];
         const std::string token = oss.str();
+
         // Store the token.
-        db::auth::issue_token(token, conn);
+        db::auth::issue_token(token, user.id(), conn);
         result.data() = token;
+    }
+    else if(user.id())
+    {
+        result.error() = "Incorrect password.";
     }
     else
     {
-        result.error() = "Incorrect username or password.";
+        result.error() = "Unknown user.";
     }
 }
 

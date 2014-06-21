@@ -8,13 +8,24 @@
 
 #include "mongoose.h"
 
+namespace sqlite
+{
+    class connection;
+}
+
 namespace photograph
 {
     class server;
 
     namespace uri
     {
-        int jpeg_image_fullsize(const server&, mg_connection*, mg_event);
+        int jpeg_image_fullsize(
+                const server&,
+                mg_connection*,
+                mg_event,
+                sqlite::connection& photograph_db,
+                sqlite::connection& auth_db
+                );
     }
 }
 

@@ -23,6 +23,8 @@ namespace photograph
                 const server&,
                 mg_connection*,
                 mg_event,
+                sqlite::connection& photograph_db,
+                sqlite::connection& auth_db,
                 sqlite::connection& cache_db
                 );
     }

@@ -26,7 +26,8 @@ namespace photograph
                 const server&,
                 mg_connection*,
                 mg_event,
-                sqlite::connection& map_db
+                sqlite::connection& map_db,
+                sqlite::connection& auth_db
                 );
     }
 }

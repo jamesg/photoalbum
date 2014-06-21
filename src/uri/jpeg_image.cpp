@@ -15,20 +15,27 @@
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
-#include "db/get_database.hpp"
+#include "db/auth.hpp"
 #include "db/jpeg_data.hpp"
 #include "server.hpp"
-#include "uri/http_date.hpp"
+#include "uri/detail.hpp"
 
 int photograph::uri::jpeg_image(
         const server& serve,
         mg_connection *conn,
         mg_event ev,
+        sqlite::connection& photograph_db,
+        sqlite::connection& auth_db,
         sqlite::connection& cache_db
         )
 {
     if(ev != MG_REQUEST)
         return MG_FALSE;
+    if(!db::auth::token_valid(detail::extract_token(conn), auth_db))
+    {
+        detail::text_response(conn, detail::status_unauthorized);
+        return MG_TRUE;
+    }
     char id_s[10], width_s[10], height_s[10];
     mg_get_var(conn, "photograph_id", id_s, sizeof(id_s));
     mg_get_var(conn, "width", width_s, sizeof(width_s));
@@ -73,7 +80,11 @@ int photograph::uri::jpeg_image(
     {
         mg_send_status(conn, 200);
         mg_send_header(conn, "Content-type", "image/jpeg");
-        mg_send_header(conn, "Last-Modified", http_date(serve.start_time()).c_str());
+        mg_send_header(
+                conn,
+                "Last-Modified",
+                detail::http_date(serve.start_time()).c_str()
+                );
         mg_send_data(
                 conn,
                 &(sqlite::column<0>(cache_data.front()).front()),
@@ -86,11 +97,7 @@ int photograph::uri::jpeg_image(
     {
         json::object data_o;
         jpeg_data_db data(data_o);
-        db::get_by_id(
-                photo_id,
-                db::get_database(db::database_photograph),
-                data
-                );
+        db::get_by_id(photo_id, photograph_db, data);
         Magick::Image image(Magick::Blob(
             reinterpret_cast<const void*>(&(data.data[0])), data.data.size())
             );
@@ -145,7 +152,11 @@ int photograph::uri::jpeg_image(
         out_image.write(&blob, "JPEG");
         mg_send_status(conn, 200);
         mg_send_header(conn, "Content-type", "image/jpeg");
-        mg_send_header(conn, "Last-Modified", http_date(serve.start_time()).c_str());
+        mg_send_header(
+                conn,
+                "Last-Modified",
+                detail::http_date(serve.start_time()).c_str()
+                );
         mg_send_data(conn, blob.data(), blob.length());
 
         sqlite::insert(

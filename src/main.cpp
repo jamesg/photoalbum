@@ -69,6 +69,7 @@ int main(int argc, const char* argv[])
         db_file,
         map_db_file,
         document_root,
+        pem_file,
         port = "4008",
         auth_db_file;
 
@@ -78,6 +79,7 @@ int main(int argc, const char* argv[])
         commandline::parameter("mapdb", map_db_file, "Path to a read-only map database"),
         commandline::parameter("auth_db", auth_db_file, "Path to the authentication database"),
         commandline::parameter("document-root", document_root, "HTML document root"),
+        commandline::parameter("pem", pem_file, "PEM file"),
         commandline::parameter("port", port, "Port number to bind on")
     };
 
@@ -102,10 +104,12 @@ int main(int argc, const char* argv[])
     sqlite::connection& db = photograph::db::get_database(photograph::db::database_photograph, db_file);
     sqlite::connection& map_db = photograph::db::get_database(photograph::db::database_map, map_db_file);
     photograph::db::map::create(map_db);
+
     sqlite::connection auth_db = 
         auth_db_file.length()?
         sqlite::connection(auth_db_file):
         sqlite::connection::in_memory_database();
+
     photograph::db::auth::create(auth_db);
     sqlite::connection cache_db = sqlite::connection::in_memory_database();
     sqlite::devoid(
@@ -342,19 +346,19 @@ int main(int argc, const char* argv[])
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
-    photograph::server s(document_root, port);
+    photograph::server s(document_root, port, pem_file);
 
     s.install(
             "/jpeg_image",
-            boost::bind(&photograph::uri::jpeg_image, boost::ref(s), _1, _2, boost::ref(cache_db))
+            boost::bind(&photograph::uri::jpeg_image, boost::ref(s), _1, _2, boost::ref(db), boost::ref(auth_db), boost::ref(cache_db))
             );
     s.install(
             "/jpeg_image_fullsize",
-            boost::bind(&photograph::uri::jpeg_image_fullsize, boost::ref(s), _1, _2)
+            boost::bind(&photograph::uri::jpeg_image_fullsize, boost::ref(s), _1, _2, boost::ref(db), boost::ref(auth_db))
             );
     s.install(
             "/map_tile_km",
-            boost::bind(&photograph::uri::map_tile_km, boost::ref(s), _1, _2, boost::ref(map_db))
+            boost::bind(&photograph::uri::map_tile_km, boost::ref(s), _1, _2, boost::ref(map_db), boost::ref(auth_db))
             );
     s.install("/insert_photograph", &photograph::uri::insert_photograph);
     s.install("/api_call", boost::bind(&api_call, api_server, _1, _2));

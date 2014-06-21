@@ -21,7 +21,8 @@ namespace photograph
     public:
         server(
                 const std::string& document_root,
-                const std::string& port
+                const std::string& port,
+                const std::string& pem_file
                 );
         ~server();
         void listen();

@@ -13,13 +13,16 @@
 
 photograph::server::server(
         const std::string& document_root,
-        const std::string& port
+        const std::string& port,
+        const std::string& pem_file
         ) :
     m_server(nullptr)
 {
     m_server = mg_create_server((void*)this, &server::accept);
     mg_set_option(m_server, "document_root", document_root.c_str());
     mg_set_option(m_server, "listening_port", port.c_str());
+    if(pem_file.length())
+        mg_set_option(m_server, "ssl_certificate", pem_file.c_str());
 }
 
 photograph::server::~server()

@@ -12,19 +12,26 @@
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
+#include "db/auth.hpp"
 #include "db/map.hpp"
 #include "server.hpp"
-#include "uri/http_date.hpp"
+#include "uri/detail.hpp"
 
 int photograph::uri::map_tile_km(
         const server& serve,
         mg_connection *conn,
         mg_event ev,
-        sqlite::connection& map_db
+        sqlite::connection& map_db,
+        sqlite::connection& auth_db
         )
 {
     if(ev != MG_REQUEST)
         return MG_FALSE;
+    if(!db::auth::token_valid(detail::extract_token(conn), auth_db))
+    {
+        detail::text_response(conn, detail::status_unauthorized);
+        return MG_TRUE;
+    }
     char region_s[10], eastings_s[10], northings_s[10];
     mg_get_var(conn, "region", region_s, sizeof(region_s));
     mg_get_var(conn, "eastings", eastings_s, sizeof(eastings_s));
@@ -43,7 +50,11 @@ int photograph::uri::map_tile_km(
             );
     mg_send_status(conn, 200);
     mg_send_header(conn, "Content-type", "image/png");
-    mg_send_header(conn, "Last-Modified", http_date(serve.start_time()).c_str());
+    mg_send_header(
+            conn,
+            "Last-Modified",
+            detail::http_date(serve.start_time()).c_str()
+            );
     mg_send_data(
             conn,
             &(data_db.data.front()),

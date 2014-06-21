@@ -7,23 +7,35 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "db/get_database.hpp"
+#include "db/auth.hpp"
 #include "db/jpeg_data.hpp"
 #include "server.hpp"
-#include "uri/http_date.hpp"
+#include "uri/detail.hpp"
 
 int photograph::uri::jpeg_image_fullsize(
         const server& serve,
         mg_connection *conn,
-        mg_event ev
+        mg_event ev,
+        sqlite::connection& photograph_db,
+        sqlite::connection& auth_db
         )
 {
     if(ev != MG_REQUEST)
         return MG_FALSE;
+    if(!db::auth::token_valid(detail::extract_token(conn), auth_db))
+    {
+        detail::text_response(conn, detail::status_unauthorized);
+        return MG_TRUE;
+    }
     mg_send_status(conn, 200);
     mg_send_header(conn, "Content-type", "image/jpeg");
-    // TODO write this comment
-    mg_send_header(conn, "Last-Modified", http_date(serve.start_time()).c_str());
+    // Images cannot be modified after they are uploaded, so we can safely give
+    // the start time of the server as the last modified time.
+    mg_send_header(
+            conn,
+            "Last-Modified",
+            detail::http_date(serve.start_time()).c_str()
+            );
 
     char field[100];
     mg_get_var(conn, "photograph_id", field, sizeof(field));
@@ -35,7 +47,7 @@ int photograph::uri::jpeg_image_fullsize(
         jpeg_data_db data(data_o);
         db::get_by_id(
                 photo_id,
-                db::get_database(db::database_photograph),
+                photograph_db,
                 data
                 );
         mg_send_data(conn, &(data.data[0]), data.data.size());

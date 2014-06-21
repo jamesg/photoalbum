@@ -21,6 +21,7 @@ LIBS=\
 	 -lboost_thread \
 	 -lpthread \
 	 -lsqlite3 \
+	 -lssl \
 	 `pkg-config --libs ImageMagick++` \
 	 -lexiv2
 
@@ -49,7 +50,7 @@ OBJS=\
 	${OBJDIR}/jsonrpc/server.o \
 	${OBJDIR}/mongoose.o \
 	${OBJDIR}/server.o \
-	${OBJDIR}/uri/http_date.o \
+	${OBJDIR}/uri/detail.o \
 	${OBJDIR}/uri/insert_photograph.o \
 	${OBJDIR}/uri/jpeg_image.o \
 	${OBJDIR}/uri/jpeg_image_fullsize.o \
@@ -84,5 +85,5 @@ ${OBJDIR}/%.o : src/%.cpp
 	${CXX} ${CPPFLAGS} $< -c -o $@
 
 ${OBJDIR}/mongoose.o: src/mongoose.c
-	${CC} ${CFLAGS} -c -o ${OBJDIR}/mongoose.o src/mongoose.c -lpthread
+	${CC} ${CFLAGS} -DNS_ENABLE_SSL -c -o ${OBJDIR}/mongoose.o src/mongoose.c -lpthread
 

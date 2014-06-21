@@ -5,21 +5,79 @@
 
 #include "db/auth.hpp"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/fusion/include/adapt_struct.hpp>
+
 #include "sqlite/connection.hpp"
 #include "sqlite/devoid.hpp"
+#include "sqlite/get_by_id.hpp"
 #include "sqlite/insert.hpp"
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
+const char photograph::auth::user_id_cstr[] = "user_id";
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::auth::user,
+        (int&, id())
+        (std::string&, username())
+        (std::string&, password())
+        )
+
+BOOST_FUSION_ADAPT_STRUCT(
+        photograph::auth::user_details,
+        (int&, id())
+        (std::string&, first_name())
+        (std::string&, last_name())
+        )
+
 void photograph::db::auth::create(sqlite::connection& conn)
 {
     sqlite::devoid(
-            "CREATE TABLE IF NOT EXISTS auth_token ( "
-            " token VARCHAR PRIMARY KEY "
+            "CREATE TABLE IF NOT EXISTS auth_user ( "
+            " user_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            " username VARCHAR NOT NULL, "
+            " password VARCHAR NOT NULL "
             " ) ",
             sqlite::empty_row(),
             conn
             );
+    sqlite::devoid(
+            "CREATE TABLE IF NOT EXISTS auth_token ( "
+            " token VARCHAR PRIMARY KEY, "
+            " user_id INTEGER NOT NULL REFERENCES auth_user(user_id), "
+            " created VARCHAR NOT NULL, "
+            " expires VARCHAR NOT NULL, "
+            " invalidated BOOLEAN NOT NULL DEFAULT false "
+            " ) ",
+            sqlite::empty_row(),
+            conn
+            );
+    sqlite::devoid(
+            "CREATE TABLE IF NOT EXISTS auth_user_details ( "
+            " user_id PRIMARY KEY REFERENCES auth_user(user_id), "
+            " first_name VARCHAR NOT NULL DEFAULT '', "
+            " last_name VARCHAR NOT NULL DEFAULT '' "
+            " ) ",
+            sqlite::empty_row(),
+            conn
+            );
+
+    json::list root_users;
+    sqlite::select<photograph::auth::user>(
+            conn,
+            "SELECT user_id, username, password FROM auth_user "
+            "WHERE username = 'root' ",
+            sqlite::empty_row(),
+            root_users
+            );
+    if(root_users.size() == 0)
+        sqlite::devoid(
+                "INSERT INTO auth_user(username, password) "
+                "VALUES('root', 'root') ",
+                sqlite::empty_row(),
+                conn
+                );
 }
 
 bool photograph::db::auth::token_valid(
@@ -27,25 +85,49 @@ bool photograph::db::auth::token_valid(
     sqlite::connection& conn
     )
 {
+    boost::posix_time::ptime current_time(
+            boost::posix_time::second_clock::universal_time()
+            );
     sqlite::rowset<std::string> tokens;
     sqlite::select(
             conn,
-            "SELECT token FROM auth_token WHERE token = ?",
-            sqlite::row<std::string>(token),
+            "SELECT token FROM auth_token "
+            "WHERE token = ? "
+            "AND expires > ? "
+            "AND created <= ? "
+            "AND NOT invalidated ",
+            sqlite::row<std::string, std::string, std::string>(
+                token,
+                boost::posix_time::to_simple_string(current_time),
+                boost::posix_time::to_simple_string(current_time)
+                ),
             tokens
             );
     return !tokens.empty();
 }
 
 void photograph::db::auth::issue_token(
-    const std::string& token,
+    const std::string&  token,
+    const int           user_id,
     sqlite::connection& conn
     )
 {
+    boost::posix_time::ptime current_time(
+            boost::posix_time::second_clock::universal_time()
+            );
+    boost::posix_time::ptime expires_time(
+            current_time +
+            boost::posix_time::hours(24)
+            );
     sqlite::insert(
             "auth_token",
-            { "token" },
-            sqlite::row<std::string>(token),
+            { "token", "user_id", "created", "expires" },
+            sqlite::row<std::string, int, std::string, std::string>(
+                    token,
+                    user_id,
+                    boost::posix_time::to_simple_string(current_time),
+                    boost::posix_time::to_simple_string(expires_time)
+                    ),
             conn
             );
 }
@@ -56,9 +138,56 @@ void photograph::db::auth::invalidate(
     )
 {
     sqlite::devoid(
-            "DELETE FROM auth_token WHERE token = ? ",
+            "UPDATE auth_token SET invalidated = true WHERE token = ? ",
             sqlite::row<std::string>(token),
             conn
+            );
+}
+
+void photograph::db::auth::username_user(
+        sqlite::connection&     conn,
+        const std::string&      username,
+        photograph::auth::user& user
+        )
+{
+    json::list users;
+    sqlite::select<photograph::auth::user>(
+            conn,
+            "SELECT user_id, username, password FROM auth_user "
+            "WHERE username = ? ",
+            sqlite::row<std::string>(username),
+            users
+            );
+    if(users.size() == 1)
+        user.get_object() = users.at(0);
+}
+
+void photograph::db::auth::delete_old_tokens(sqlite::connection& conn)
+{
+    boost::posix_time::ptime current_time(
+            boost::posix_time::second_clock::universal_time()
+            );
+    sqlite::devoid(
+            "DELETE FROM auth_token WHERE expires < ? ",
+            sqlite::row<std::string>(
+                boost::posix_time::to_simple_string(current_time)
+                ),
+            conn
+            );
+}
+
+void photograph::db::get_by_id(
+        int user_id,
+        sqlite::connection& conn,
+        photograph::auth::user& user
+        )
+{
+    sqlite::get_by_id(
+            "auth_user",
+            { "id", "username", "password" },
+            user_id,
+            conn,
+            user
             );
 }
 

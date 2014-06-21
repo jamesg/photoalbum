@@ -6,7 +6,8 @@
     "dependencies": {
         "domjs": "latest",
         "marked": "latest",
-        "webmake": "latest"
+        "webmake": "latest",
+        "underscore": "latest"
     }
 }
 

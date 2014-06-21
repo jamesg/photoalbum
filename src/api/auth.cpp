@@ -96,6 +96,8 @@ void photograph::api::auth::update_user(
         result.error() = "Not authorised.";
     else if(db_user.username() != new_user.username())
         result.error() = "Changing usernames is not allowed.";
+    else if(new_user.password().length() == 0)
+        result.error() = "Empty passwords are not allowed.";
     else
         db::update(new_user, auth_db);
 }
@@ -106,6 +108,7 @@ void photograph::api::auth::logged_in_user(
         sqlite::connection& auth_db
         )
 {
+    // TODO: strip out the password field.
     photograph::auth::user user(result.data());
     db::auth::token_user(auth_db, request.token(), user);
 }

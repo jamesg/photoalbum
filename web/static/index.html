@@ -32,11 +32,28 @@
         border-radius: 5px;
         border-color: #444;
         border-width: 2px;
+        border-style: solid;
         padding: 10px;
     }
 
-    .messagebox :empty {
-        border: none;
+    .messagebox-empty {
+        border-style: none;
+    }
+
+    .messagebox-info {
+        border-color: blue;
+    }
+
+    .messagebox-warning {
+        border-color: yellow;
+    }
+
+    .messagebox-success {
+        border-color: green;
+    }
+
+    .messagebox-error {
+        border-color: red;
     }
 
     .pure-g > div {

@@ -20,6 +20,7 @@ exports.PhotographView.prototype._template = function() {
             src: '/jpeg_image' +
                 util.queryString(
                     {
+                        token: localStorage['token'],
                         photograph_id: this._photographId,
                         width: 800,
                         height: 600

@@ -18,9 +18,10 @@ exports.KmTileView.prototype._template = function() {
 var tileImageUrl = function(kmRef) {
     return '/map_tile_km' + util.queryString(
             {
-                'region': kmRef.substring(0, 2).toLowerCase(),
-                'eastings': kmRef.substring(2, 4),
-                'northings': kmRef.substring(4, 6)
+                token: localStorage['token'],
+                region: kmRef.substring(0, 2).toLowerCase(),
+                eastings: kmRef.substring(2, 4),
+                northings: kmRef.substring(4, 6)
             }
             );
 }

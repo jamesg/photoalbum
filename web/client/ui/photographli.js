@@ -97,6 +97,7 @@ exports.PhotographLi.prototype._scalesTemplate = function(photograph) {
         _ul(li(a(
             {
                 href: '/jpeg_image' + util.queryString(params),
+                token: localStorage['token'],
                 download: photograph.title + '.jpg'
             },
             params.width, 'x', params.height
@@ -162,6 +163,7 @@ exports.PhotographLi.prototype._smallTemplate = function(photograph) {
                     src: '/jpeg_image' +
                         util.queryString(
                             {
+                                token: localStorage['token'],
                                 photograph_id: photograph.photograph_id,
                                 width: 120,
                                 height: 120

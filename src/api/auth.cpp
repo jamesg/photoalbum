@@ -30,10 +30,10 @@ void photograph::api::auth::login(
         boost::random_device rng;
         static const std::string chars = 
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-             "abcdefghijklmnopqrstuvwxyz";
-             //"0123456789+/";
+             "abcdefghijklmnopqrstuvwxyz"
+             "0123456789+/";
         boost::variate_generator<boost::random_device&, boost::uniform_int<>>
-            gen(rng, boost::uniform_int<>(0, chars.size()));
+            gen(rng, boost::uniform_int<>(0, chars.size()-1));
         for(int i = 0; i < 64; ++i)
             oss << chars[gen()];
         const std::string token = oss.str();

@@ -54,6 +54,7 @@ void jsonrpc::server::serve(request& req, result& res) const
     catch(const std::exception& e)
     {
         res.error() = "Checking authentication";
+        std::cerr << "checking authentication: " << e.what() << std::endl;
         return;
     }
 

@@ -345,6 +345,15 @@ int main(int argc, const char* argv[])
         boost::bind(photograph::api::auth::token_valid, _1, _2, boost::ref(auth_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
+    api_server.install(
+        "update_user",
+        boost::bind(photograph::api::auth::update_user, _1, _2, boost::ref(auth_db))
+        );
+    api_server.install(
+        "logged_in_user",
+        boost::bind(photograph::api::auth::logged_in_user, _1, _2, boost::ref(auth_db)),
+        boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
+        );
 
     photograph::server s(document_root, port, pem_file);
 

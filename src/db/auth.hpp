@@ -111,7 +111,12 @@ namespace photograph
         void get_by_id(
                 int user_id,
                 sqlite::connection& auth_db,
-                photograph::auth::user& user
+                const photograph::auth::user& user
+                );
+
+        void update(
+                const photograph::auth::user& user,
+                sqlite::connection& auth_db
                 );
     }
 }

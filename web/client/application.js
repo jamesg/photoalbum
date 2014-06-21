@@ -3,17 +3,18 @@ var domjs = require('domjs/lib/html5')(document);
 var api = require('./api');
 var css = require('./css').css;
 
-var Albums        = require('./albums').Albums;
-var Filters       = require('./filters').Filters;
-var Locations     = require('./locations').Locations;
-var LoginForm     = require('./loginform').LoginForm;
-var MainMenu      = require('./ui/mainmenu').MainMenu;
-var Map           = require('./map').Map;
-var NewPhotograph = require('./newphotograph').NewPhotograph;
-var NoteEditor    = require('./noteeditor').NoteEditor;
-var Notes         = require('./notes').Notes;
-var Statistics    = require('./statistics').Statistics;
-var Tags          = require('./tags').Tags;
+var Albums         = require('./albums').Albums;
+var ChangePassword = require('./changepassword').ChangePassword;
+var Filters        = require('./filters').Filters;
+var Locations      = require('./locations').Locations;
+var LoginForm      = require('./loginform').LoginForm;
+var MainMenu       = require('./ui/mainmenu').MainMenu;
+var Map            = require('./map').Map;
+var NewPhotograph  = require('./newphotograph').NewPhotograph;
+var NoteEditor     = require('./noteeditor').NoteEditor;
+var Notes          = require('./notes').Notes;
+var Statistics     = require('./statistics').Statistics;
+var Tags           = require('./tags').Tags;
 
 exports.Application = function() {
     this._documentFragment = domjs.build(this._template.bind(this));
@@ -116,5 +117,9 @@ exports.Application.prototype.showStatistics = function() {
 
 exports.Application.prototype.showMap = function() {
     this._showElement((new Map()).element());
+}
+
+exports.Application.prototype.changePassword = function() {
+    this._showElement((new ChangePassword()).element());
 }
 

@@ -76,3 +76,37 @@ void photograph::api::auth::token_valid(
     result.data() = db::auth::token_valid(token, conn);
 }
 
+void photograph::api::auth::update_user(
+    jsonrpc::request& request,
+    jsonrpc::result& result,
+    sqlite::connection& auth_db
+    )
+{
+    json::object user_o;
+    photograph::auth::user user(user_o);
+    db::auth::token_user(auth_db, request.token(), user);
+
+    json::object db_user_o;
+    photograph::auth::user db_user(db_user_o);
+    db::get_by_id(user.id(), auth_db, db_user);
+
+    photograph::auth::user new_user(request.params()[0]);
+
+    if(user.username() != "root" && user.id() != new_user.id())
+        result.error() = "Not authorised.";
+    else if(db_user.username() != new_user.username())
+        result.error() = "Changing usernames is not allowed.";
+    else
+        db::update(new_user, auth_db);
+}
+
+void photograph::api::auth::logged_in_user(
+        jsonrpc::request& request,
+        jsonrpc::result& result,
+        sqlite::connection& auth_db
+        )
+{
+    photograph::auth::user user(result.data());
+    db::auth::token_user(auth_db, request.token(), user);
+}
+

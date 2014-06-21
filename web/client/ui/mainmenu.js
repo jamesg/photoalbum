@@ -97,5 +97,17 @@ exports.MainMenu.prototype._buttonsTemplate = function(features) {
                 )
             );
     }
+    this._element(
+            this._sectionTemplate(
+                'Account',
+                'Manage your user account.',
+                [
+                this._buttonTemplate(
+                    'Change Password',
+                    this._application.changePassword.bind(this._application)
+                    )
+                ]
+                )
+            );
 }
 

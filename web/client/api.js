@@ -125,7 +125,9 @@ var passthroughFunctions = {
 
     'login':                     'login',
     'logout':                    'logout',
-    'tokenValid':                'token_valid'
+    'tokenValid':                'token_valid',
+    'updateUser':                'update_user',
+    'loggedInUser':              'logged_in_user'
 };
 
 for(f in passthroughFunctions)

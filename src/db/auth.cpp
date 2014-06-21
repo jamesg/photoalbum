@@ -14,6 +14,7 @@
 #include "sqlite/insert.hpp"
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
+#include "sqlite/update.hpp"
 
 const char photograph::auth::user_id_cstr[] = "user_id";
 
@@ -144,6 +145,26 @@ void photograph::db::auth::invalidate(
             );
 }
 
+void photograph::db::auth::token_user(
+        sqlite::connection&     conn,
+        const std::string&      token,
+        photograph::auth::user& user
+        )
+{
+    json::list users;
+    sqlite::select<photograph::auth::user>(
+            conn,
+            "SELECT auth_user.user_id, username, password "
+            "FROM auth_user, auth_token "
+            "WHERE auth_user.user_id = auth_token.user_id "
+            "AND token = ? ",
+            sqlite::row<std::string>(token),
+            users
+            );
+    if(users.size() == 1)
+        user.get_object() = users.at(0);
+}
+
 void photograph::db::auth::username_user(
         sqlite::connection&     conn,
         const std::string&      username,
@@ -179,15 +200,28 @@ void photograph::db::auth::delete_old_tokens(sqlite::connection& conn)
 void photograph::db::get_by_id(
         int user_id,
         sqlite::connection& conn,
-        photograph::auth::user& user
+        const photograph::auth::user& user
         )
 {
     sqlite::get_by_id(
             "auth_user",
-            { "id", "username", "password" },
+            { "user_id", "username", "password" },
             user_id,
             conn,
             user
+            );
+}
+
+void photograph::db::update(
+        const photograph::auth::user& user,
+        sqlite::connection& auth_db
+        )
+{
+    sqlite::update(
+            "auth_user",
+            { boost::optional<const char*>(), "username", "password" },
+            user,
+            auth_db
             );
 }
 

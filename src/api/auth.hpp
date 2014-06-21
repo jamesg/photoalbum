@@ -62,6 +62,30 @@ namespace photograph
                 jsonrpc::result&,
                 sqlite::connection& db
                 );
+            /*
+             * Update a user account.
+             *
+             * This function should be used to update any details of the
+             * auth_user, including the password.  The username cannot be
+             * changed.  Users can only change their own account, with the
+             * exception of the root user who can modify anyone's account.
+             */
+            void update_user(
+                jsonrpc::request& request,
+                jsonrpc::result& result,
+                sqlite::connection& auth_db
+                );
+            /*
+             * Get details of the currently logged in user.
+             *
+             * This function accepts no parameters, as the currently logged in
+             * user is determined from the token.
+             */
+            void logged_in_user(
+                jsonrpc::request& request,
+                jsonrpc::result& result,
+                sqlite::connection& auth_db
+                );
         }
     }
 }

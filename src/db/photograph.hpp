@@ -44,7 +44,8 @@ namespace photoalbum
     };
 
     /*
-     * Records the fact that a photograph id has been tagged with a string tag.
+     * Records the fact that a photograph id has been tagged with a string
+     * tag.
      */
     struct photograph_tagged : public json::map_accessor
     {
@@ -66,14 +67,18 @@ namespace photoalbum
 {
     namespace db
     {
-        //namespace photoalbum
-        //{
-            //void create(sqlite::connection& photograph_db);
-        //}
+        namespace photograph
+        {
+            void create(sqlite::connection& photograph_db);
+        }
 
-        int insert(const photograph&, sqlite::connection& db);
-        void update(const photograph&, sqlite::connection& db);
-        void get_by_id(int id, sqlite::connection& db, const photograph& photo);
+        int insert(const photoalbum::photograph&, sqlite::connection& db);
+        void update(const photoalbum::photograph&, sqlite::connection& db);
+        void get_by_id(
+                int                           id,
+                sqlite::connection&           photograph_db,
+                const photoalbum::photograph& photo
+                );
         void get_photograph_list(sqlite::connection& db, json::list& list);
         int insert(const photograph_in_album&, sqlite::connection& db);
         void get_photographs_by_album(

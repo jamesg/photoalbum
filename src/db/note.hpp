@@ -146,14 +146,23 @@ namespace photoalbum
 {
     namespace db
     {
-        int insert(const note&, sqlite::connection&);
-        void update(const note&, sqlite::connection&);
+        namespace note
+        {
+            void create(sqlite::connection& photograph_db);
+        }
+
+        int insert(const photoalbum::note&, sqlite::connection&);
+        void update(const photoalbum::note&, sqlite::connection&);
         int insert(const markdown_data&, sqlite::connection&);
         void update(const markdown_data&, sqlite::connection&);
         int insert(const note_version&, sqlite::connection&);
         void delete_note(int, sqlite::connection&);
-        void delete_note_version(int, note_version::phase_t, sqlite::connection&);
-        void get(int, sqlite::connection&, const note&);
+        void delete_note_version(
+                int,
+                note_version::phase_t,
+                sqlite::connection&
+                );
+        void get(int, sqlite::connection&, const photoalbum::note&);
         void get_note_list(sqlite::connection&, json::list&);
         void get_published_notes(sqlite::connection&, json::list&);
         void get(

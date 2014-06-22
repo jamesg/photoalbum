@@ -14,6 +14,7 @@
 #include "sqlite/get_by_id.hpp"
 #include "sqlite/get_list.hpp"
 #include "sqlite/insert.hpp"
+#include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 #include "sqlite/update.hpp"
 
@@ -46,11 +47,74 @@ namespace photoalbum
     const char photograph_id_cstr[] = "photograph_id";
 }
 
-//void photoalbum::db::photoalbum::create(sqlite::connection& conn)
-//{
-//}
+void photoalbum::db::photograph::create(sqlite::connection& conn)
+{
+    sqlite::devoid(
+            "CREATE TABLE IF NOT EXISTS  photograph          ( "
+            "    photograph_id           INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "    title                   VARCHAR NOT NULL, "
+            "    caption                 VARCHAR NULL, "
+            "    filename                VARCHAR NOT NULL, "
+            "    location                VARCHAR NULL, "
+            "    taken                   VARCHAR NULL, "
+            "    UNIQUE(photograph_id, title, caption, filename, location, taken) "
+            "    ) ",
+            sqlite::empty_row(),
+            conn
+            );
+    sqlite::devoid(
+            "CREATE TABLE IF NOT EXISTS  jpeg_data           ( "
+            "    photograph_id           INTEGER PRIMARY KEY, "
+            "    data                    BLOB NOT NULL, "
+            "    FOREIGN KEY( photograph_id ) REFERENCES photograph(photograph_id) "
+            "    ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, "
+            "    UNIQUE(photograph_id, data) "
+            "    ) ",
+            sqlite::empty_row(),
+            conn
+            );
+    sqlite::devoid(
+            "CREATE TABLE IF NOT EXISTS  album               ( "
+            "    album_id                INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "    name                    VARCHAR NOT NULL, "
+            "    caption                 VARCHAR NULL, "
+            "    fromdate                VARCHAR NULL, "
+            "    todate                  VARCHAR NULL, "
+            "    UNIQUE(album_id, name, caption, fromdate, todate) "
+            "    ) ",
+            sqlite::empty_row(),
+            conn
+            );
+    sqlite::devoid(
+            "CREATE TABLE IF NOT EXISTS  photograph_tagged    ( "
+            "    photograph_id           INTEGER NOT NULL, "
+            "    tag                     VARCHAR NOT NULL, "
+            "    FOREIGN KEY( photograph_id ) REFERENCES photograph( photograph_id ) "
+            "    ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, "
+            "    UNIQUE(photograph_id, tag) "
+            "    ) ",
+            sqlite::empty_row(),
+            conn
+            );
+    sqlite::devoid(
+            "CREATE TABLE IF NOT EXISTS  photograph_in_album   ( "
+            "    photograph_id           INTEGER NOT NULL, "
+            "    album_id                INTEGER NOT NULL, "
+            "    FOREIGN KEY( photograph_id ) REFERENCES photograph( photograph_id ) "
+            "    ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, "
+            "    FOREIGN KEY( album_id )      REFERENCES album( album_id ) "
+            "    ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, "
+            "    UNIQUE(photograph_id, album_id) "
+            "    ) ",
+            sqlite::empty_row(),
+            conn
+            );
+}
 
-int photoalbum::db::insert(const photograph& photo, sqlite::connection& db)
+int photoalbum::db::insert(
+        const photoalbum::photograph& photo,
+        sqlite::connection& db
+        )
 {
     int id = sqlite::insert(
             "photograph",
@@ -80,7 +144,10 @@ int photoalbum::db::insert(const photograph& photo, sqlite::connection& db)
     return id;
 }
 
-void photoalbum::db::update(const photograph& photo, sqlite::connection& db)
+void photoalbum::db::update(
+        const photoalbum::photograph& photo,
+        sqlite::connection& db
+        )
 {
     sqlite::update(
             "photograph",
@@ -105,7 +172,6 @@ void photoalbum::db::update(const photograph& photo, sqlite::connection& db)
             );
     for(json::object p : photo.get_list("tags").objects)
     {
-        //std::cerr << "insert photograph_tagged: " << json::serialise_json(p) << std::endl;
         try
         {
             sqlite::insert(
@@ -126,7 +192,7 @@ void photoalbum::db::update(const photograph& photo, sqlite::connection& db)
 void photoalbum::db::get_by_id(
         int id,
         sqlite::connection& db,
-        const photograph& photo
+        const photoalbum::photograph& photo
         )
 {
     sqlite::get_by_id(
@@ -172,7 +238,7 @@ void photoalbum::db::get_photograph_list(
         json::list&         list
         )
 {
-    sqlite::get_list<photograph>(
+    sqlite::get_list<photoalbum::photograph>(
             db,
             "photograph",
             {
@@ -207,7 +273,7 @@ void photoalbum::db::get_photographs_by_album(
         )
 {
     boost::fusion::vector<int> params(album_id);
-    sqlite::select<photograph>(
+    sqlite::select<photoalbum::photograph>(
             db,
             "SELECT DISTINCT "
             "photograph_id, title, caption, filename, location, taken "

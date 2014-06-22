@@ -2,6 +2,8 @@ var domjs = require('domjs/lib/html5')(document);
 
 var util  = require('../util');
 
+var MessageBox = require('./messagebox').MessageBox;
+
 /*
  * New photograph form.
  */
@@ -22,28 +24,28 @@ exports.PhotographForm.prototype._template = function() {
             inputs,
             function(input) { return input().value; }
             );
-        messageBox().innerHTML = 'Form submit';
+        messageBox.displayInfo('Form submit');
         if(submissionData.title == '')
         {
-            messageBox().innerHTML = 'Title is required';
+            messageBox.displayInfo('Title is required');
             return false;
         }
         if(submissionData.location == '')
         {
-            messageBox().innerHTML = 'Location is required';
+            messageBox.displayInfo('Location is required');
             return false;
         }
 
         var photographData = new FormData(_form());
 
         _form.disabled = true;
-        messageBox().innerHTML = 'Uploading';
+        messageBox.displayInfo('Uploading');
         var reqListener = function() {
             _form.disabled = false;
             if(this.response['error'])
-                console.log('upload error ' + this.response.error);
+                messageBox.displayError(this.response.error);
             else
-                console.log('upload success');
+                messageBox.displaySuccess('Upload Complete');
         }
 
         var xhr = new XMLHttpRequest();
@@ -59,20 +61,17 @@ exports.PhotographForm.prototype._template = function() {
                     if(event.lengthComputable)
                     {
                         var percent = (event.loaded/event.total)*100;
-                        messageBox().innerHTML =
-                            'Progress: ' + percent + '%';
+                        console.log('upload percentage', percent);
                     }
-                    else
-                        messageBox().innerHTML = 'Progress';
                 }
                 );
         xhr.addEventListener(
                 'load',
                 function(event) {
                     if(this.response['error'])
-                        messageBox().innerHTML = 'Upload error';
+                        messageBox.displayError(this.response.error);
                     else
-                        messageBox().innerHTML = 'Upload complete';
+                        messageBox.displaySuccess('Upload complete.');
                 }
                 );
         xhr.send(photographData);
@@ -95,7 +94,7 @@ exports.PhotographForm.prototype._template = function() {
         );
     var fileInput = input({ type: 'file', name: 'file' });
 
-    var messageBox = span({ class: 'messagebox' });
+    var messageBox = new MessageBox();
 
     var inlineInput = function(input_, label_) {
         return div(
@@ -112,7 +111,7 @@ exports.PhotographForm.prototype._template = function() {
             enctype: 'multipart/form-data',
             onsubmit: submit
         },
-        messageBox,
+        messageBox.element(),
         inlineInput(inputs.title, 'Title'),
         inlineInput(inputs.caption, 'Caption'),
         inlineInput(inputs.location, 'Location'),

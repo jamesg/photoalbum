@@ -94,6 +94,8 @@ void photograph::api::auth::update_user(
 
     if(user.username() != "root" && user.id() != new_user.id())
         result.error() = "Not authorised.";
+    else if(db_user.password() != new_user.get_string("current_password"))
+        result.error() = "Current password doesn't match.";
     else if(db_user.username() != new_user.username())
         result.error() = "Changing usernames is not allowed.";
     else if(new_user.password().length() == 0)
@@ -108,8 +110,8 @@ void photograph::api::auth::logged_in_user(
         sqlite::connection& auth_db
         )
 {
-    // TODO: strip out the password field.
     photograph::auth::user user(result.data());
     db::auth::token_user(auth_db, request.token(), user);
+    user.password() = "";
 }
 

@@ -13,7 +13,14 @@ exports.ChangePassword.prototype.element = function() {
 };
 
 exports.ChangePassword.prototype._template = function() {
-    this._element = div();
+    var _u = div({ class: 'pure-u-1-1' });
+    this._element = div({ class: 'mainmenu pure-g' }, _u);
+    _u(
+            h2(
+                'Change Password',
+                small(' Change your account password.')
+              )
+            );
 
     this._messageBox = new MessageBox();
 
@@ -28,13 +35,8 @@ exports.ChangePassword.prototype._template = function() {
                 this._messageBox.displayError('Error retrieving account details.');
                 return;
             }
-            // TODO: don't rely on the password being present.
-            if(currentPassword().value != user.password)
-            {
-                this._messageBox.displayError('Current password doesn\'t match');
-                return;
-            }
             user.password = newPassword1().value;
+            user.current_password = currentPassword().value;
             api.updateUser(user, (function(err, user) {
                 if(err)
                     this._messageBox.displayError(err);
@@ -45,7 +47,7 @@ exports.ChangePassword.prototype._template = function() {
         return false;
     }).bind(this);
 
-    this._element(
+    _u(
             this._messageBox.element(),
             form(
                 {

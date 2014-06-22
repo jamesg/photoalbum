@@ -14,14 +14,14 @@
 #include "sqlite/select.hpp"
 #include "sqlite/update.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     const char markdown_id_str[]     = "markdown_id";
     const char note_id_str[]         = "note_id";
     const char note_version_id_str[] = "note_version_id";
 }
 
-int photograph::db::insert(const note& note_, sqlite::connection& conn)
+int photoalbum::db::insert(const note& note_, sqlite::connection& conn)
 {
     return sqlite::insert(
             "note",
@@ -31,7 +31,7 @@ int photograph::db::insert(const note& note_, sqlite::connection& conn)
             );
 }
 
-void photograph::db::update(const note& note_, sqlite::connection& conn)
+void photoalbum::db::update(const note& note_, sqlite::connection& conn)
 {
     sqlite::update(
             "note",
@@ -41,7 +41,7 @@ void photograph::db::update(const note& note_, sqlite::connection& conn)
             );
 }
 
-int photograph::db::insert(const markdown_data& data, sqlite::connection& conn)
+int photoalbum::db::insert(const markdown_data& data, sqlite::connection& conn)
 {
     return sqlite::insert(
             "markdown",
@@ -51,7 +51,7 @@ int photograph::db::insert(const markdown_data& data, sqlite::connection& conn)
             );
 }
 
-void photograph::db::update(const markdown_data& data, sqlite::connection& conn)
+void photoalbum::db::update(const markdown_data& data, sqlite::connection& conn)
 {
     sqlite::update(
             "markdown",
@@ -61,7 +61,7 @@ void photograph::db::update(const markdown_data& data, sqlite::connection& conn)
             );
 }
 
-int photograph::db::insert(const note_version& data, sqlite::connection& conn)
+int photoalbum::db::insert(const note_version& data, sqlite::connection& conn)
 {
     return sqlite::insert(
             "note_version",
@@ -77,7 +77,7 @@ int photograph::db::insert(const note_version& data, sqlite::connection& conn)
             );
 }
 
-void photograph::db::delete_note(int note_id, sqlite::connection& conn)
+void photoalbum::db::delete_note(int note_id, sqlite::connection& conn)
 {
     sqlite::devoid(
             "DELETE FROM note WHERE note_id = ? ",
@@ -86,7 +86,7 @@ void photograph::db::delete_note(int note_id, sqlite::connection& conn)
             );
 }
 
-void photograph::db::delete_note_version(
+void photoalbum::db::delete_note_version(
         int                   note_id,
         note_version::phase_t phase,
         sqlite::connection&   conn
@@ -99,7 +99,7 @@ void photograph::db::delete_note_version(
             );
 }
 
-void photograph::db::get(int id, sqlite::connection& conn, const note& note_)
+void photoalbum::db::get(int id, sqlite::connection& conn, const note& note_)
 {
     sqlite::get_by_id(
             "note",
@@ -110,7 +110,7 @@ void photograph::db::get(int id, sqlite::connection& conn, const note& note_)
             );
 }
 
-void photograph::db::get_note_list(sqlite::connection& conn, json::list& list)
+void photoalbum::db::get_note_list(sqlite::connection& conn, json::list& list)
 {
     sqlite::get_list<note>(
             conn,
@@ -120,7 +120,7 @@ void photograph::db::get_note_list(sqlite::connection& conn, json::list& list)
             );
 }
 
-void photograph::db::get_published_notes(sqlite::connection& conn, json::list& list)
+void photoalbum::db::get_published_notes(sqlite::connection& conn, json::list& list)
 {
     sqlite::select<note>(
             conn,
@@ -133,7 +133,7 @@ void photograph::db::get_published_notes(sqlite::connection& conn, json::list& l
             );
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
         int note_id,
         note_version::phase_t phase_,
         sqlite::connection& conn,
@@ -154,7 +154,7 @@ void photograph::db::get(
         data.get_object() = l[0];
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
         int                  markdown_id,
         sqlite::connection&  conn,
         const markdown_data& data
@@ -169,7 +169,7 @@ void photograph::db::get(
             );
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
         int id,
         note_version::phase_t phase_,
         sqlite::connection& conn,
@@ -189,7 +189,7 @@ void photograph::db::get(
         data.get_object() = l[0];
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
         int note_version_id,
         sqlite::connection& conn,
         const note_version& data
@@ -210,7 +210,7 @@ void photograph::db::get(
             );
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
         int                 note_id,
         sqlite::connection& conn,
         const               published_note& note_

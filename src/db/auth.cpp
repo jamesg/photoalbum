@@ -16,23 +16,23 @@
 #include "sqlite/select.hpp"
 #include "sqlite/update.hpp"
 
-const char photograph::auth::user_id_cstr[] = "user_id";
+const char photoalbum::auth::user_id_cstr[] = "user_id";
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::auth::user,
+        photoalbum::auth::user,
         (int&, id())
         (std::string&, username())
         (std::string&, password())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::auth::user_details,
+        photoalbum::auth::user_details,
         (int&, id())
         (std::string&, first_name())
         (std::string&, last_name())
         )
 
-void photograph::db::auth::create(sqlite::connection& conn)
+void photoalbum::db::auth::create(sqlite::connection& conn)
 {
     sqlite::devoid(
             "CREATE TABLE IF NOT EXISTS auth_user ( "
@@ -65,7 +65,7 @@ void photograph::db::auth::create(sqlite::connection& conn)
             );
 
     json::list root_users;
-    sqlite::select<photograph::auth::user>(
+    sqlite::select<photoalbum::auth::user>(
             conn,
             "SELECT user_id, username, password FROM auth_user "
             "WHERE username = 'root' ",
@@ -81,7 +81,7 @@ void photograph::db::auth::create(sqlite::connection& conn)
                 );
 }
 
-bool photograph::db::auth::token_valid(
+bool photoalbum::db::auth::token_valid(
     const std::string& token,
     sqlite::connection& conn
     )
@@ -107,7 +107,7 @@ bool photograph::db::auth::token_valid(
     return !tokens.empty();
 }
 
-void photograph::db::auth::issue_token(
+void photoalbum::db::auth::issue_token(
     const std::string&  token,
     const int           user_id,
     sqlite::connection& conn
@@ -133,7 +133,7 @@ void photograph::db::auth::issue_token(
             );
 }
 
-void photograph::db::auth::invalidate(
+void photoalbum::db::auth::invalidate(
     const std::string& token,
     sqlite::connection& conn
     )
@@ -145,14 +145,14 @@ void photograph::db::auth::invalidate(
             );
 }
 
-void photograph::db::auth::token_user(
+void photoalbum::db::auth::token_user(
         sqlite::connection&     conn,
         const std::string&      token,
-        photograph::auth::user& user
+        photoalbum::auth::user& user
         )
 {
     json::list users;
-    sqlite::select<photograph::auth::user>(
+    sqlite::select<photoalbum::auth::user>(
             conn,
             "SELECT auth_user.user_id, username, password "
             "FROM auth_user, auth_token "
@@ -165,14 +165,14 @@ void photograph::db::auth::token_user(
         user.get_object() = users.at(0);
 }
 
-void photograph::db::auth::username_user(
+void photoalbum::db::auth::username_user(
         sqlite::connection&     conn,
         const std::string&      username,
-        photograph::auth::user& user
+        photoalbum::auth::user& user
         )
 {
     json::list users;
-    sqlite::select<photograph::auth::user>(
+    sqlite::select<photoalbum::auth::user>(
             conn,
             "SELECT user_id, username, password FROM auth_user "
             "WHERE username = ? ",
@@ -183,7 +183,7 @@ void photograph::db::auth::username_user(
         user.get_object() = users.at(0);
 }
 
-void photograph::db::auth::delete_old_tokens(sqlite::connection& conn)
+void photoalbum::db::auth::delete_old_tokens(sqlite::connection& conn)
 {
     boost::posix_time::ptime current_time(
             boost::posix_time::second_clock::universal_time()
@@ -197,10 +197,10 @@ void photograph::db::auth::delete_old_tokens(sqlite::connection& conn)
             );
 }
 
-void photograph::db::get_by_id(
+void photoalbum::db::get_by_id(
         int user_id,
         sqlite::connection& conn,
-        const photograph::auth::user& user
+        const photoalbum::auth::user& user
         )
 {
     sqlite::get_by_id(
@@ -212,8 +212,8 @@ void photograph::db::get_by_id(
             );
 }
 
-void photograph::db::update(
-        const photograph::auth::user& user,
+void photoalbum::db::update(
+        const photoalbum::auth::user& user,
         sqlite::connection& auth_db
         )
 {

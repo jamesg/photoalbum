@@ -19,7 +19,7 @@ namespace sqlite
     class connection;
 }
 
-namespace photograph
+namespace photoalbum
 {
     namespace map
     {
@@ -116,7 +116,7 @@ namespace photograph
                 const std::string& region,
                 int eastings,
                 int northings,
-                const ::photograph::map::tile&
+                const ::photoalbum::map::tile&
                 );
         /*
          * Get image data for a tile.
@@ -128,7 +128,7 @@ namespace photograph
                 const std::string& region,
                 int eastings,
                 int northings,
-                ::photograph::map::tile_data_db&
+                ::photoalbum::map::tile_data_db&
                 );
         /*
          * Get image data for a tile.
@@ -139,27 +139,27 @@ namespace photograph
                 const std::string& region,
                 int eastings,
                 int northings,
-                const ::photograph::map::tile_data&
+                const ::photoalbum::map::tile_data&
                 );
 
         void insert(
-                const ::photograph::map::tile_data&,
+                const ::photoalbum::map::tile_data&,
                 sqlite::connection&
                 );
 
         void insert(
-                ::photograph::map::tile_data_db&,
+                ::photoalbum::map::tile_data_db&,
                 sqlite::connection&
                 );
 
         void get(
                 sqlite::connection&,
                 int seq,
-                const ::photograph::map::gazetteer_record&
+                const ::photoalbum::map::gazetteer_record&
                 );
 
         void insert(
-                const ::photograph::map::gazetteer_record&,
+                const ::photoalbum::map::gazetteer_record&,
                 sqlite::connection&
                 );
 
@@ -193,14 +193,14 @@ namespace photograph
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::map::tile,
+        ::photoalbum::map::tile,
         (std::string&, region())
         (int&, eastings())
         (int&, northings())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::map::tile_data,
+        ::photoalbum::map::tile_data,
         (std::string&, region())
         (int&, eastings())
         (int&, northings())
@@ -208,7 +208,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::map::tile_data_db,
+        ::photoalbum::map::tile_data_db,
         (std::string, region)
         (int, eastings)
         (int, northings)
@@ -216,7 +216,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::map::gazetteer_record,
+        ::photoalbum::map::gazetteer_record,
         (int&, seq())
         (std::string&, km_ref())
         (std::string&, def_nam())

@@ -6,7 +6,7 @@
  * Copyright (C) 2014 James Goode.
  */
 
-namespace photograph
+namespace photoalbum
 {
     namespace os
     {

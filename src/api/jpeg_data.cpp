@@ -18,17 +18,17 @@
 
 #include "db/jpeg_data.hpp"
 
-void photograph::api::insert_jpeg_data(
+void photoalbum::api::insert_jpeg_data(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
         )
 {
-    db::insert(::photograph::jpeg_data(request.params()[0]), db);
+    db::insert(::photoalbum::jpeg_data(request.params()[0]), db);
 
     // Decode the jpeg data to get the date taken
     std::string jpeg_bin = base64::decode(
-            ::photograph::jpeg_data(request.params()[0]).data()
+            ::photoalbum::jpeg_data(request.params()[0]).data()
             );
 
     try
@@ -71,7 +71,7 @@ void photograph::api::insert_jpeg_data(
                 json::object o = json::map();
                 photograph photo(o);
                 db::get_by_id(
-                        ::photograph::jpeg_data(request.params()[0]).id(),
+                        ::photoalbum::jpeg_data(request.params()[0]).id(),
                         db,
                         photo
                         );
@@ -94,7 +94,7 @@ void photograph::api::insert_jpeg_data(
     }
 }
 
-void photograph::api::jpeg_data(
+void photoalbum::api::jpeg_data(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -102,12 +102,12 @@ void photograph::api::jpeg_data(
 {
     int id = request.params().get<int>(0);
     json::object o = json::map();
-    ::photograph::jpeg_data data(o);
+    ::photoalbum::jpeg_data data(o);
     db::get_by_id(id, db, data);
     result.data() = o;
 }
 
-void photograph::api::jpeg_data_scaled(
+void photoalbum::api::jpeg_data_scaled(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -115,7 +115,7 @@ void photograph::api::jpeg_data_scaled(
 {
     int id = request.params().get<int>(0);
     json::object o = json::map();
-    ::photograph::jpeg_data data(o);
+    ::photoalbum::jpeg_data data(o);
     db::get_by_id(id, db, data);
 
     // Load the image

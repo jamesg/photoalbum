@@ -17,7 +17,7 @@
 #include "server.hpp"
 #include "uri/detail.hpp"
 
-int photograph::uri::map_tile_km(
+int photoalbum::uri::map_tile_km(
         const server& serve,
         mg_connection *conn,
         mg_event ev,
@@ -40,7 +40,7 @@ int photograph::uri::map_tile_km(
     const int eastings = boost::lexical_cast<int>(eastings_s);
     const int northings = boost::lexical_cast<int>(northings_s);
 
-    photograph::map::tile_data_db data_db;
+    photoalbum::map::tile_data_db data_db;
     db::get(
             map_db,
             region_s,

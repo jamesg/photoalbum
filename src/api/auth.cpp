@@ -13,7 +13,7 @@
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
 
-void photograph::api::auth::login(
+void photoalbum::api::auth::login(
     jsonrpc::request& request,
     jsonrpc::result& result,
     sqlite::connection& conn
@@ -24,7 +24,7 @@ void photograph::api::auth::login(
         password = request.params().get<std::string>(1);
 
     json::object user_o;
-    photograph::auth::user user(user_o);
+    photoalbum::auth::user user(user_o);
     db::auth::username_user(conn, username, user);
 
     if(user.id() && user.password() == password)
@@ -56,7 +56,7 @@ void photograph::api::auth::login(
     }
 }
 
-void photograph::api::auth::logout(
+void photoalbum::api::auth::logout(
     jsonrpc::request& request,
     jsonrpc::result&,
     sqlite::connection& conn
@@ -66,7 +66,7 @@ void photograph::api::auth::logout(
     db::auth::invalidate(token, conn);
 }
 
-void photograph::api::auth::token_valid(
+void photoalbum::api::auth::token_valid(
     jsonrpc::request& request,
     jsonrpc::result& result,
     sqlite::connection& conn
@@ -76,21 +76,21 @@ void photograph::api::auth::token_valid(
     result.data() = db::auth::token_valid(token, conn);
 }
 
-void photograph::api::auth::update_user(
+void photoalbum::api::auth::update_user(
     jsonrpc::request& request,
     jsonrpc::result& result,
     sqlite::connection& auth_db
     )
 {
     json::object user_o;
-    photograph::auth::user user(user_o);
+    photoalbum::auth::user user(user_o);
     db::auth::token_user(auth_db, request.token(), user);
 
     json::object db_user_o;
-    photograph::auth::user db_user(db_user_o);
+    photoalbum::auth::user db_user(db_user_o);
     db::get_by_id(user.id(), auth_db, db_user);
 
-    photograph::auth::user new_user(request.params()[0]);
+    photoalbum::auth::user new_user(request.params()[0]);
 
     if(user.username() != "root" && user.id() != new_user.id())
         result.error() = "Not authorised.";
@@ -104,13 +104,13 @@ void photograph::api::auth::update_user(
         db::update(new_user, auth_db);
 }
 
-void photograph::api::auth::logged_in_user(
+void photoalbum::api::auth::logged_in_user(
         jsonrpc::request& request,
         jsonrpc::result& result,
         sqlite::connection& auth_db
         )
 {
-    photograph::auth::user user(result.data());
+    photoalbum::auth::user user(result.data());
     db::auth::token_user(auth_db, request.token(), user);
     user.password() = "";
 }

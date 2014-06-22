@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace photograph
+namespace photoalbum
 {
     namespace util
     {

@@ -10,7 +10,7 @@
 
 #include "json/json.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     namespace detail
     {

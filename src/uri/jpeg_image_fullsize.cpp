@@ -12,7 +12,7 @@
 #include "server.hpp"
 #include "uri/detail.hpp"
 
-int photograph::uri::jpeg_image_fullsize(
+int photoalbum::uri::jpeg_image_fullsize(
         const server& serve,
         mg_connection *conn,
         mg_event ev,

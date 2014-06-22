@@ -10,7 +10,7 @@
 
 #include "db/statistics.hpp"
 
-void photograph::api::statistics(
+void photoalbum::api::statistics(
         jsonrpc::request& request,
         jsonrpc::result& result,
         sqlite::connection& db
@@ -18,7 +18,7 @@ void photograph::api::statistics(
 {
     try
     {
-        db::get(db, ::photograph::statistics(result.data()));
+        db::get(db, ::photoalbum::statistics(result.data()));
     }
     catch(const std::exception& e)
     {

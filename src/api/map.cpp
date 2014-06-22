@@ -12,7 +12,7 @@
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
 
-void photograph::api::map::get_tile(
+void photoalbum::api::map::get_tile(
         const jsonrpc::request& request,
         jsonrpc::result&        result,
         sqlite::connection&     conn
@@ -26,11 +26,11 @@ void photograph::api::map::get_tile(
             region,
             eastings,
             northings,
-            photograph::map::tile(result.data())
+            photoalbum::map::tile(result.data())
             );
 }
 
-void photograph::api::map::get_tile_data(
+void photoalbum::api::map::get_tile_data(
         const jsonrpc::request& request,
         jsonrpc::result&        result,
         sqlite::connection&     conn
@@ -44,11 +44,11 @@ void photograph::api::map::get_tile_data(
             region,
             eastings,
             northings,
-            photograph::map::tile_data(result.data())
+            photoalbum::map::tile_data(result.data())
             );
 }
 
-void photograph::api::map::search_gazetteer(
+void photoalbum::api::map::search_gazetteer(
         const jsonrpc::request& request,
         jsonrpc::result&        result,
         sqlite::connection&     conn
@@ -64,7 +64,7 @@ void photograph::api::map::search_gazetteer(
     result.data() = out;
 }
 
-void photograph::api::map::map_tile_km(
+void photoalbum::api::map::map_tile_km(
         const jsonrpc::request& request,
         jsonrpc::result&        result,
         sqlite::connection&     conn
@@ -74,7 +74,7 @@ void photograph::api::map::map_tile_km(
     const int eastings = request.params().get<int>(1);
     const int northings = request.params().get<int>(2);
 
-    photograph::map::tile_data_db data_db;
+    photoalbum::map::tile_data_db data_db;
     db::get(
             conn,
             region,

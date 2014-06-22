@@ -15,7 +15,7 @@ namespace sqlite
     class connection;
 }
 
-namespace photograph
+namespace photoalbum
 {
     namespace auth
     {
@@ -89,7 +89,7 @@ namespace photograph
             void token_user(
                     sqlite::connection&     auth_db,
                     const std::string&      token,
-                    photograph::auth::user& user
+                    photoalbum::auth::user& user
                     );
 
             /*
@@ -98,7 +98,7 @@ namespace photograph
             void username_user(
                     sqlite::connection&     auth_db,
                     const std::string&      username,
-                    photograph::auth::user& user
+                    photoalbum::auth::user& user
                     );
 
             /*
@@ -111,11 +111,11 @@ namespace photograph
         void get_by_id(
                 int user_id,
                 sqlite::connection& auth_db,
-                const photograph::auth::user& user
+                const photoalbum::auth::user& user
                 );
 
         void update(
-                const photograph::auth::user& user,
+                const photoalbum::auth::user& user,
                 sqlite::connection& auth_db
                 );
     }

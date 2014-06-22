@@ -23,7 +23,7 @@
 
 namespace
 {
-    typedef photograph::photograph photograph_t;
+    typedef photoalbum::photograph photograph_t;
 
     struct location : json::map_accessor
     {
@@ -53,7 +53,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::photograph,
+        photoalbum::photograph,
         (int&,         id())
         (std::string&, title())
         (std::string&, caption())
@@ -62,7 +62,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         (std::string&, taken())
         )
 
-void photograph::api::recent_photographs(
+void photoalbum::api::recent_photographs(
         jsonrpc::request& request,
         jsonrpc::result& result,
         sqlite::connection& db
@@ -83,7 +83,7 @@ void photograph::api::recent_photographs(
     result.data() = photographs;
 }
 
-void photograph::api::locations(
+void photoalbum::api::locations(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -101,7 +101,7 @@ void photograph::api::locations(
     result.data() = list;
 }
 
-void photograph::api::tags(
+void photoalbum::api::tags(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db

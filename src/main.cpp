@@ -91,7 +91,7 @@ int main(int argc, const char* argv[])
         return 0;
     }
 
-    photograph::features f = photograph::get_features();
+    photoalbum::features f = photoalbum::get_features();
 
     if(db_file.size())
         f.photographs() = true;
@@ -101,16 +101,16 @@ int main(int argc, const char* argv[])
 
     boost::asio::ip::address bind_addr;
 
-    sqlite::connection& db = photograph::db::get_database(photograph::db::database_photograph, db_file);
-    sqlite::connection& map_db = photograph::db::get_database(photograph::db::database_map, map_db_file);
-    photograph::db::map::create(map_db);
+    sqlite::connection& db = photoalbum::db::get_database(photoalbum::db::database_photograph, db_file);
+    sqlite::connection& map_db = photoalbum::db::get_database(photoalbum::db::database_map, map_db_file);
+    photoalbum::db::map::create(map_db);
 
     sqlite::connection auth_db = 
         auth_db_file.length()?
         sqlite::connection(auth_db_file):
         sqlite::connection::in_memory_database();
 
-    photograph::db::auth::create(auth_db);
+    photoalbum::db::auth::create(auth_db);
     sqlite::connection cache_db = sqlite::connection::in_memory_database();
     sqlite::devoid(
             "CREATE TABLE jpeg_cache ( "
@@ -129,247 +129,247 @@ int main(int argc, const char* argv[])
     // Features.
     api_server.install(
             "features",
-            boost::bind(photograph::api::features, _1, _2)
+            boost::bind(photoalbum::api::features, _1, _2)
             );
 
     // Album methods.
     api_server.install(
         "add_photograph_to_album",
-        boost::bind(photograph::api::add_photograph_to_album, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::add_photograph_to_album, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "album_list",
-        boost::bind(photograph::api::album_list, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::album_list, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "delete_album",
-        boost::bind(photograph::api::delete_album, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::delete_album, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "insert_album",
-        boost::bind(photograph::api::insert_album, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::insert_album, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "update_album",
-        boost::bind(photograph::api::update_album, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::update_album, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
     // JPEG data methods.
     api_server.install(
         "insert_jpeg_data",
-        boost::bind(photograph::api::insert_jpeg_data, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::insert_jpeg_data, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "jpeg_data",
-        boost::bind(photograph::api::jpeg_data, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::jpeg_data, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "jpeg_data_scaled",
-        boost::bind(photograph::api::jpeg_data_scaled, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::jpeg_data_scaled, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
     api_server.install(
         "locations",
-        boost::bind(photograph::api::locations, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::locations, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "tags",
-        boost::bind(photograph::api::tags, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::tags, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
     // Photograph methods.
     api_server.install(
         "photograph",
-        boost::bind(photograph::api::photograph, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::photograph, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "delete_photograph",
-        boost::bind(photograph::api::delete_photograph, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::delete_photograph, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "insert_photograph",
-        boost::bind(photograph::api::insert_photograph, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::insert_photograph, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "photograph_albums",
-        boost::bind(photograph::api::photograph_albums, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::photograph_albums, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "photograph_list",
-        boost::bind(photograph::api::photograph_list, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::photograph_list, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "photographs_in_album",
-        boost::bind(photograph::api::photographs_in_album, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::photographs_in_album, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "photographs_with_location",
-        boost::bind(photograph::api::photographs_with_location, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::photographs_with_location, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "photographs_with_tag",
-        boost::bind(photograph::api::photographs_with_tag, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::photographs_with_tag, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "recent_photographs",
-        boost::bind(photograph::api::recent_photographs, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::recent_photographs, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "remove_photograph_from_album",
-        boost::bind(photograph::api::remove_photograph_from_album, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::remove_photograph_from_album, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "uncategorised_photographs",
-        boost::bind(photograph::api::uncategorised_photographs, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::uncategorised_photographs, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "update_photograph",
-        boost::bind(photograph::api::update_photograph, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::update_photograph, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
     // Note methods.
     api_server.install(
         "markdown_data",
-        boost::bind(photograph::api::markdown_data, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::markdown_data, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "note",
-        boost::bind(photograph::api::note, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::note, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "note_list",
-        boost::bind(photograph::api::note_list, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::note_list, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "note_version",
-        boost::bind(photograph::api::note_version, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::note_version, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "note_phase_version",
-        boost::bind(photograph::api::note_phase_version, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::note_phase_version, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
             "create_draft_note",
-            boost::bind(photograph::api::create_draft_note, _1, _2, boost::ref(db)),
+            boost::bind(photoalbum::api::create_draft_note, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
             );
     api_server.install(
         "delete_note",
-        boost::bind(photograph::api::delete_note, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::delete_note, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "update_markdown_data",
-        boost::bind(photograph::api::update_markdown_data, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::update_markdown_data, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "publish_note",
-        boost::bind(photograph::api::publish_note, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::publish_note, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "published_notes",
-        boost::bind(photograph::api::published_notes, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::published_notes, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
     // Statistics methods.
     api_server.install(
         "statistics",
-        boost::bind(photograph::api::statistics, _1, _2, boost::ref(db)),
+        boost::bind(photoalbum::api::statistics, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
     // Map methods.
     api_server.install(
         "get_tile",
-        boost::bind(photograph::api::map::get_tile, _1, _2, boost::ref(map_db)),
+        boost::bind(photoalbum::api::map::get_tile, _1, _2, boost::ref(map_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "get_tile_data",
-        boost::bind(photograph::api::map::get_tile_data, _1, _2, boost::ref(map_db)),
+        boost::bind(photoalbum::api::map::get_tile_data, _1, _2, boost::ref(map_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "search_gazetteer",
-        boost::bind(photograph::api::map::search_gazetteer, _1, _2, boost::ref(map_db)),
+        boost::bind(photoalbum::api::map::search_gazetteer, _1, _2, boost::ref(map_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "map_tile_km",
-        boost::bind(photograph::api::map::map_tile_km, _1, _2, boost::ref(map_db)),
+        boost::bind(photoalbum::api::map::map_tile_km, _1, _2, boost::ref(map_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
     // Authentication functions.
     api_server.install(
         "login",
-        boost::bind(photograph::api::auth::login, _1, _2, boost::ref(auth_db))
+        boost::bind(photoalbum::api::auth::login, _1, _2, boost::ref(auth_db))
         );
     api_server.install(
         "logout",
-        boost::bind(photograph::api::auth::logout, _1, _2, boost::ref(auth_db)),
+        boost::bind(photoalbum::api::auth::logout, _1, _2, boost::ref(auth_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "token_valid",
-        boost::bind(photograph::api::auth::token_valid, _1, _2, boost::ref(auth_db)),
+        boost::bind(photoalbum::api::auth::token_valid, _1, _2, boost::ref(auth_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
     api_server.install(
         "update_user",
-        boost::bind(photograph::api::auth::update_user, _1, _2, boost::ref(auth_db))
+        boost::bind(photoalbum::api::auth::update_user, _1, _2, boost::ref(auth_db))
         );
     api_server.install(
         "logged_in_user",
-        boost::bind(photograph::api::auth::logged_in_user, _1, _2, boost::ref(auth_db)),
+        boost::bind(photoalbum::api::auth::logged_in_user, _1, _2, boost::ref(auth_db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
 
-    photograph::server s(document_root, port, pem_file);
+    photoalbum::server s(document_root, port, pem_file);
 
     s.install(
             "/jpeg_image",
-            boost::bind(&photograph::uri::jpeg_image, boost::ref(s), _1, _2, boost::ref(db), boost::ref(auth_db), boost::ref(cache_db))
+            boost::bind(&photoalbum::uri::jpeg_image, boost::ref(s), _1, _2, boost::ref(db), boost::ref(auth_db), boost::ref(cache_db))
             );
     s.install(
             "/jpeg_image_fullsize",
-            boost::bind(&photograph::uri::jpeg_image_fullsize, boost::ref(s), _1, _2, boost::ref(db), boost::ref(auth_db))
+            boost::bind(&photoalbum::uri::jpeg_image_fullsize, boost::ref(s), _1, _2, boost::ref(db), boost::ref(auth_db))
             );
     s.install(
             "/map_tile_km",
-            boost::bind(&photograph::uri::map_tile_km, boost::ref(s), _1, _2, boost::ref(map_db), boost::ref(auth_db))
+            boost::bind(&photoalbum::uri::map_tile_km, boost::ref(s), _1, _2, boost::ref(map_db), boost::ref(auth_db))
             );
-    s.install("/insert_photograph", &photograph::uri::insert_photograph);
+    s.install("/insert_photograph", &photoalbum::uri::insert_photograph);
     s.install("/api_call", boost::bind(&api_call, api_server, _1, _2));
     s.listen();
 }

@@ -20,7 +20,7 @@
 #include "server.hpp"
 #include "uri/detail.hpp"
 
-int photograph::uri::jpeg_image(
+int photoalbum::uri::jpeg_image(
         const server& serve,
         mg_connection *conn,
         mg_event ev,

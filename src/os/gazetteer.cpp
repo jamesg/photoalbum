@@ -26,7 +26,7 @@
 #include "db/map.hpp"
 #include "fill_container.hpp"
 
-int photograph::os::gazetteer(int argc, const char *argv[])
+int photoalbum::os::gazetteer(int argc, const char *argv[])
 {
     bool show_help = false;
     std::string data_file, mapdb;
@@ -115,6 +115,6 @@ int photograph::os::gazetteer(int argc, const char *argv[])
 
 int main(int argc, const char* argv[])
 {
-    photograph::os::gazetteer(argc, argv);
+    photoalbum::os::gazetteer(argc, argv);
 }
 

@@ -8,7 +8,7 @@
 
 #include "json/map_accessor.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     /*
      * Generic type for database types that have integer ids.

@@ -10,7 +10,7 @@
 
 #include "has_id.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     extern const char photograph_id_cstr[];
     /*
@@ -62,10 +62,15 @@ namespace sqlite
     class connection;
 }
 
-namespace photograph
+namespace photoalbum
 {
     namespace db
     {
+        //namespace photoalbum
+        //{
+            //void create(sqlite::connection& photograph_db);
+        //}
+
         int insert(const photograph&, sqlite::connection& db);
         void update(const photograph&, sqlite::connection& db);
         void get_by_id(int id, sqlite::connection& db, const photograph& photo);

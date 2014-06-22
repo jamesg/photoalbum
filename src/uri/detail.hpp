@@ -18,7 +18,7 @@ namespace boost
     }
 }
 
-namespace photograph
+namespace photoalbum
 {
     namespace uri
     {

@@ -16,14 +16,14 @@
 #include "sqlite/step.hpp"
 #include "sqlite/update.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     // These strings need to be stored in one place so that there is only one
     // instantiation of has_id for each database type.
     const char album_id_cstr[] = "album_id";
 }
 
-int photograph::db::insert(const album& al, sqlite::connection& db)
+int photoalbum::db::insert(const album& al, sqlite::connection& db)
 {
     json::list albums;
     sqlite::select<album>(
@@ -49,7 +49,7 @@ int photograph::db::insert(const album& al, sqlite::connection& db)
             );
 }
 
-void photograph::db::update(const album& al, sqlite::connection& db)
+void photoalbum::db::update(const album& al, sqlite::connection& db)
 {
     sqlite::update(
             "album",
@@ -59,7 +59,7 @@ void photograph::db::update(const album& al, sqlite::connection& db)
             );
 }
 
-void photograph::db::get_by_id(int id, sqlite::connection& db, const album& al)
+void photoalbum::db::get_by_id(int id, sqlite::connection& db, const album& al)
 {
     sqlite::get_by_id(
             "album",
@@ -70,7 +70,7 @@ void photograph::db::get_by_id(int id, sqlite::connection& db, const album& al)
             );
 }
 
-void photograph::db::get_album_list(sqlite::connection& db, json::list& list)
+void photoalbum::db::get_album_list(sqlite::connection& db, json::list& list)
 {
     sqlite::select<album>(
             db,

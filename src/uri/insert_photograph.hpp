@@ -8,7 +8,7 @@
 
 #include "mongoose.h"
 
-namespace photograph
+namespace photoalbum
 {
     namespace uri
     {

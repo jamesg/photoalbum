@@ -14,7 +14,7 @@
 #include "jsonrpc/method_type.hpp"
 #include "uri/uri_type.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     class server : boost::noncopyable
     {

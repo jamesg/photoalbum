@@ -9,7 +9,7 @@
 
 #include <Magick++.h>
 
-void photograph::util::scale(
+void photoalbum::util::scale(
     const std::vector<unsigned char> data,
     const std::string& geometry,
     std::vector<unsigned char>& scaled_image
@@ -32,7 +32,7 @@ void photograph::util::scale(
             );
 }
 
-void photograph::util::scale(
+void photoalbum::util::scale(
         const std::vector<unsigned char> image,
         const int width,
         const int height,

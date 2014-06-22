@@ -13,7 +13,7 @@ namespace sqlite
     class connection;
 }
 
-namespace photograph
+namespace photoalbum
 {
     class server;
 

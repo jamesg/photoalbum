@@ -15,7 +15,7 @@ namespace sqlite
     class connection;
 }
 
-namespace photograph
+namespace photoalbum
 {
     struct statistics : public json::map_accessor
     {
@@ -36,7 +36,7 @@ namespace photograph
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::statistics,
+        photoalbum::statistics,
         (int&, total_count())
         )
 

@@ -12,7 +12,7 @@
 
 #include "photograph.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     /*
      * Base64 JPEG data for a photograph.
@@ -42,18 +42,18 @@ namespace photograph
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::jpeg_data,
+        photoalbum::jpeg_data,
         (int&,          id())
         (std::string&,  data())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::jpeg_data_db,
+        photoalbum::jpeg_data_db,
         (int&,                id())
         (std::vector<unsigned char>, data)
         )
 
-namespace photograph
+namespace photoalbum
 {
     namespace db
     {

@@ -25,7 +25,7 @@
 
 #include "db/map.hpp"
 
-int photograph::os::streetmap(int argc, const char* argv[])
+int photoalbum::os::streetmap(int argc, const char* argv[])
 {
     bool show_help = false;
     std::string mapdb;
@@ -140,6 +140,6 @@ int photograph::os::streetmap(int argc, const char* argv[])
 
 int main(int argc, const char* argv[])
 {
-    photograph::os::streetmap(argc, argv);
+    photoalbum::os::streetmap(argc, argv);
 }
 

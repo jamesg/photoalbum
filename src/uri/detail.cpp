@@ -7,14 +7,14 @@
 
 #include "db/auth.hpp"
 
-std::string photograph::uri::detail::extract_token(mg_connection *conn)
+std::string photoalbum::uri::detail::extract_token(mg_connection *conn)
 {
     char token_str[db::auth::token_length+1];
     mg_get_var(conn, "token", token_str, sizeof(token_str));
     return std::string(token_str);
 }
 
-std::string photograph::uri::detail::http_date(const boost::posix_time::ptime& time)
+std::string photoalbum::uri::detail::http_date(const boost::posix_time::ptime& time)
 {
     boost::local_time::local_time_facet* lf(
             new boost::local_time::local_time_facet("%a, %d %b %Y %H:%M:%S GMT")
@@ -25,7 +25,7 @@ std::string photograph::uri::detail::http_date(const boost::posix_time::ptime& t
     return ss.str();
 }
 
-void photograph::uri::detail::text_response(
+void photoalbum::uri::detail::text_response(
         mg_connection *conn,
         int status_code,
         const std::string& response

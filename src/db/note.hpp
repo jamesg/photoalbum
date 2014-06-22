@@ -10,7 +10,7 @@
 
 #include "has_id.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     extern const char markdown_id_str[];
     extern const char note_id_str[];
@@ -102,14 +102,14 @@ namespace photograph
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::note,
+        ::photoalbum::note,
         (int&,         id())
         (std::string&, title())
         (std::string&, created())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::note_version,
+        ::photoalbum::note_version,
         (int&,         id())
         (int&,         note_id())
         (int&,         markdown_id())
@@ -118,20 +118,20 @@ BOOST_FUSION_ADAPT_STRUCT(
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::markdown_data,
+        ::photoalbum::markdown_data,
         (int&,         id())
         (std::string&, markdown())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::published_note,
+        ::photoalbum::published_note,
         (std::string&, created())
         (std::string&, modified())
         (std::string&, markdown())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        ::photograph::note_version_uses_photograph,
+        ::photoalbum::note_version_uses_photograph,
         (int&,         note_version_id())
         (int&,         photograph_id())
         (std::string&, filename())
@@ -142,7 +142,7 @@ namespace sqlite
     class connection;
 }
 
-namespace photograph
+namespace photoalbum
 {
     namespace db
     {

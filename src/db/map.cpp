@@ -18,7 +18,7 @@
 #include "sqlite/step.hpp"
 #include "sqlite/temporary_table.hpp"
 
-namespace photograph
+namespace photoalbum
 {
     namespace map
     {
@@ -26,7 +26,7 @@ namespace photograph
     }
 }
 
-void photograph::db::map::create(sqlite::connection& conn)
+void photoalbum::db::map::create(sqlite::connection& conn)
 {
     /*
      * Table for Ordnance Survey Street Map data.  Images are stored in PNG
@@ -85,16 +85,16 @@ void photograph::db::map::create(sqlite::connection& conn)
         );
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
     sqlite::connection& conn,
     const std::string& region,
     int eastings,
     int northings,
-    const photograph::map::tile& out
+    const photoalbum::map::tile& out
     )
 {
     json::list l;
-    sqlite::select<photograph::map::tile>(
+    sqlite::select<photoalbum::map::tile>(
             conn,
             "SELECT region, eastings, northings "
             "FROM tile "
@@ -108,16 +108,16 @@ void photograph::db::get(
         out.get_object() = l[0];
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
     sqlite::connection& conn,
     const std::string& region,
     int eastings,
     int northings,
-    photograph::map::tile_data_db& data
+    photoalbum::map::tile_data_db& data
     )
 {
-    std::vector<photograph::map::tile_data_db> l;
-    sqlite::select<photograph::map::tile_data_db>(
+    std::vector<photoalbum::map::tile_data_db> l;
+    sqlite::select<photoalbum::map::tile_data_db>(
             conn,
             "SELECT region, eastings, northings, data "
             "FROM tile_data "
@@ -131,15 +131,15 @@ void photograph::db::get(
         data = l.at(0);
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
         sqlite::connection& conn,
         const std::string& region,
         int eastings,
         int northings,
-        const photograph::map::tile_data& out
+        const photoalbum::map::tile_data& out
         )
 {
-    photograph::map::tile_data_db data;
+    photoalbum::map::tile_data_db data;
     get(conn, region, eastings, northings, data);
     out.region() = data.region;
     out.eastings() = data.eastings;
@@ -150,8 +150,8 @@ void photograph::db::get(
             );
 }
 
-void photograph::db::insert(
-    const photograph::map::tile_data& td,
+void photoalbum::db::insert(
+    const photoalbum::map::tile_data& td,
     sqlite::connection& conn
     )
 {
@@ -168,8 +168,8 @@ void photograph::db::insert(
             );
 }
 
-void photograph::db::insert(
-    photograph::map::tile_data_db& td,
+void photoalbum::db::insert(
+    photoalbum::map::tile_data_db& td,
     sqlite::connection& conn
     )
 {
@@ -190,10 +190,10 @@ void photograph::db::insert(
     sqlite3_finalize(stmt);
 }
 
-void photograph::db::get(
+void photoalbum::db::get(
         sqlite::connection&          conn,
         int                          seq,
-        const photograph::map::gazetteer_record& out
+        const photoalbum::map::gazetteer_record& out
         )
 {
     sqlite::get_by_id(
@@ -226,8 +226,8 @@ void photograph::db::get(
             );
 }
 
-void photograph::db::insert(
-        const photograph::map::gazetteer_record& in,
+void photoalbum::db::insert(
+        const photoalbum::map::gazetteer_record& in,
         sqlite::connection&          conn
         )
 {
@@ -260,12 +260,12 @@ void photograph::db::insert(
             );
 }
 
-void photograph::db::insert_gazetteer_records(
+void photoalbum::db::insert_gazetteer_records(
         json::list&         in,
         sqlite::connection& conn
         )
 {
-    sqlite::insert<photograph::map::gazetteer_record>(
+    sqlite::insert<photoalbum::map::gazetteer_record>(
             "gazetteer",
             {
                 "seq",
@@ -294,12 +294,12 @@ void photograph::db::insert_gazetteer_records(
             );
 }
 
-void photograph::db::clear_gazetteer(sqlite::connection& conn)
+void photoalbum::db::clear_gazetteer(sqlite::connection& conn)
 {
     sqlite::devoid("DELETE FROM gazetteer", boost::fusion::vector<>(), conn);
 }
 
-void photograph::db::clear_gazetteer(
+void photoalbum::db::clear_gazetteer(
         const std::vector<std::string>& regions,
         sqlite::connection&          conn
         )
@@ -328,7 +328,7 @@ void photograph::db::clear_gazetteer(
             );
 }
 
-void photograph::db::delete_tile_data(
+void photoalbum::db::delete_tile_data(
         const std::string& region,
         int eastings,
         int northings,
@@ -347,7 +347,7 @@ void photograph::db::delete_tile_data(
             );
 }
 
-void photograph::db::search_gazetteer(
+void photoalbum::db::search_gazetteer(
         sqlite::connection& conn,
         const std::string& search_term,
         json::list& out
@@ -355,7 +355,7 @@ void photograph::db::search_gazetteer(
 {
     std::ostringstream oss;
     oss << "%" << search_term << "%";
-    sqlite::select<photograph::map::gazetteer_record>(
+    sqlite::select<photoalbum::map::gazetteer_record>(
             conn,
             "SELECT seq, km_ref, def_nam, lat_deg, lat_min, long_deg, "
             "long_min, north, east, gmt, co_code, county, full_county, f_code, "

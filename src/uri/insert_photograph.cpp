@@ -72,7 +72,7 @@ namespace
     }
 }
 
-int photograph::uri::insert_photograph(mg_connection *conn, mg_event ev)
+int photoalbum::uri::insert_photograph(mg_connection *conn, mg_event ev)
 {
     if(ev != MG_REQUEST)
         return MG_FALSE;

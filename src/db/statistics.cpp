@@ -16,7 +16,7 @@
 #include "sqlite/step.hpp"
 #include "sqlite/update.hpp"
 
-void photograph::db::get(sqlite::connection& db, const statistics& stats)
+void photoalbum::db::get(sqlite::connection& db, const statistics& stats)
 {
     json::list stats_list;
     sqlite::select<statistics>(

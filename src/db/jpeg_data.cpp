@@ -11,7 +11,7 @@
 #include "sqlite/get_by_id.hpp"
 #include "sqlite/step.hpp"
 
-void photograph::db::get_by_id(
+void photoalbum::db::get_by_id(
         const int photograph_id,
         sqlite::connection& db,
         jpeg_data_db& data
@@ -27,14 +27,14 @@ void photograph::db::get_by_id(
             );
 }
 
-void photograph::db::get_by_id(
+void photoalbum::db::get_by_id(
         const int photograph_id,
         sqlite::connection& db,
         const jpeg_data& data
         )
 {
     json::object o = json::map();
-    ::photograph::jpeg_data_db data_inter(o);
+    ::photoalbum::jpeg_data_db data_inter(o);
 
     get_by_id(photograph_id, db, data_inter);
 
@@ -45,7 +45,7 @@ void photograph::db::get_by_id(
             );
 }
 
-void photograph::db::insert(const jpeg_data& data, sqlite::connection& db)
+void photoalbum::db::insert(const jpeg_data& data, sqlite::connection& db)
 {
     sqlite3_stmt *stmt;
     sqlite3_prepare(
@@ -66,7 +66,7 @@ void photograph::db::insert(const jpeg_data& data, sqlite::connection& db)
     sqlite3_finalize(stmt);
 }
 
-void photograph::db::insert(const jpeg_data_db& data, sqlite::connection& db)
+void photoalbum::db::insert(const jpeg_data_db& data, sqlite::connection& db)
 {
     sqlite3_stmt *stmt;
     sqlite3_prepare(

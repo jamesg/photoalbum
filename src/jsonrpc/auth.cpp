@@ -13,6 +13,6 @@ bool jsonrpc::auth::logged_in(
         const request& req
         )
 {
-    return photograph::db::auth::token_valid(req.token(), conn);
+    return photoalbum::db::auth::token_valid(req.token(), conn);
 }
 

@@ -20,11 +20,11 @@
 
 namespace
 {
-    typedef photograph::photograph photograph_t;
+    typedef photoalbum::photograph photograph_t;
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::photograph,
+        photoalbum::photograph,
         (int&,         id())
         (std::string&, title())
         (std::string&, caption())
@@ -33,7 +33,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         (std::string&, taken())
         )
 
-void photograph::api::photograph(
+void photoalbum::api::photograph(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -53,7 +53,7 @@ void photograph::api::photograph(
     }
 }
 
-void photograph::api::delete_photograph(
+void photoalbum::api::delete_photograph(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -73,7 +73,7 @@ void photograph::api::delete_photograph(
     }
 }
 
-void photograph::api::insert_photograph(
+void photoalbum::api::insert_photograph(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -82,7 +82,7 @@ void photograph::api::insert_photograph(
     int id;
     try
     {
-        id = db::insert(::photograph::photograph(request.params()[0]), db);
+        id = db::insert(::photoalbum::photograph(request.params()[0]), db);
     }
     catch( const std::exception& e )
     {
@@ -93,7 +93,7 @@ void photograph::api::insert_photograph(
     result.data() = o;
 }
 
-void photograph::api::photograph_albums(
+void photoalbum::api::photograph_albums(
         jsonrpc::request& request,
         jsonrpc::result& result,
         sqlite::connection& db
@@ -112,7 +112,7 @@ void photograph::api::photograph_albums(
     result.data() = photographs;
 }
 
-void photograph::api::photograph_list(
+void photoalbum::api::photograph_list(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -123,7 +123,7 @@ void photograph::api::photograph_list(
     result.data() = photo_list;
 }
 
-void photograph::api::photographs_in_album(
+void photoalbum::api::photographs_in_album(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -135,7 +135,7 @@ void photograph::api::photographs_in_album(
     result.data() = photographs;
 }
 
-void photograph::api::remove_photograph_from_album(
+void photoalbum::api::remove_photograph_from_album(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -158,7 +158,7 @@ void photograph::api::remove_photograph_from_album(
     }
 }
 
-void photograph::api::update_photograph(
+void photoalbum::api::update_photograph(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -166,7 +166,7 @@ void photograph::api::update_photograph(
 {
     try
     {
-        ::photograph::photograph photo(request.params()[0]);
+        ::photoalbum::photograph photo(request.params()[0]);
         db::update(photo, db);
     }
     catch( const std::exception& e )
@@ -175,14 +175,14 @@ void photograph::api::update_photograph(
     }
 }
 
-void photograph::api::photographs_with_tag(
+void photoalbum::api::photographs_with_tag(
             jsonrpc::request&   request,
             jsonrpc::result&    result,
             sqlite::connection& db
             )
 {
     json::list photographs;
-    sqlite::select< ::photograph::photograph>(
+    sqlite::select< ::photoalbum::photograph>(
             db,
             "SELECT DISTINCT photograph.photograph_id, title, caption, "
             "filename, location, taken "
@@ -196,14 +196,14 @@ void photograph::api::photographs_with_tag(
     result.data() = photographs;
 }
 
-void photograph::api::photographs_with_location(
+void photoalbum::api::photographs_with_location(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
         )
 {
     json::list photographs;
-    sqlite::select< ::photograph::photograph>(
+    sqlite::select< ::photoalbum::photograph>(
             db,
             "SELECT DISTINCT "
             "photograph_id, title, caption, filename, location, taken "

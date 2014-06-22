@@ -20,7 +20,7 @@
 #include "db/album.hpp"
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::photograph,
+        photoalbum::photograph,
         (int&,         id())
         (std::string&, title())
         (std::string&, caption())
@@ -30,23 +30,27 @@ BOOST_FUSION_ADAPT_STRUCT(
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::photograph_in_album,
+        photoalbum::photograph_in_album,
         (int&,         photograph_id())
         (int&,         album_id())
         )
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::photograph_tagged,
+        photoalbum::photograph_tagged,
         (int&,         photograph_id())
         (std::string&, tag())
         )
 
-namespace photograph
+namespace photoalbum
 {
     const char photograph_id_cstr[] = "photograph_id";
 }
 
-int photograph::db::insert(const photograph& photo, sqlite::connection& db)
+//void photoalbum::db::photoalbum::create(sqlite::connection& conn)
+//{
+//}
+
+int photoalbum::db::insert(const photograph& photo, sqlite::connection& db)
 {
     int id = sqlite::insert(
             "photograph",
@@ -76,7 +80,7 @@ int photograph::db::insert(const photograph& photo, sqlite::connection& db)
     return id;
 }
 
-void photograph::db::update(const photograph& photo, sqlite::connection& db)
+void photoalbum::db::update(const photograph& photo, sqlite::connection& db)
 {
     sqlite::update(
             "photograph",
@@ -119,7 +123,7 @@ void photograph::db::update(const photograph& photo, sqlite::connection& db)
     }
 }
 
-void photograph::db::get_by_id(
+void photoalbum::db::get_by_id(
         int id,
         sqlite::connection& db,
         const photograph& photo
@@ -163,7 +167,7 @@ void photograph::db::get_by_id(
             );
 }
 
-void photograph::db::get_photograph_list(
+void photoalbum::db::get_photograph_list(
         sqlite::connection& db,
         json::list&         list
         )
@@ -183,7 +187,7 @@ void photograph::db::get_photograph_list(
             );
 }
 
-int photograph::db::insert(
+int photoalbum::db::insert(
         const photograph_in_album& photo_in_al,
         sqlite::connection& db
         )
@@ -196,7 +200,7 @@ int photograph::db::insert(
             );
 }
 
-void photograph::db::get_photographs_by_album(
+void photoalbum::db::get_photographs_by_album(
         sqlite::connection& db,
         const int album_id,
         json::list& list

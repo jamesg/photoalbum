@@ -14,7 +14,7 @@ namespace jsonrpc
     class result;
 }
 
-namespace photograph
+namespace photoalbum
 {
     /*
      * Set of features supported by this server.

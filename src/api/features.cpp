@@ -16,7 +16,7 @@ namespace
     static boost::scoped_ptr<json::object> g_features;
 }
 
-const photograph::features photograph::get_features()
+const photoalbum::features photoalbum::get_features()
 {
     if(!g_features)
         g_features.reset(new json::object);
@@ -24,7 +24,7 @@ const photograph::features photograph::get_features()
     return features(*g_features);
 }
 
-void photograph::api::features(
+void photoalbum::api::features(
         const jsonrpc::request&,
         jsonrpc::result& result
         )

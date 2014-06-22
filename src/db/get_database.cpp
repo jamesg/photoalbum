@@ -12,10 +12,10 @@
 
 namespace
 {
-    static std::map<photograph::db::database_type, sqlite::connection> g_connections;
+    static std::map<photoalbum::db::database_type, sqlite::connection> g_connections;
 }
 
-sqlite::connection& photograph::db::get_database(
+sqlite::connection& photoalbum::db::get_database(
         database_type db_type,
         const std::string& filename
         )

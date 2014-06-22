@@ -18,7 +18,7 @@
 #include "db/jpeg_data.hpp"
 #include "util/scale.hpp"
 
-int photograph::exports::main(int argc, const char* argv[])
+int photoalbum::exports::main(int argc, const char* argv[])
 {
     bool show_help = false, fullsize = false;
     std::string db_file, output_directory, geometry;
@@ -155,6 +155,6 @@ int photograph::exports::main(int argc, const char* argv[])
 
 int main(int argc, const char* argv[])
 {
-    photograph::exports::main(argc, argv);
+    photoalbum::exports::main(argc, argv);
 }
 

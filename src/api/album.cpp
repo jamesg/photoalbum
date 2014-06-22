@@ -22,7 +22,7 @@
 #include "db/photograph.hpp"
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::photograph,
+        photoalbum::photograph,
         (int&,         id())
         (std::string&, title())
         (std::string&, caption())
@@ -31,7 +31,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         (std::string&, taken())
         )
 
-void photograph::api::add_photograph_to_album(
+void photoalbum::api::add_photograph_to_album(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -65,7 +65,7 @@ void photograph::api::add_photograph_to_album(
     }
 }
 
-void photograph::api::album_list(
+void photoalbum::api::album_list(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -76,7 +76,7 @@ void photograph::api::album_list(
     result.data() = album_list;
 }
 
-void photograph::api::insert_album(
+void photoalbum::api::insert_album(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -85,14 +85,14 @@ void photograph::api::insert_album(
     db::insert(album(request.params()[0]), db);
 }
 
-void photograph::api::uncategorised_photographs(
+void photoalbum::api::uncategorised_photographs(
         jsonrpc::request& request,
         jsonrpc::result& result,
         sqlite::connection& db
         )
 {
     json::list photographs;
-    sqlite::select< ::photograph::photograph>(
+    sqlite::select< ::photoalbum::photograph>(
             db,
             "SELECT DISTINCT "
             "photograph.photograph_id, photograph_in_album.album_id "
@@ -106,7 +106,7 @@ void photograph::api::uncategorised_photographs(
     result.data() = photographs;
 }
 
-void photograph::api::update_album(
+void photoalbum::api::update_album(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db
@@ -123,7 +123,7 @@ void photograph::api::update_album(
     }
 }
 
-void photograph::api::delete_album(
+void photoalbum::api::delete_album(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& db

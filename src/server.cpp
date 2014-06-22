@@ -11,7 +11,7 @@
 
 #include "mongoose.h"
 
-photograph::server::server(
+photoalbum::server::server(
         const std::string& document_root,
         const std::string& port,
         const std::string& pem_file
@@ -25,34 +25,34 @@ photograph::server::server(
         mg_set_option(m_server, "ssl_certificate", pem_file.c_str());
 }
 
-photograph::server::~server()
+photoalbum::server::~server()
 {
     mg_destroy_server(&m_server);
 }
 
-void photograph::server::listen()
+void photoalbum::server::listen()
 {
     m_start_time = boost::posix_time::second_clock::universal_time();
     for(;;)
         mg_poll_server(m_server, 1000);
 }
 
-void photograph::server::install(const std::string& uri, uri::uri_type function)
+void photoalbum::server::install(const std::string& uri, uri::uri_type function)
 {
     m_uri[uri] = function;
 }
 
-const boost::posix_time::ptime& photograph::server::start_time() const
+const boost::posix_time::ptime& photoalbum::server::start_time() const
 {
     return m_start_time;
 }
 
-int photograph::server::accept(mg_connection *conn, mg_event ev)
+int photoalbum::server::accept(mg_connection *conn, mg_event ev)
 {
     return ((server*)(conn->server_param))->serve(conn, ev);
 }
 
-int photograph::server::serve(mg_connection *conn, mg_event ev) const
+int photoalbum::server::serve(mg_connection *conn, mg_event ev) const
 {
     if(ev == MG_AUTH)
         return MG_TRUE;

@@ -15,7 +15,7 @@
 
 #include "db/note.hpp"
 
-void photograph::api::markdown_data(
+void photoalbum::api::markdown_data(
         jsonrpc::request& request,
         jsonrpc::result& result,
         sqlite::connection& conn
@@ -27,7 +27,7 @@ void photograph::api::markdown_data(
         note_version::phase_t phase = static_cast<note_version::phase_t>(
                 request.params().get<int>(1)
                 );
-        db::get(id, phase, conn, ::photograph::markdown_data(result.data()));
+        db::get(id, phase, conn, ::photoalbum::markdown_data(result.data()));
     }
     catch(const std::exception&)
     {
@@ -35,7 +35,7 @@ void photograph::api::markdown_data(
     }
 }
 
-void photograph::api::update_markdown_data(
+void photoalbum::api::update_markdown_data(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -43,7 +43,7 @@ void photograph::api::update_markdown_data(
 {
     try
     {
-        ::photograph::markdown_data md(request.params()[0]);
+        ::photoalbum::markdown_data md(request.params()[0]);
         db::update(md, conn);
     }
     catch(const std::exception&)
@@ -52,7 +52,7 @@ void photograph::api::update_markdown_data(
     }
 }
 
-void photograph::api::note(
+void photoalbum::api::note(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -63,7 +63,7 @@ void photograph::api::note(
         db::get(
                 request.params().get<int>(0),
                 conn,
-                ::photograph::note(result.data())
+                ::photoalbum::note(result.data())
                 );
     }
     catch(const std::exception&)
@@ -72,7 +72,7 @@ void photograph::api::note(
     }
 }
 
-void photograph::api::note_list(
+void photoalbum::api::note_list(
                 jsonrpc::request&,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -90,7 +90,7 @@ void photograph::api::note_list(
     }
 }
 
-void photograph::api::note_version(
+void photoalbum::api::note_version(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -101,7 +101,7 @@ void photograph::api::note_version(
         db::get(
                 request.params().get<int>(0),
                 conn,
-                ::photograph::note_version(result.data())
+                ::photoalbum::note_version(result.data())
                 );
     }
     catch(const std::exception&)
@@ -110,7 +110,7 @@ void photograph::api::note_version(
     }
 }
 
-void photograph::api::note_phase_version(
+void photoalbum::api::note_phase_version(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -120,11 +120,11 @@ void photograph::api::note_phase_version(
     {
         db::get(
                 request.params().get<int>(0),
-                static_cast< ::photograph::note_version::phase_t>(
+                static_cast< ::photoalbum::note_version::phase_t>(
                     request.params().get<int>(1)
                     ),
                 conn,
-                ::photograph::note_version(result.data())
+                ::photoalbum::note_version(result.data())
                 );
     }
     catch(const std::exception&)
@@ -133,7 +133,7 @@ void photograph::api::note_phase_version(
     }
 }
 
-void photograph::api::insert_note(
+void photoalbum::api::insert_note(
         jsonrpc::request& request,
         jsonrpc::result& result,
         sqlite::connection& conn
@@ -141,7 +141,7 @@ void photograph::api::insert_note(
 {
     try
     {
-        db::insert(::photograph::note(request.params()[0]), conn);
+        db::insert(::photoalbum::note(request.params()[0]), conn);
     }
     catch(const std::exception&)
     {
@@ -149,7 +149,7 @@ void photograph::api::insert_note(
     }
 }
 
-void photograph::api::create_draft_note(
+void photoalbum::api::create_draft_note(
         jsonrpc::request&   request,
         jsonrpc::result&    result,
         sqlite::connection& conn
@@ -159,7 +159,7 @@ void photograph::api::create_draft_note(
     {
         // TODO: transaction
         json::object note_o;
-        ::photograph::note note_(note_o);
+        ::photoalbum::note note_(note_o);
         note_.title() = request.params().get<std::string>(0);
 
         boost::gregorian::date today =
@@ -170,16 +170,16 @@ void photograph::api::create_draft_note(
 
         json::object markdown_data_o;
         int markdown_id = db::insert(
-                ::photograph::markdown_data(markdown_data_o),
+                ::photoalbum::markdown_data(markdown_data_o),
                 conn
                 );
 
         json::object note_version_o;
-        ::photograph::note_version note_version_(note_version_o);
+        ::photoalbum::note_version note_version_(note_version_o);
         note_version_.note_id() = note_id;
         note_version_.markdown_id() = markdown_id;
         note_version_.modified() = note_.created();
-        note_version_.phase() = ::photograph::note_version::draft;
+        note_version_.phase() = ::photoalbum::note_version::draft;
         int note_version_id = db::insert(note_version_, conn);
 
         json::map_accessor result_data(result.data());
@@ -193,7 +193,7 @@ void photograph::api::create_draft_note(
     }
 }
 
-void photograph::api::delete_note(
+void photoalbum::api::delete_note(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -201,7 +201,7 @@ void photograph::api::delete_note(
 {
     try
     {
-        ::photograph::db::delete_note(request.params().get<int>(0), conn);
+        ::photoalbum::db::delete_note(request.params().get<int>(0), conn);
     }
     catch(const std::exception&)
     {
@@ -209,7 +209,7 @@ void photograph::api::delete_note(
     }
 }
 
-void photograph::api::published_notes(
+void photoalbum::api::published_notes(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -227,7 +227,7 @@ void photograph::api::published_notes(
     }
 }
 
-void photograph::api::publish_note(
+void photoalbum::api::publish_note(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -242,7 +242,7 @@ void photograph::api::publish_note(
         // Delete any old note versions.
         db::delete_note_version(
                 note_id,
-                ::photograph::note_version::published,
+                ::photoalbum::note_version::published,
                 conn
                 );
 
@@ -267,7 +267,7 @@ void photograph::api::publish_note(
                 "VALUES(?, last_insert_rowid(), ?, ?) ",
                 boost::fusion::vector<int, int, std::string>(
                     note_id,
-                    ::photograph::note_version::published,
+                    ::photoalbum::note_version::published,
                     boost::gregorian::to_iso_extended_string(today)
                     ),
                 conn
@@ -284,7 +284,7 @@ void photograph::api::publish_note(
                 "WHERE note_id = ? AND phase = ? ",
                 boost::fusion::vector<int, int>(
                     note_id,
-                    ::photograph::note_version::draft
+                    ::photoalbum::note_version::draft
                     ),
                 conn
                 );
@@ -295,7 +295,7 @@ void photograph::api::publish_note(
     }
 }
 
-void photograph::api::published_note(
+void photoalbum::api::published_note(
                 jsonrpc::request&   request,
                 jsonrpc::result&    result,
                 sqlite::connection& conn
@@ -306,7 +306,7 @@ void photograph::api::published_note(
         db::get(
                 request.params().get<int>(0),
                 conn,
-                ::photograph::published_note(result.data())
+                ::photoalbum::published_note(result.data())
                 );
     }
     catch(const std::exception&)

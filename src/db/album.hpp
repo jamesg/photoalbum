@@ -15,7 +15,7 @@ namespace sqlite
     class connection;
 }
 
-namespace photograph
+namespace photoalbum
 {
     extern const char album_id_cstr[];
     /*
@@ -42,7 +42,7 @@ namespace photograph
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
-        photograph::album,
+        photoalbum::album,
         (int&,         id())
         (std::string&, name())
         (std::string&, caption())

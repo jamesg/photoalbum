@@ -32,23 +32,10 @@ namespace
         }
         std::string& str() const { return get_string("location"); }
     };
-
-    struct tag : json::map_accessor
-    {
-        tag(json::object& o) : map_accessor(o)
-        {
-        }
-        std::string& str() const { return get_string("tag"); }
-    };
 }
 
 BOOST_FUSION_ADAPT_STRUCT(
         ::location,
-        (std::string&, str())
-        )
-
-BOOST_FUSION_ADAPT_STRUCT(
-        ::tag,
         (std::string&, str())
         )
 
@@ -98,23 +85,6 @@ void photoalbum::api::locations(
            boost::fusion::vector<>(),
            list
            );
-    result.data() = list;
-}
-
-void photoalbum::api::tags(
-        jsonrpc::request&   request,
-        jsonrpc::result&    result,
-        sqlite::connection& db
-        )
-{
-    json::list list;
-    sqlite::select< ::tag>(
-            db,
-            "SELECT DISTINCT tag FROM photograph_tagged "
-            "ORDER BY tag ",
-            sqlite::empty_row(),
-            list
-            );
     result.data() = list;
 }
 

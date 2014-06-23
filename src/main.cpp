@@ -182,6 +182,16 @@ int main(int argc, const char* argv[])
         boost::bind(photoalbum::api::tags, _1, _2, boost::ref(db)),
         boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
         );
+    api_server.install(
+        "tags_alphabetical",
+        boost::bind(photoalbum::api::tags_alphabetical, _1, _2, boost::ref(db)),
+        boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
+        );
+    api_server.install(
+        "tags_popular",
+        boost::bind(photoalbum::api::tags_popular, _1, _2, boost::ref(db)),
+        boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
+        );
 
     // Photograph methods.
     api_server.install(

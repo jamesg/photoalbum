@@ -35,6 +35,7 @@ OBJS=\
 	${OBJDIR}/api/note.o \
 	${OBJDIR}/api/photograph/album.o \
 	${OBJDIR}/api/photograph/jpeg_data.o \
+	${OBJDIR}/api/photograph/tags.o \
 	${OBJDIR}/api/photograph.o \
 	${OBJDIR}/api/statistics.o \
 	${OBJDIR}/base64/base64.o \

@@ -8,7 +8,7 @@
 
 #include <boost/fusion/include/adapt_struct.hpp>
 
-#include "has_id.hpp"
+#include "db/has_id.hpp"
 
 namespace sqlite
 {

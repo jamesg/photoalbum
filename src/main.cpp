@@ -28,7 +28,7 @@
 
 #include "api/api.hpp"
 #include "db/auth.hpp"
-#include "db/get_database.hpp"
+#include "db/cache.hpp"
 #include "db/map.hpp"
 #include "db/photograph.hpp"
 #include "jsonrpc/auth.hpp"
@@ -101,28 +101,24 @@ int main(int argc, const char* argv[])
 
     boost::asio::ip::address bind_addr;
 
-    sqlite::connection& db = photoalbum::db::get_database(photoalbum::db::database_photograph, db_file);
-    sqlite::connection& map_db = photoalbum::db::get_database(photoalbum::db::database_map, map_db_file);
+    sqlite::connection db =
+        db_file.length()?
+        sqlite::connection(db_file):
+        sqlite::connection::in_memory_database();
+    sqlite::connection map_db =
+        map_db_file.length()?
+        sqlite::connection(map_db_file):
+        sqlite::connection::in_memory_database();
     photoalbum::db::map::create(map_db);
 
-    sqlite::connection auth_db = 
+    sqlite::connection auth_db =
         auth_db_file.length()?
         sqlite::connection(auth_db_file):
         sqlite::connection::in_memory_database();
-
     photoalbum::db::auth::create(auth_db);
+
     sqlite::connection cache_db = sqlite::connection::in_memory_database();
-    sqlite::devoid(
-            "CREATE TABLE jpeg_cache ( "
-            " photograph_id INTEGER, "
-            " width INTEGER, "
-            " height INTEGER, "
-            " data BLOB, "
-            " PRIMARY KEY(photograph_id, width, height) "
-            " ) ",
-            boost::fusion::vector<>(),
-            cache_db
-            );
+    photoalbum::db::cache::create(cache_db);
 
     jsonrpc::server api_server;
 
@@ -369,7 +365,10 @@ int main(int argc, const char* argv[])
             "/map_tile_km",
             boost::bind(&photoalbum::uri::map_tile_km, boost::ref(s), _1, _2, boost::ref(map_db), boost::ref(auth_db))
             );
-    s.install("/insert_photograph", &photoalbum::uri::insert_photograph);
+    s.install(
+            "/insert_photograph",
+            boost::bind(&photoalbum::uri::insert_photograph, _1, _2, boost::ref(db))
+            );
     s.install("/api_call", boost::bind(&api_call, api_server, _1, _2));
     s.listen();
 }

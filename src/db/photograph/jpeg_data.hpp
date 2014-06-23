@@ -10,7 +10,7 @@
 
 #include "json/map_accessor.hpp"
 
-#include "photograph.hpp"
+#include "db/photograph.hpp"
 
 namespace photoalbum
 {

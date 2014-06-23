@@ -15,7 +15,7 @@
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
-#include "db/album.hpp"
+#include "db/photograph/album.hpp"
 #include "db/photograph.hpp"
 
 namespace

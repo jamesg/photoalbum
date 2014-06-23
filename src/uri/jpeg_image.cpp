@@ -16,7 +16,7 @@
 #include "sqlite/select.hpp"
 
 #include "db/auth.hpp"
-#include "db/jpeg_data.hpp"
+#include "db/photograph/jpeg_data.hpp"
 #include "server.hpp"
 #include "uri/detail.hpp"
 

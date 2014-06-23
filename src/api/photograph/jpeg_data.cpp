@@ -16,7 +16,7 @@
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
 
-#include "db/jpeg_data.hpp"
+#include "db/photograph/jpeg_data.hpp"
 
 void photoalbum::api::insert_jpeg_data(
         jsonrpc::request&   request,

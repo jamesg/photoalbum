@@ -28,22 +28,22 @@ LIBS=\
 OBJDIR=objs
 
 OBJS=\
-	${OBJDIR}/api/album.o \
 	${OBJDIR}/api/auth.o \
 	${OBJDIR}/api/features.o \
-	${OBJDIR}/api/jpeg_data.o \
 	${OBJDIR}/api/api.o \
 	${OBJDIR}/api/map.o \
 	${OBJDIR}/api/note.o \
+	${OBJDIR}/api/photograph/album.o \
+	${OBJDIR}/api/photograph/jpeg_data.o \
 	${OBJDIR}/api/photograph.o \
 	${OBJDIR}/api/statistics.o \
 	${OBJDIR}/base64/base64.o \
 	${OBJDIR}/db/album.o \
 	${OBJDIR}/db/auth.o \
-	${OBJDIR}/db/get_database.o \
-	${OBJDIR}/db/jpeg_data.o \
+	${OBJDIR}/db/cache.o \
 	${OBJDIR}/db/map.o \
 	${OBJDIR}/db/note.o \
+	${OBJDIR}/db/photograph/jpeg_data.o \
 	${OBJDIR}/db/photograph.o \
 	${OBJDIR}/db/statistics.o \
 	${OBJDIR}/jsonrpc/auth.o \

@@ -8,7 +8,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "db/auth.hpp"
-#include "db/jpeg_data.hpp"
+#include "db/photograph/jpeg_data.hpp"
 #include "server.hpp"
 #include "uri/detail.hpp"
 

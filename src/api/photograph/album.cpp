@@ -3,7 +3,7 @@
  * Copyright (C) 2014 James Goode.
  */
 
-#include "api.hpp"
+#include "album.hpp"
 
 #include <exception>
 #include <locale>
@@ -18,7 +18,7 @@
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
-#include "db/album.hpp"
+#include "db/photograph/album.hpp"
 #include "db/photograph.hpp"
 
 BOOST_FUSION_ADAPT_STRUCT(

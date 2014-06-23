@@ -8,11 +8,20 @@
 
 #include "mongoose.h"
 
+namespace sqlite
+{
+    class connection;
+}
+
 namespace photoalbum
 {
     namespace uri
     {
-        int insert_photograph(mg_connection*, mg_event);
+        int insert_photograph(
+                mg_connection*,
+                mg_event,
+                sqlite::connection& photo_db
+                );
     }
 }
 

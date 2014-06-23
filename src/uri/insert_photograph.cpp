@@ -14,8 +14,7 @@
 
 #include "json/json.hpp"
 
-#include "db/get_database.hpp"
-#include "db/jpeg_data.hpp"
+#include "db/photograph/jpeg_data.hpp"
 #include "db/photograph.hpp"
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
@@ -72,7 +71,11 @@ namespace
     }
 }
 
-int photoalbum::uri::insert_photograph(mg_connection *conn, mg_event ev)
+int photoalbum::uri::insert_photograph(
+        mg_connection       *conn,
+        mg_event            ev,
+        sqlite::connection& photo_db
+        )
 {
     if(ev != MG_REQUEST)
         return MG_FALSE;
@@ -121,7 +124,7 @@ int photoalbum::uri::insert_photograph(mg_connection *conn, mg_event ev)
 
     int photo_id = db::insert(
             photo,
-            db::get_database(db::database_photograph)
+            photo_db
             );
 
     typedef boost::tokenizer<boost::escaped_list_separator<char> > tokenizer;
@@ -132,7 +135,7 @@ int photoalbum::uri::insert_photograph(mg_connection *conn, mg_event ev)
     data_db.id() = photo_id;
     db::insert(
             data_db,
-            db::get_database(db::database_photograph)
+            photo_db
             );
 
     mg_send_status(conn, 200);

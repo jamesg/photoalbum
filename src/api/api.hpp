@@ -11,12 +11,12 @@
 #include "sqlite/bind_values.hpp"
 #include "sqlite/update.hpp"
 
-#include "album.hpp"
 #include "auth.hpp"
 #include "features.hpp"
-#include "jpeg_data.hpp"
 #include "map.hpp"
 #include "note.hpp"
+#include "photograph/album.hpp"
+#include "photograph/jpeg_data.hpp"
 #include "photograph.hpp"
 #include "statistics.hpp"
 

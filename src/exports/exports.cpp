@@ -15,7 +15,7 @@
 #include "sqlite/row.hpp"
 #include "sqlite/select.hpp"
 
-#include "db/jpeg_data.hpp"
+#include "db/photograph/jpeg_data.hpp"
 #include "util/scale.hpp"
 
 int photoalbum::exports::main(int argc, const char* argv[])

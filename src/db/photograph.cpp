@@ -18,7 +18,7 @@
 #include "sqlite/select.hpp"
 #include "sqlite/update.hpp"
 
-#include "db/album.hpp"
+#include "db/photograph/album.hpp"
 
 BOOST_FUSION_ADAPT_STRUCT(
         photoalbum::photograph,

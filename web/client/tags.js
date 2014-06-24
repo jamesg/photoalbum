@@ -4,7 +4,7 @@ var api = require('./api');
 var util = require('./util');
 
 var TagList        = require('./ui/taglist').TagList;
-var Collapsable       = require('./ui/collapsable').Collapsable;
+var Collapsable    = require('./ui/collapsable').Collapsable;
 var PhotographList = require('./ui/photographlist').PhotographList;
 
 exports.Tags = function() {
@@ -19,6 +19,42 @@ exports.Tags.prototype.element = function() {
 
 exports.Tags.prototype._template = function() {
     this._element = div();
+
+    this._element(
+        ul(
+            {
+                class: 'pure-menu pure-menu-open pure-menu-horizontal'
+            },
+            li(a(
+                {
+                    onclick: function() {
+                        api.tagsAlphabetical(function(err, tags) {
+                            if(err)
+                                console.log('retrieving alphabetical tags', err);
+                            else
+                                tagList.setTagList(tags);
+                        }
+                        );
+                    }
+                },
+                'Order Alphabetically'
+              )),
+            li(a(
+                {
+                    onclick: function() {
+                        api.tagsPopular(function(err, tags) {
+                            if(err)
+                                console.log('retrieving popular tags', err);
+                            else
+                                tagList.setTagList(tags);
+                        }
+                        );
+                    }
+                },
+                'Order by Popularity'
+                ))
+          )
+        );
 
     // Create the tag list.
     var tagListCollapsable = new Collapsable('Tags', null);
@@ -35,11 +71,10 @@ exports.Tags.prototype._template = function() {
             );
     api.tags(
             function(err, tags) {
-                tagList.setTagList( util.values(
-                        util.mapValues(tags,
-                            function(tag) { return tag.tag; }
-                            )
-                        ) );
+                if(err)
+                    console.log('retrieving tags list', err);
+                else
+                    tagList.setTagList(tags);
             }
             );
     tagListCollapsable.setContent(tagList.element());

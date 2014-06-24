@@ -13,6 +13,7 @@ namespace jsonrpc
 {
     struct request;
     struct result;
+    class server;
 }
 
 namespace sqlite
@@ -26,6 +27,11 @@ namespace photoalbum
     {
         namespace map
         {
+            void install(
+                    sqlite::connection& map_db,
+                    sqlite::connection& auth_db,
+                    jsonrpc::server& api_server
+                    );
             /*
              * Struct for transferring base64-encoded PNG data.
              */

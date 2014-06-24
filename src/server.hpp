@@ -7,7 +7,7 @@
  */
 
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/utility.hpp>
+#include <boost/noncopyable.hpp>
 
 #include "mongoose.h"
 

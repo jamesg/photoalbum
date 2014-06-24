@@ -5,13 +5,46 @@
 
 #include "api/auth.hpp"
 
+#include <boost/bind.hpp>
 #include <boost/nondet_random.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <boost/random/uniform_int.hpp>
 
 #include "db/auth.hpp"
+#include "jsonrpc/auth.hpp"
 #include "jsonrpc/request.hpp"
 #include "jsonrpc/result.hpp"
+#include "jsonrpc/server.hpp"
+
+void photoalbum::api::auth::install(
+        sqlite::connection& auth_db,
+        jsonrpc::server&    api_server
+        )
+{
+    api_server.install(
+        "login",
+        boost::bind(photoalbum::api::auth::login, _1, _2, boost::ref(auth_db))
+        );
+    api_server.install(
+        "logout",
+        boost::bind(photoalbum::api::auth::logout, _1, _2, boost::ref(auth_db)),
+        boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
+        );
+    api_server.install(
+        "token_valid",
+        boost::bind(photoalbum::api::auth::token_valid, _1, _2, boost::ref(auth_db)),
+        boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
+        );
+    api_server.install(
+        "update_user",
+        boost::bind(photoalbum::api::auth::update_user, _1, _2, boost::ref(auth_db))
+        );
+    api_server.install(
+        "logged_in_user",
+        boost::bind(photoalbum::api::auth::logged_in_user, _1, _2, boost::ref(auth_db)),
+        boost::bind(jsonrpc::auth::logged_in, boost::ref(auth_db), _1)
+        );
+}
 
 void photoalbum::api::auth::login(
     jsonrpc::request& request,

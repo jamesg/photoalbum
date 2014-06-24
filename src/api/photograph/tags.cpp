@@ -68,7 +68,7 @@ void photoalbum::api::tags_popular(
             "SELECT DISTINCT tag, COUNT(photograph_id) AS count "
             "FROM photograph_tagged "
             "GROUP BY tag "
-            "ORDER BY count ",
+            "ORDER BY count DESC ",
             sqlite::empty_row(),
             list
             );

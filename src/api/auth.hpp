@@ -12,6 +12,7 @@ namespace jsonrpc
 {
     struct request;
     struct result;
+    class server;
 }
 
 namespace sqlite
@@ -25,6 +26,10 @@ namespace photoalbum
     {
         namespace auth
         {
+            /*
+             * Install authentication module handlers to a JSONRPC server.
+             */
+            void install(sqlite::connection& auth_db, jsonrpc::server& server);
             /*
              * Generate a token if the username and password are correct.
              *

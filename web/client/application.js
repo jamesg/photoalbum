@@ -40,7 +40,7 @@ exports.Application.prototype._template = function() {
             );
 
     this._element(
-            h1({ 'onclick': this.showMainMenu.bind(this) }, 'Photograph Album')
+            h1(a({ 'onclick': this.showMainMenu.bind(this) }, 'Photograph Album'))
             );
 
     this._container = div();

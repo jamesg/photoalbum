@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var domjs = require('domjs/lib/html5')(document);
 
 var api = require('../api');
@@ -17,12 +18,11 @@ exports.TagList = function(callback) {
 }
 
 exports.TagList.prototype.setTagList = function(tags) {
+    if(!_.isArray(tags)) return;
     this._element().innerHTML = '';
-    this._element(
-            domjs.build(
-                this._listTemplate.bind(this, tags)
-                )
-            );
+    domjs.build(
+        this._listTemplate.bind(this, tags)
+        );
 }
 
 exports.TagList.prototype.element = function() {
@@ -33,17 +33,14 @@ exports.TagList.prototype._listTemplate = function(tags) {
     for(l in tags) {
         var _li = li(
                 {
-                    onclick: this._callback.bind(this, tags[l])
+                    onclick: this._callback.bind(this, tags[l].tag)
                 },
-                tags[l]
+                tags[l].tag
                 );
         this._element(_li);
     }
 }
 
-/*
- * Template for the tag list.
- */
 exports.TagList.prototype._template = function() {
     this._element = ul({ 'class': 'albumlist' });
     this._element();

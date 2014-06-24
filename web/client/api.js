@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 var util = require('./util');
 
 /*
@@ -80,56 +82,75 @@ exports.apiPostRequest = function(api_function, params, callback) {
     req.send(formData);
 }
 
-var passthroughFunctions = {
-    'features':                  'features',
+/*
+ * List of functions that will be install on exports.api.
+ */
+var passthroughFunctions = [
+    'features',
 
-    'addPhotographToAlbum':      'add_photograph_to_album',
-    'albumList':                 'album_list',
-    'deleteAlbum':               'delete_album',
-    'insertAlbum':               'insert_album',
-    'updateAlbum':               'update_album',
+    'addPhotographToAlbum',
+    'albumList',
+    'deleteAlbum',
+    'insertAlbum',
+    'updateAlbum',
 
-    'photograph':                'photograph',
-    'deletePhotograph':          'delete_photograph',
-    'insertPhotograph':          'insert_photograph',
-    'photographAlbums':          'photograph_albums',
-    'photographList':            'photograph_list',
-    'photographsInAlbum':        'photographs_in_album',
-    'photographsWithLocation':   'photographs_with_location',
-    'photographsWithTag':        'photographs_with_tag',
-    'recentPhotographs':         'recent_photographs',
-    'removePhotographFromAlbum': 'remove_photograph_from_album',
-    'uncategorisedPhotographs':  'uncategorised_photographs',
-    'updatePhotograph':          'update_photograph',
+    'photograph',
+    'deletePhotograph',
+    'insertPhotograph',
+    'photographAlbums',
+    'photographList',
+    'photographsInAlbum',
+    'photographsWithLocation',
+    'photographsWithTag',
+    'recentPhotographs',
+    'removePhotographFromAlbum',
+    'uncategorisedPhotographs',
+    'updatePhotograph',
 
-    'markdownData':              'markdown_data',
-    'note':                      'note',
-    'noteList':                  'note_list',
-    'noteVersion':               'note_version',
-    'notePhaseVersion':          'note_phase_version',
-    'insertNote':                'insert_note',
-    'createDraftNote':           'create_draft_note',
-    'deleteNote':                'delete_note',
-    'updateMarkdownData':        'update_markdown_data',
-    'publishNote':               'publish_note',
-    'publishedNote':             'published_note',
-    'publishedNotes':            'published_notes',
+    'markdownData',
+    'note',
+    'noteList',
+    'noteVersion',
+    'notePhaseVersion',
+    'insertNote',
+    'createDraftNote',
+    'deleteNote',
+    'updateMarkdownData',
+    'publishNote',
+    'publishedNote',
+    'publishedNotes',
 
-    'locations':                 'locations',
-    'tags':                      'tags',
+    'locations',
+    'tags',
+    'tagsAlphabetical',
+    'tagsPopular',
 
-    'statistics':                'statistics',
+    'statistics',
 
-    'getTile':                   'get_tile',
-    'searchGazetteer':           'search_gazetteer',
+    'getTile',
+    'searchGazetteer',
 
-    'login':                     'login',
-    'logout':                    'logout',
-    'tokenValid':                'token_valid',
-    'updateUser':                'update_user',
-    'loggedInUser':              'logged_in_user'
-};
+    'login',
+    'logout',
+    'tokenValid',
+    'updateUser',
+    'loggedInUser',
+];
 
-for(f in passthroughFunctions)
-    exports[f] = exports.passThrough.bind(this, passthroughFunctions[f]);
+// Install passthrough functions as members of 'exports'.
+_.each(
+        passthroughFunctions,
+        function(f) {
+            exports[f] = exports.passThrough.bind(
+                this,
+                // Translate the local function name (lower camel case) to an
+                // underscore-separated name.
+                _.flatten(
+                    _.map(f, function(c) {
+                        return (/[A-Z]/.test(c))?('_' + c.toLowerCase()):c;
+                    })
+                    ).join('')
+                );
+        }
+        );
 

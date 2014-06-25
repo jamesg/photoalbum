@@ -88,3 +88,8 @@ ${OBJDIR}/%.o : src/%.cpp
 ${OBJDIR}/mongoose.o: src/mongoose.c
 	${CC} ${CFLAGS} -DNS_ENABLE_SSL -c -o ${OBJDIR}/mongoose.o src/mongoose.c -lpthread
 
+.PHONY: docs
+
+docs:
+	doxygen doxygen/doxygen.conf
+

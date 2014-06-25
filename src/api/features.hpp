@@ -16,7 +16,7 @@ namespace jsonrpc
 
 namespace photoalbum
 {
-    /*
+    /*!
      * Set of features supported by this server.
      */
     struct features : public json::map_accessor
@@ -29,7 +29,7 @@ namespace photoalbum
         }
     };
 
-    /*
+    /*!
      * Get the global features object.
      */
     const features get_features();

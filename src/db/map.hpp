@@ -23,7 +23,7 @@ namespace photoalbum
 {
     namespace map
     {
-        /*
+        /*!
          * Metadata for a tile.  The key consists of the region, eastings and
          * northings.
          */
@@ -35,7 +35,7 @@ namespace photoalbum
             int& northings() const { return get_int("northings"); }
         };
 
-        /*
+        /*!
          * Base64-encoded image data for a tile.  The key consists of the
          * region, eastings and northings.
          */
@@ -49,7 +49,7 @@ namespace photoalbum
             std::string& data() const { return get_string("data"); }
         };
 
-        /*
+        /*!
          * Internal tile data structure.  Contains raw data (not base64
          * encoded).
          */
@@ -62,7 +62,7 @@ namespace photoalbum
         };
 
         extern const char gazetteer_record_id_str[];
-        /*
+        /*!
          * Gazetteer record data structure.  Corresponds exactly to the
          * Ordnance Survey 50k Gazetteer data set.
          */
@@ -95,12 +95,12 @@ namespace photoalbum
 
     namespace db
     {
-        /*
+        /*!
          * Database functions specific to the maps component.
          */
         namespace map
         {
-            /*
+            /*!
              * Create tables for map data if they do not exist in the database.
              * This database stores map information and images from the
              * Ordnance Survey Open Data archive.  When the database is used
@@ -108,7 +108,7 @@ namespace photoalbum
              */
             void create(sqlite::connection&);
         }
-        /*
+        /*!
          * Get metadata about a tile.
          */
         void get(
@@ -118,7 +118,7 @@ namespace photoalbum
                 int northings,
                 const ::photoalbum::map::tile&
                 );
-        /*
+        /*!
          * Get image data for a tile.
          * The data will not be base64 encoded so is not intended to be
          * serialised.
@@ -130,7 +130,7 @@ namespace photoalbum
                 int northings,
                 ::photoalbum::map::tile_data_db&
                 );
-        /*
+        /*!
          * Get image data for a tile.
          * The data will be base64 encoded.
          */
@@ -165,10 +165,12 @@ namespace photoalbum
 
         void insert_gazetteer_records(json::list&, sqlite::connection&);
 
-        // Remove all entries from the OS 50k gazetteer table.
+        /*!
+         * Remove all entries from the OS 50k gazetteer table.
+         */
         void clear_gazetteer(sqlite::connection&);
 
-        /*
+        /*!
          * Remove all entries from the OS 50k gazetteer table where the entry
          * is inside one of the given regions.
          */

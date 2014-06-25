@@ -46,13 +46,13 @@ namespace photoalbum
     {
         namespace auth
         {
-            /*
+            /*!
              * The length of an authentication token when represented as a
              * string.  Does not include the null terminator.
              */
             static const int token_length = 64;
 
-            /*
+            /*!
              * Populate an authentication database with the required tables.
              *
              * Tables are created with 'IF NOT EXISTS', so this function can be
@@ -60,7 +60,7 @@ namespace photoalbum
              */
             void create(sqlite::connection& auth_db);
 
-            /*
+            /*!
              * Check if a token is valid at the present time.
              *
              * Tokens are considered valid if their creation date is in the
@@ -69,7 +69,7 @@ namespace photoalbum
              */
             bool token_valid(const std::string& token, sqlite::connection&);
 
-            /*
+            /*!
              * Issue a token.
              */
             void issue_token(
@@ -78,12 +78,12 @@ namespace photoalbum
                     sqlite::connection&
                     );
 
-            /*
+            /*!
              * Invalidate a token.
              */
             void invalidate(const std::string& token, sqlite::connection&);
 
-            /*
+            /*!
              * Get the user associated with a token.
              */
             void token_user(
@@ -92,7 +92,7 @@ namespace photoalbum
                     photoalbum::auth::user& user
                     );
 
-            /*
+            /*!
              * Get the user by their username.
              */
             void username_user(
@@ -101,7 +101,7 @@ namespace photoalbum
                     photoalbum::auth::user& user
                     );
 
-            /*
+            /*!
              * Delete tokens that have expired because the expiry time has
              * passed.
              */

@@ -19,7 +19,7 @@ namespace photoalbum
 
     namespace uri
     {
-        /*
+        /*!
          * Render a PNG image of a kilometre square map tile.
          */
         int map_tile_km(

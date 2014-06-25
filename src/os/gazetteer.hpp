@@ -10,7 +10,7 @@ namespace photoalbum
 {
     namespace os
     {
-        /*
+        /*!
          * Import gazetteer data from a colon separated file to a SQLite
          * database.
          */

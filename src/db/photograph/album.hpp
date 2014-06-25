@@ -18,7 +18,7 @@ namespace sqlite
 namespace photoalbum
 {
     extern const char album_id_cstr[];
-    /*
+    /*!
      */
     struct album : public has_id<album_id_cstr>
     {

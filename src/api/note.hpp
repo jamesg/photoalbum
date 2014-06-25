@@ -31,19 +31,25 @@ namespace photoalbum
                 jsonrpc::result&,
                 sqlite::connection&
                 );
-        // Get all notes (including drafts).
+        /*!
+         * Get all notes (including drafts).
+         */
         void note_list(
                 jsonrpc::request&,
                 jsonrpc::result&,
                 sqlite::connection&
                 );
-        // Get a note version by id.
+        /*!
+         * Get a note version by id.
+         */
         void note_version(
                 jsonrpc::request&,
                 jsonrpc::result&,
                 sqlite::connection&
                 );
-        // Get a note version by note id and phase.
+        /*!
+         * Get a note version by note id and phase.
+         */
         void note_phase_version(
                 jsonrpc::request&,
                 jsonrpc::result&,
@@ -64,7 +70,9 @@ namespace photoalbum
                 jsonrpc::result&,
                 sqlite::connection&
                 );
-        // Get published notes (only those with a published note_version).
+        /*!
+         * Get published notes (only those with a published note_version).
+         */
         void published_notes(
                 jsonrpc::request&,
                 jsonrpc::result&,
@@ -75,7 +83,9 @@ namespace photoalbum
                 jsonrpc::result&,
                 sqlite::connection&
                 );
-        // Copy the note's draft markdown data to published markdown data.
+        /*!
+         * Copy the note's draft markdown data to published markdown data.
+         */
         void publish_note(
                 jsonrpc::request&,
                 jsonrpc::result&,

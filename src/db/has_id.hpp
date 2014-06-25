@@ -10,7 +10,7 @@
 
 namespace photoalbum
 {
-    /*
+    /*!
      * Generic type for database types that have integer ids.
      */
     template<const char *Tid_field>

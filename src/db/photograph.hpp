@@ -13,7 +13,7 @@
 namespace photoalbum
 {
     extern const char photograph_id_cstr[];
-    /*
+    /*!
      * Photograph metadata.
      */
     struct photograph : public has_id<photograph_id_cstr>
@@ -30,7 +30,7 @@ namespace photoalbum
         json::list& tags() const { return get_list("tags"); }
     };
 
-    /*
+    /*!
      * Records the fact that a photograph id is in an album id.
      */
     struct photograph_in_album : public json::map_accessor
@@ -43,7 +43,7 @@ namespace photoalbum
         int& album_id() const { return get_int("album_id"); }
     };
 
-    /*
+    /*!
      * Records the fact that a photograph id has been tagged with a string
      * tag.
      */

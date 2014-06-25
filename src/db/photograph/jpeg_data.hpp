@@ -14,7 +14,7 @@
 
 namespace photoalbum
 {
-    /*
+    /*!
      * Base64 JPEG data for a photograph.
      */
     struct jpeg_data : public has_id<photograph_id_cstr>
@@ -23,11 +23,13 @@ namespace photoalbum
             has_id<photograph_id_cstr>(m)
         {
         }
-        // Base64 encoded data
+        /*!
+         * Base64 encoded data
+         */
         std::string& data() const { return get_string("data"); }
     };
 
-    /*
+    /*!
      * Raw JPEG data for a photograph.
      */
     struct jpeg_data_db : public has_id<photograph_id_cstr>

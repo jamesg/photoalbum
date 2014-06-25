@@ -11,7 +11,7 @@
 
 namespace jsonrpc
 {
-    /*
+    /*!
      * Accessor for a JSONRPC request.
      */
     struct request : public json::map_accessor

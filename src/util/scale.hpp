@@ -13,10 +13,10 @@ namespace photoalbum
 {
     namespace util
     {
-        /*
+        /*!
          * Scale an image.
          *
-         * @geometry An ImageMagick geometry string.
+         * \param geometry An ImageMagick geometry string.
          */
         void scale(
                 const std::vector<unsigned char> image,
@@ -24,11 +24,11 @@ namespace photoalbum
                 std::vector<unsigned char>& scaled_image
                 );
 
-        /*
+        /*!
          * Scale an image.
          *
-         * @width Width of the resulting image.
-         * @height Height of the resulting image.
+         * \param width Width of the resulting image.
+         * \param height Height of the resulting image.
          */
         void scale(
                 const std::vector<unsigned char> image,

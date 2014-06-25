@@ -27,15 +27,15 @@ namespace photoalbum
             static const int status_ok = 200;
             static const int status_unauthorized = 401;
 
-            /*
+            /*!
              * Extract the 'token' GET variable.
              */
             std::string extract_token(mg_connection *conn);
-            /*
+            /*!
              * Format a date correctly for HTTP date headers.
              */
             std::string http_date(const boost::posix_time::ptime&);
-            /*
+            /*!
              * Send a plain text response.
              */
             void text_response(

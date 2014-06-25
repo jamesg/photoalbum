@@ -10,7 +10,7 @@ namespace photoalbum
 {
     namespace exports
     {
-        /*
+        /*!
          * Entry point.  Export photographs in a database to the filesystem.
          *
          * The output directory is specified with the --out parameter.  A

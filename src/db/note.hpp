@@ -24,11 +24,13 @@ namespace photoalbum
         {
         }
         std::string& title()    const { return get_string("title"); }
-        // Date the note was created.
+        /*!
+         * Date the note was created as an ISO date (YYYY-MM-DD).
+         */
         std::string& created()  const { return get_string("created"); }
     };
 
-    /*
+    /*!
      * Version of a note in a particular phase (draft, published).  There can
      * only be one version of each note for each phase.
      */
@@ -45,17 +47,25 @@ namespace photoalbum
             has_id(m)
         {
         }
-        // Note id references note.
+        /*!
+         * Note id references note.
+         */
         int& note_id()          const { return get_int(note_id_str); }
-        // Markdown id references markdown.
+        /*!
+         * Markdown id references markdown.
+         */
         int& markdown_id()      const { return get_int(markdown_id_str); }
-        // Member of enum phase_t.
+        /*!
+         * Member of enum phase_t.
+         */
         int& phase()            const { return get_int("phase"); }
-        // Date this version was last modified.
+        /*!
+         * Date this version was last modified.
+         */
         std::string& modified() const { return get_string("modified"); }
     };
 
-    /*
+    /*!
      * Storage for markdown data.
      */
     struct markdown_data :
@@ -68,7 +78,7 @@ namespace photoalbum
         std::string& markdown() const { return get_string("markdown"); }
     };
 
-    /*
+    /*!
      * All data required to display a publically viewable note (phase ==
      * published).
      */
@@ -84,7 +94,7 @@ namespace photoalbum
         std::string& markdown() const { return get_string("markdown"); }
     };
 
-    /*
+    /*!
      * A photograph is available for use in a note.  It can be referenced in
      * the markdown with the filename.
      */

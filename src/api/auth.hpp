@@ -26,11 +26,11 @@ namespace photoalbum
     {
         namespace auth
         {
-            /*
+            /*!
              * Install authentication module handlers to a JSONRPC server.
              */
             void install(sqlite::connection& auth_db, jsonrpc::server& server);
-            /*
+            /*!
              * Generate a token if the username and password are correct.
              *
              * Should be called when the user logs in.  The generated token
@@ -43,7 +43,7 @@ namespace photoalbum
                 jsonrpc::result&,
                 sqlite::connection& db
                 );
-            /*
+            /*!
              * Immediately invalidate a token.
              *
              * Parameters: [ token ].
@@ -57,7 +57,7 @@ namespace photoalbum
                 jsonrpc::result&,
                 sqlite::connection& db
                 );
-            /*
+            /*!
              * Check if an authentication token is valid.
              *
              * Parameters: [ token ].
@@ -67,7 +67,7 @@ namespace photoalbum
                 jsonrpc::result&,
                 sqlite::connection& db
                 );
-            /*
+            /*!
              * Update a user account.
              *
              * This function should be used to update any details of the
@@ -80,7 +80,7 @@ namespace photoalbum
                 jsonrpc::result& result,
                 sqlite::connection& auth_db
                 );
-            /*
+            /*!
              * Get details of the currently logged in user.
              *
              * This function accepts no parameters, as the currently logged in

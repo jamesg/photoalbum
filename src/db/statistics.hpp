@@ -23,7 +23,7 @@ namespace photoalbum
             map_accessor(o)
         {
         }
-        /*
+        /*!
          * The total number of photographs stored in the database.
          */
         int& total_count() const { return get_int("total_count"); }

@@ -23,7 +23,7 @@ namespace photoalbum
             {
             }
 
-            /*
+            /*!
              * Extract the element at index 'index' from the vector into a JSON
              * container 'val'.  The element will be cast as appropriate.  If
              * the cast fails, this function has no effect (val will be
@@ -47,7 +47,7 @@ namespace photoalbum
         };
     }
 
-    /*
+    /*!
      * Fill a Boost Fusion container with elements in the vector.
      */
     template<typename CONTAINER>

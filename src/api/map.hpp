@@ -32,7 +32,7 @@ namespace photoalbum
                     sqlite::connection& auth_db,
                     jsonrpc::server& api_server
                     );
-            /*
+            /*!
              * Struct for transferring base64-encoded PNG data.
              */
             struct png_data : public json::map_accessor

@@ -77,7 +77,7 @@ int main(int argc, const char* argv[])
         commandline::flag("help", show_help, "Print a help message"),
         commandline::parameter("db", db_file, "Path to the photograph database"),
         commandline::parameter("mapdb", map_db_file, "Path to a read-only map database"),
-        commandline::parameter("auth_db", auth_db_file, "Path to the authentication database"),
+        commandline::parameter("authdb", auth_db_file, "Path to the authentication database"),
         commandline::parameter("document-root", document_root, "HTML document root"),
         commandline::parameter("pem", pem_file, "PEM file"),
         commandline::parameter("port", port, "Port number to bind on")
@@ -109,15 +109,15 @@ int main(int argc, const char* argv[])
         map_db_file.length()?
         sqlite::connection(map_db_file):
         sqlite::connection::in_memory_database();
-    photoalbum::db::map::create(map_db);
-
     sqlite::connection auth_db =
         auth_db_file.length()?
         sqlite::connection(auth_db_file):
         sqlite::connection::in_memory_database();
-    photoalbum::db::auth::create(auth_db);
-
     sqlite::connection cache_db = sqlite::connection::in_memory_database();
+
+    photoalbum::db::photograph::create(db);
+    photoalbum::db::map::create(map_db);
+    photoalbum::db::auth::create(auth_db);
     photoalbum::db::cache::create(cache_db);
 
     jsonrpc::server api_server;

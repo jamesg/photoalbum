@@ -33,7 +33,8 @@ int photoalbum::uri::jpeg_image(
         return MG_FALSE;
     if(!db::auth::token_valid(detail::extract_token(conn), auth_db))
     {
-        detail::text_response(conn, detail::status_unauthorized);
+        detail::text_response(conn, detail::status_unauthorized, "Not authorised");
+        std::cerr << "token " << detail::extract_token(conn) << std::endl;
         return MG_TRUE;
     }
     char id_s[10], width_s[10], height_s[10];

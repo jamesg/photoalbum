@@ -9,9 +9,19 @@
 
 std::string photoalbum::uri::detail::extract_token(mg_connection *conn)
 {
-    char token_str[db::auth::token_length+1];
-    mg_get_var(conn, "token", token_str, sizeof(token_str));
-    return std::string(token_str);
+    // Prefer the token in the header.
+    {
+        const char *token_str = mg_get_header(conn, "Authorization");
+        if(token_str)
+            return std::string(token_str);
+    }
+
+    // Fall back: try to extract a token from the GET parameter.
+    {
+        char token_str[db::auth::token_length+1];
+        mg_get_var(conn, "token", token_str, sizeof(token_str));
+        return std::string(token_str);
+    }
 }
 
 std::string photoalbum::uri::detail::http_date(const boost::posix_time::ptime& time)

@@ -65,10 +65,11 @@ void photoalbum::api::auth::login(
         // Generate a token.
         std::ostringstream oss;
         boost::random_device rng;
+        // Only characters that don't require URI encoding are used.
         static const std::string chars = 
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
              "abcdefghijklmnopqrstuvwxyz"
-             "0123456789+/";
+             "0123456789";//+/";
         boost::variate_generator<boost::random_device&, boost::uniform_int<>>
             gen(rng, boost::uniform_int<>(0, chars.size()-1));
         for(int i = 0; i < 64; ++i)

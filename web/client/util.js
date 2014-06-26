@@ -5,7 +5,7 @@
 exports.queryString = function(params) {
     var varList = [];
     for(p in params)
-        varList.push(p + '=' + params[p]);
+        varList.push(p + '=' + encodeURI(params[p]));
 
     return '?' + varList.join('&');
 }

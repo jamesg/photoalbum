@@ -1,9 +1,9 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api  = require('../api');
-var util = require('../util');
+var api  = require('../../api');
+var util = require('../../util');
 
-var ConfirmButton = require('./confirmbutton').ConfirmButton;
+var ConfirmButton = require('../confirmbutton').ConfirmButton;
 
 exports.AlbumsForm = function(photographId) {
     this._photographId = photographId;

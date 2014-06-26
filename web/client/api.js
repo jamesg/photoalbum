@@ -54,6 +54,7 @@ exports.passThrough = function() {
     console.log('api request: ' + requestContent);
 
     req.open('post', '/api_call', true);
+    req.setRequestHeader('Authorization', localStorage.getItem('token'));
     req.onload = reqListener;
     req.send(requestContent);
 }

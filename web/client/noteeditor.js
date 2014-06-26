@@ -4,10 +4,10 @@ var api = require('./api');
 var util = require('./util');
 
 var Collapsable       = require('./ui/collapsable').Collapsable;
-var NewNoteForm       = require('./ui/newnoteform').NewNoteForm;
-var NoteEdit          = require('./ui/noteedit').NoteEdit;
-var NoteList          = require('./ui/notelist').NoteList;
-var PublishedNoteList = require('./ui/publishednotelist').PublishedNoteList;
+var NewNoteForm       = require('./ui/note/newnoteform').NewNoteForm;
+var NoteEdit          = require('./ui/note/edit').NoteEdit;
+var NoteList          = require('./ui/note/list').NoteList;
+var PublishedNoteList = require('./ui/note/publishedlist').PublishedNoteList;
 
 exports.NoteEditor = function() {
     this._documentFragment = domjs.build(

@@ -1,6 +1,6 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var util = require('../util');
+var util = require('../../util');
 
 exports.PhotographFilter = function(callback) {
     this._callback = callback;

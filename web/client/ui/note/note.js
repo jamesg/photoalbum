@@ -1,7 +1,7 @@
 var domjs  = require('domjs/lib/html5')(document);
 var marked = require('marked/lib/marked');
 
-var api = require('../api');
+var api = require('../../api');
 
 exports.Note = function(callback) {
     this._callback = callback;

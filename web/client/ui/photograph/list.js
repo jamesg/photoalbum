@@ -1,9 +1,9 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api  = require('../api');
-var util = require('../util');
+var api  = require('../../api');
+var util = require('../../util');
 
-var PhotographLi = require('./photographli').PhotographLi;
+var PhotographLi = require('./li').PhotographLi;
 
 /*
  * Photographs is a list of the form:

@@ -3,9 +3,9 @@ var domjs = require('domjs/lib/html5')(document);
 var api = require('./api');
 var util = require('./util');
 
-var PhotographFilter = require('./ui/photographfilter').PhotographFilter;
+var PhotographFilter = require('./ui/photograph/filter').PhotographFilter;
 var Collapsable      = require('./ui/collapsable').Collapsable;
-var PhotographList   = require('./ui/photographlist').PhotographList;
+var PhotographList   = require('./ui/photograph/list').PhotographList;
 
 exports.Filters = function() {
     this._documentFragment = domjs.build(

@@ -5,7 +5,7 @@ var util = require('./util');
 
 var LocationList      = require('./ui/locationlist').LocationList;
 var Collapsable       = require('./ui/collapsable').Collapsable;
-var PhotographList    = require('./ui/photographlist').PhotographList;
+var PhotographList    = require('./ui/photograph/list').PhotographList;
 
 exports.Locations = function() {
     this._documentFragment = domjs.build(

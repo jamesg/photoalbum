@@ -1,8 +1,8 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var util  = require('../util');
+var util  = require('../../util');
 
-var MessageBox = require('./messagebox').MessageBox;
+var MessageBox = require('../messagebox').MessageBox;
 
 /*
  * New photograph form.

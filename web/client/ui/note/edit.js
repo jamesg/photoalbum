@@ -1,6 +1,6 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api = require('../api');
+var api = require('../../api');
 
 exports.NoteEdit = function(callback) {
     this._callback = callback;

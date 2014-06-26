@@ -1,6 +1,6 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api = require('../api');
+var api = require('../../api');
 
 /*
  * Callback is called with the id of the note selected.

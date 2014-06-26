@@ -4,8 +4,8 @@ var api = require('./api');
 var util = require('./util');
 
 var Collapsable       = require('./ui/collapsable').Collapsable;
-var Note              = require('./ui/note').Note;
-var PublishedNoteList = require('./ui/publishednotelist').PublishedNoteList;
+var Note              = require('./ui/note/note').Note;
+var PublishedNoteList = require('./ui/note/publishedlist').PublishedNoteList;
 
 exports.Notes = function() {
     this._documentFragment = domjs.build(

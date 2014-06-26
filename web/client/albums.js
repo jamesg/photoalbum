@@ -3,10 +3,10 @@ var domjs = require('domjs/lib/html5')(document);
 var api = require('./api');
 var util = require('./util');
 
-var AlbumForm      = require('./ui/albumform').AlbumForm;
-var AlbumList      = require('./ui/albumlist').AlbumList;
+var AlbumForm      = require('./ui/photograph/album/form').AlbumForm;
+var AlbumList      = require('./ui/photograph/album/list').AlbumList;
 var Collapsable    = require('./ui/collapsable').Collapsable;
-var PhotographList = require('./ui/photographlist').PhotographList;
+var PhotographList = require('./ui/photograph/list').PhotographList;
 
 exports.Albums = function() {
     this._documentFragment = domjs.build(

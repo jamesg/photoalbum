@@ -1,7 +1,7 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api  = require('../api');
-var util = require('../util');
+var api  = require('../../api');
+var util = require('../../util');
 
 exports.PhotographDetailsForm = function(photograph) {
     this._documentFragment = domjs.build(this._template.bind(this, photograph));

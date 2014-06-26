@@ -1,6 +1,6 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var PhotographForm = require('./ui/photographform').PhotographForm;
+var PhotographForm = require('./ui/photograph/form').PhotographForm;
 
 exports.NewPhotograph = function() {
     this._documentFragment = domjs.build(

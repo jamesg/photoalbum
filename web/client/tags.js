@@ -5,7 +5,7 @@ var util = require('./util');
 
 var TagList        = require('./ui/taglist').TagList;
 var Collapsable    = require('./ui/collapsable').Collapsable;
-var PhotographList = require('./ui/photographlist').PhotographList;
+var PhotographList = require('./ui/photograph/list').PhotographList;
 
 exports.Tags = function() {
     this._documentFragment = domjs.build(

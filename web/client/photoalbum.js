@@ -4,14 +4,14 @@ var api = require('./api');
 var util = require('./util');
 
 // Ui
-var AlbumForm         = require('./ui/albumform').AlbumForm;
-var AlbumList         = require('./ui/albumlist').AlbumList;
+var AlbumForm         = require('./ui/photograph/album/form').AlbumForm;
+var AlbumList         = require('./ui/photograph/album/list').AlbumList;
 var Collapsable       = require('./ui/collapsable').Collapsable;
 var DateRangeSelector = require('./ui/daterangeselector').DateRangeSelector;
 var LocationList      = require('./ui/locationlist').LocationList;
-var PhotographFilter  = require('./ui/photographfilter').PhotographFilter;
-var PhotographForm    = require('./ui/photographform').PhotographForm;
-var PhotographList    = require('./ui/photographlist').PhotographList;
+var PhotographFilter  = require('./ui/photograph/filter').PhotographFilter;
+var PhotographForm    = require('./ui/photograph/form').PhotographForm;
+var PhotographList    = require('./ui/photograph/list').PhotographList;
 var Statistics        = require('./ui/statistics').Statistics;
 var TagList           = require('./ui/taglist').TagList;
 

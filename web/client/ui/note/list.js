@@ -1,8 +1,8 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api = require('../api');
+var api = require('../../api');
 
-var ConfirmButton = require('./confirmbutton').ConfirmButton;
+var ConfirmButton = require('./../confirmbutton').ConfirmButton;
 
 /*
  * Notes is a list of the form:

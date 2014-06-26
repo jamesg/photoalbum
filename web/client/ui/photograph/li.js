@@ -1,12 +1,12 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api  = require('../api');
-var util = require('../util');
+var api  = require('../../api');
+var util = require('../../util');
 
 var AlbumsForm = require('./albumsform').AlbumsForm;
-var ConfirmButton = require('./confirmbutton').ConfirmButton;
-var PhotographDetailsForm = require('./photographdetailsform').PhotographDetailsForm;
-var PhotographView = require('./photographview').PhotographView;
+var ConfirmButton = require('../confirmbutton').ConfirmButton;
+var PhotographDetailsForm = require('./detailsform').PhotographDetailsForm;
+var PhotographView = require('./view').PhotographView;
 
 /*
  * Displays a photograph in a list item.  The list item can be expanded to give

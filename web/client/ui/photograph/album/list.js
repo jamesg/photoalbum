@@ -1,6 +1,6 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api = require('../api');
+var api = require('../../../api');
 
 /*
  * Albums is a list of the form:

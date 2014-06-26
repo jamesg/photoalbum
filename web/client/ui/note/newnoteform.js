@@ -1,7 +1,7 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api   = require('../api');
-var util  = require('../util');
+var api   = require('../../api');
+var util  = require('../../util');
 
 /*
  * New note form.  Creates a note and a draft version for the note.

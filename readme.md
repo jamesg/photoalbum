@@ -4,15 +4,13 @@ Photograph Album
 A photograph album web application.  The back end server is written in C++ and
 uses SQLite for data storage and libmongoose as the web server.
 
-Features
+Modules
 --------
 
-* Upload JPEG photographs.
-* Assign photographs to albums.  A photograph can be a member of zero, one or
-  more albums.
-* Assign tags to photographs.
-* Browse photographs by album, tag or location.
-* Write text notes in Markdown.
+* Photograph: Upload and store photographs, categorise photographs into albums and write textual notes.
+* Map: Search for map landmarks and view Ordance Survey Streetmap tiles.
+* Auth: Restrict access to the software.
+* Cache: Speed up access to photograph thumbnails.
 
 Dependencies
 ------------
@@ -26,7 +24,7 @@ C++ server:
 
 Web client:
 
-* Node JS and NPM (included with recent Node)
+* Node JS and NPM (included with recent Node).
 
 Building
 --------
@@ -39,34 +37,76 @@ Building
 Installation
 ------------
 
-A SQLite database must be populated from a setup script.
+Database files specified as command line parameters will be initialised when the
+program is started.  Different databases may be specified for each module
+(photograph, map, cache and auth) or the same database can be used for some or
+all modules.
 
-    sqlite3 database_name.db
-    sqlite> .read install.sql
+Databases for the photograph and map modules must be specified for their
+modules to be used.  If no database is specified for the auth or cache module
+an in-memory database will be used instead.
+
+It is a good idea to keep at least the map and cache databases separate from
+the photograph and auth databases because the map and cache databases can be
+generated from the Ordnance Survey data and the photograph database, while the
+photograph and auth databases cannot be regenerated and are most likely to be
+included in backups.
 
 Usage
 -------
 
-    bin/main --db database_name.db --document-root web/static
+    bin/main --db photograph_database_name.db --document-root web/static
 
-Run bin/main --help for command line options reference.
+### Command Line Options
+
+* db: photograph database file
+* authdb: authentication database file
+* document-root: location of static files to serve at the web server root
+
+Run bin/main --help for a complete command line options reference.
 
 Design
 ------
 
-The application is built around a libmongoose web server.  There are handlers
-for serving static content, JPEG images from the database and JSONRPC API
-requests.  URI functions are located in the uri directory.
+The application is built in two parts: a C++ web server and a Javascript web
+application.  These components communicate over a JSONRPC API.
 
-All data that can be encoded as JSON is accessed and updated through the
-JSONRPC API.  API functions are located in the api directory.
+### Server Side
+
+Libmongoose is used on the server side for handling HTTP requests.  The JSONRPC
+API is provided by a custom library (look at src/jsonrpc/server.hpp).
+
+Code is split into modules.  Each module has a source and header (for large
+modules, a directory) in each of src/api and src/db where API functions and
+database functions for the module are kept.  Although there are some
+inter-dependencies between modules, they operate mostly independently, having
+their own API functions, database storage and user interfaces.
+
+#### Namespacing
+
+A standard namespacing scheme is used across all C++ code to define boundaries
+between modules.  The project`s root namespace is ::photoalbum.  A module may
+have database functions, JSONRPC API functions and URI functions.  These are
+placed in ::photograph::[module]::db, ::photograph::[module]::api and
+::photograph::[uri]:: respectively.  The exception to this rule are heavily
+overloaded database functions such as get_by_id(id, conn, out) and update(in,
+conn).  These functions are located in ::photograph::db.
+
+### Web Application
 
 The client is a single page web application.  It is compiled from sources in
-web/client using Webmake and is delivered to the client as a single Javascript
-file.
+web/client using Webmake and is delivered to the client as one HTML and one
+Javascript file.
 
-Maps
-----
+TODO List
+---------
 
-Work is ongoing to implement linking photographs to locations.
+* Maps module.
+  The maps module currently imports data from the Ordnance Survey 50k Gazetteer
+  and Stree Map data sets, provides searching by landmark name and displays
+  individual map tiles.  The next steps are locating photographs on the map by
+  storing a grid reference in the photograph database and displaying photograph
+  locations on the map tiles.
+* Smaller issues:
+    * Remove old images from the cache.
 

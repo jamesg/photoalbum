@@ -39,11 +39,11 @@ OBJS=\
 	${OBJDIR}/api/photograph.o \
 	${OBJDIR}/api/statistics.o \
 	${OBJDIR}/base64/base64.o \
-	${OBJDIR}/db/album.o \
 	${OBJDIR}/db/auth.o \
 	${OBJDIR}/db/cache.o \
 	${OBJDIR}/db/map.o \
 	${OBJDIR}/db/note.o \
+	${OBJDIR}/db/photograph/album.o \
 	${OBJDIR}/db/photograph/jpeg_data.o \
 	${OBJDIR}/db/photograph.o \
 	${OBJDIR}/db/statistics.o \

@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var domjs = require('domjs/lib/html5')(document);
 
 var api  = require('../../api');
@@ -92,8 +93,14 @@ exports.PhotographLi.prototype._scalesTemplate = function(photograph) {
     ];
     var _ul = ul();
     for(scale in scales) {
-        var params = scales[scale];
-        params.photograph_id = photograph.photograph_id;
+        var params = _.clone(scales[scale]);
+        _.extend(
+                params,
+                {
+                    photograph_id: photograph.photograph_id,
+                    token: localStorage['token']
+                }
+                );
         _ul(li(a(
             {
                 href: '/jpeg_image' + util.queryString(params),
@@ -103,6 +110,17 @@ exports.PhotographLi.prototype._scalesTemplate = function(photograph) {
             params.width, 'x', params.height
             )));
     }
+    var params = {
+        photograph_id: photograph.photograph_id,
+        token: localStorage['token']
+    };
+    _ul(li(a(
+        {
+            href: '/jpeg_image_fullsize' + util.queryString(params),
+            download: photograph.title + '.jpg'
+        },
+        'Full size'
+        )));
     return div(
             h3(
                 'Download Image ',

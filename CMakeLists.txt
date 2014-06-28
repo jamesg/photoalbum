@@ -9,10 +9,6 @@ add_subdirectory(web)
 project(PhotoAlbum)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
-find_package(Threads)
-find_package(Boost COMPONENTS date_time filesystem random regex system)
-find_package(ImageMagick COMPONENTS Magick++)
-#SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lsqlite3" )
 
 file(GLOB photoalbum_sources src/photoalbum/*.cpp)
 file(GLOB sources            src/*.c src/*.cpp)
@@ -23,6 +19,10 @@ file(GLOB db_sources      src/db/*.cpp src/db/*/*.cpp)
 file(GLOB jsonrpc_sources src/jsonrpc/*.cpp)
 file(GLOB uri_sources     src/uri/*.cpp)
 file(GLOB util_sources    src/util/*.cpp)
+
+find_package(Threads)
+find_package(Boost COMPONENTS date_time filesystem random regex system)
+find_package(ImageMagick COMPONENTS Magick++)
 
 add_library(api     ${api_sources})
 add_library(base64  ${base64_sources})
@@ -36,6 +36,7 @@ include_directories(commandline/include)
 include_directories(json/include)
 include_directories(sqlite/include)
 include_directories(${ImageMagick_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(
     photoalbum

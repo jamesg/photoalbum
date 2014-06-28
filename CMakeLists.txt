@@ -10,20 +10,22 @@ project(PhotoAlbum)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 find_package(Threads)
-find_package(Boost COMPONENTS filesystem regex)
+find_package(Boost COMPONENTS date_time filesystem random regex system)
 find_package(ImageMagick COMPONENTS Magick++)
+#SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lsqlite3" )
 
-file(GLOB sources src/*.cpp)
-file(GLOB sources src/*.c)
+file(GLOB photoalbum_sources src/photoalbum/*.cpp)
+file(GLOB sources            src/*.c src/*.cpp)
 
-file(GLOB api_sources     src/api/*.cpp)
+file(GLOB api_sources     src/api/*.cpp src/api/*/*.cpp)
 file(GLOB base64_sources  src/base64/*.cpp)
-file(GLOB db_sources      src/db/*.cpp)
+file(GLOB db_sources      src/db/*.cpp src/db/*/*.cpp)
 file(GLOB jsonrpc_sources src/jsonrpc/*.cpp)
 file(GLOB uri_sources     src/uri/*.cpp)
 file(GLOB util_sources    src/util/*.cpp)
 
 add_library(api     ${api_sources})
+add_library(base64  ${base64_sources})
 add_library(db      ${db_sources})
 add_library(jsonrpc ${jsonrpc_sources})
 add_library(uri     ${uri_sources})
@@ -37,12 +39,14 @@ include_directories(${ImageMagick_INCLUDE_DIRS})
 
 add_executable(
     photoalbum
+    ${photoalbum_sources}
     ${sources}
     )
 
 target_link_libraries(
     photoalbum
     api
+    base64
     db
     jsonrpc
     uri
@@ -50,6 +54,9 @@ target_link_libraries(
 
     json
     sqlite
+
+    "exiv2"
+    "ssl"
 
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}

@@ -12,6 +12,7 @@ add_custom_target(
         ${CMAKE_CURRENT_BINARY_DIR}/static/bundle.js
     )
 configure_file(static/index.html static/index.html COPYONLY)
+configure_file(static/pure-min.css static/pure-min.css COPYONLY)
 configure_file(
     static/open-iconic/font/css/open-iconic.css
     static/open-iconic/font/css/open-iconic.css

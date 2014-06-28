@@ -1,8 +1,10 @@
+var _ = require('underscore');
 var domjs = require('domjs/lib/html5')(document);
 
 var api = require('../../api');
 
 var ConfirmButton = require('./../confirmbutton').ConfirmButton;
+var iconTemplate = require('../icon').icon;
 
 /*
  * Notes is a list of the form:
@@ -55,42 +57,54 @@ exports.NoteList.prototype.element = function() {
 }
 
 exports.NoteList.prototype._listTemplate = function(notes) {
-    this._element(thead(tr(td('Date'), td('Title'), td('Action'))));
-    var _tbody = tbody();
-    this._element(_tbody);
-    for(n in notes) {
-        var deleteFunction = function(noteList, noteId) {
-            var noteList = noteList, noteId = noteId;
-            return function() {
-                api.deleteNote(
-                    noteId,
-                    function(err) {
-                        if(err)
-                            console.log('deleting note: ' + e);
-                        else
-                            noteList.reload();
-                    }
-                    );
+    this._element(
+            thead(
+                tr(
+                    td('Date'),
+                    td('Title'),
+                    td({ colspan: 3 }, 'Action')
+                    )
+                )
+            );
+
+    var deleteFunction = function(noteList, noteId) {
+        api.deleteNote(
+            noteId,
+            function(err) {
+                if(err)
+                    console.log('deleting note: ' + e);
+                else
+                    noteList.reload();
             }
-        }
-        var _tr = tr(
-                td(notes[n].created),
-                td(notes[n].title),
+            );
+    }
+
+    this._element( tbody.apply( this, _.map( notes,
+        (function(n) {
+            return tr(
+                td(n.created),
+                td(n.title),
                 td(
                     (new ConfirmButton(
-                        'Delete',
-                        deleteFunction(this, notes[n].note_id)
-                        )).element(),
+                        function() { return span(iconTemplate('delete'), 'Delete'); },
+                        _.partial(deleteFunction, this, n.note_id)
+                        )).element()
+                  ),
+                td(
                     button(
                         {
                             class: 'pure-button',
-                            onclick: this._callback.bind(this, notes[n].note_id)
+                            onclick: _.partial(this._callback, n.note_id)
                         },
+                        iconTemplate('text'),
                         'Edit'
-                        ),
+                        )
+                  ),
+                td(
                     (new ConfirmButton(
                         'Publish',
-                        (function(noteId) {
+                        _.partial(
+                            function(noteId) {
                             api.publishNote(
                                 noteId,
                                 function(err) {
@@ -98,12 +112,14 @@ exports.NoteList.prototype._listTemplate = function(notes) {
                                         console.log('publishing note: ' + err);
                                 }
                                 )
-                        }).bind(this, notes[n].note_id)
+                            },
+                            n.note_id
+                            )
                         )).element()
                     )
                 );
-        _tbody(_tr);
-    }
+        }).bind(this)
+        )));
 }
 
 exports.NoteList.prototype._template = function() {

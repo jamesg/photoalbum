@@ -3,7 +3,6 @@ var domjs = require('domjs/lib/html5')(document);
 var api = require('./api');
 var util = require('./util');
 
-var Collapsable       = require('./ui/collapsable').Collapsable;
 var NewNoteForm       = require('./ui/note/newnoteform').NewNoteForm;
 var NoteEdit          = require('./ui/note/edit').NoteEdit;
 var NoteList          = require('./ui/note/list').NoteList;
@@ -22,14 +21,8 @@ exports.NoteEditor.prototype.element = function() {
 exports.NoteEditor.prototype._template = function() {
     this._element = div();
 
-    var publishedNoteListCollapsable = new Collapsable('Published Notes', null);
-    this._element(publishedNoteListCollapsable.element());
-
     var publishedNoteList = new PublishedNoteList();
-    publishedNoteListCollapsable.setContent(publishedNoteList.element());
-
-    var noteListCollapsable = new Collapsable('Notes', null);
-    this._element(noteListCollapsable.element());
+    this._element(div({ class: 'mainmenu' }, publishedNoteList.element()));
 
     var noteList = new NoteList(
             function(noteId) {
@@ -37,16 +30,23 @@ exports.NoteEditor.prototype._template = function() {
                 noteEdit.setNote(noteId, 0);
             }
             );
-    noteListCollapsable.setContent(noteList.element());
+    this._element(
+            div(
+                { class: 'mainmenu' },
+                h2('Notes'),
+                noteList.element()
+                )
+            );
 
-    var noteEditCollapsable = new Collapsable('Editor', null);
-    this._element(noteEditCollapsable.element());
     var noteEdit = new NoteEdit();
-    noteEditCollapsable.setContent(noteEdit.element());
-    noteEditCollapsable.hideButton();
+    this._element(
+            div(
+                { class: 'mainmenu' },
+                h2('Edit Note'),
+                noteEdit.element()
+               )
+            );
 
-    var newNoteFormCollapsable = new Collapsable('New Note', null);
-    this._element(newNoteFormCollapsable.element());
     var newNoteForm = new NewNoteForm(
             function(note) {
                 api.noteList(
@@ -59,6 +59,13 @@ exports.NoteEditor.prototype._template = function() {
                     );
             }
             );
-    newNoteFormCollapsable.setContent(newNoteForm.element());
+    this._element(
+            div(
+                { class: 'mainmenu' },
+                h2('Create Note'),
+                newNoteForm.element()
+               )
+            );
+
 }
 

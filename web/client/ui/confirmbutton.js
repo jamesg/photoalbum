@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var domjs = require('domjs/lib/html5')(document);
 
 exports.ConfirmButton = function(text, callback) {
@@ -20,7 +21,7 @@ exports.ConfirmButton.prototype._firstTemplate = function() {
                     class: 'pure-button',
                     onclick: this._buildSecond.bind(this)
                 },
-                this._text
+                _.isFunction(this._text)?this._text():this._text
                 )
             );
 }

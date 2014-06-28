@@ -61,16 +61,18 @@ exports.NoteEdit.prototype._loadingTemplate = function() {
 exports.NoteEdit.prototype._editorTemplate = function(title, markdown) {
     var markdownTextarea = textarea(
             {
-                'name': 'markdown',
-                'rows': 16,
-                'cols': 80
+                name: 'markdown',
+                rows: 16,
+                cols: 80,
+                class: 'note-textarea'
             },
             markdown
             );
     var statusP = p();
     form(
         {
-            'onsubmit': (function() {
+            class: 'pure-form',
+            onsubmit: (function() {
                 api.updateMarkdownData(
                     {
                         'markdown_id': this._markdownId,

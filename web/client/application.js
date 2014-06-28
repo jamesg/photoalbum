@@ -3,6 +3,7 @@ var domjs = require('domjs/lib/html5')(document);
 var api = require('./api');
 var css = require('./css').css;
 
+var icon           = require('./ui/icon').icon;
 var Albums         = require('./albums').Albums;
 var ChangePassword = require('./changepassword').ChangePassword;
 var Filters        = require('./filters').Filters;
@@ -40,7 +41,13 @@ exports.Application.prototype._template = function() {
             );
 
     this._element(
-            h1(a({ 'onclick': this.showMainMenu.bind(this) }, 'Photograph Album'))
+            h1(
+                span(' '),
+                a(
+                    { 'onclick': this.showMainMenu.bind(this) },
+                    icon('layers'),
+                    'Photograph Album')
+                )
             );
 
     this._container = div();

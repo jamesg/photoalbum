@@ -28,6 +28,7 @@ exports.MainMenu.prototype._buttonTemplate = function(icon_, text, callback) {
     return button(
             { 'onclick': callback, class: 'pure-button' },
             icon(icon_),
+            br(),
             text
             );
 }

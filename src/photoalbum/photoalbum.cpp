@@ -30,6 +30,7 @@
 #include "db/auth.hpp"
 #include "db/cache.hpp"
 #include "db/map.hpp"
+#include "db/note.hpp"
 #include "db/photograph.hpp"
 #include "jsonrpc/auth.hpp"
 #include "jsonrpc/server.hpp"
@@ -116,6 +117,7 @@ int main(int argc, const char* argv[])
     sqlite::connection cache_db = sqlite::connection::in_memory_database();
 
     photoalbum::db::photograph::create(db);
+    photoalbum::db::note::create(db);
     photoalbum::db::map::create(map_db);
     photoalbum::db::auth::create(auth_db);
     photoalbum::db::cache::create(cache_db);

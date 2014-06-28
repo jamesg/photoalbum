@@ -59,7 +59,7 @@ OBJS=\
 	${OBJDIR}/util/scale.o
 
 clean:
-	rm -f ${OBJS} objs/main.o objs/os/gazetteer.o objs/os/streetmap.o
+	rm -f ${OBJS} objs/photoalbum/photoalbum.o objs/os/gazetteer.o objs/os/streetmap.o
 
 all:	bin/main
 
@@ -70,8 +70,8 @@ sqlite/libsqlite.a:
 	# Build libsqlite with our copy of the JSON library.
 	cd sqlite && make JSON_LIBRARY=../json libsqlite.a
 
-bin/main:	${OBJS} ${OBJDIR}/main.o json/libjson.a sqlite/libsqlite.a
-	${CXX} ${OBJS} ${OBJDIR}/main.o ${LIBS} -o $@
+bin/main:	${OBJS} ${OBJDIR}/photoalbum/photoalbum.o json/libjson.a sqlite/libsqlite.a
+	${CXX} ${OBJS} ${OBJDIR}/photoalbum/photoalbum.o ${LIBS} -o $@
 
 bin/exports: ${OBJS} ${OBJDIR}/exports/exports.o json/libjson.a sqlite/libsqlite.a
 	${CXX} ${OBJS} ${OBJDIR}/exports/exports.o ${LIBS} -o $@

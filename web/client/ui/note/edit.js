@@ -2,6 +2,10 @@ var domjs = require('domjs/lib/html5')(document);
 
 var api = require('../../api');
 
+var icon          = require('../icon').icon;
+var ConfirmButton = require('../confirmbutton').ConfirmButton;
+var MessageBox    = require('../messagebox').MessageBox;
+
 exports.NoteEdit = function(callback) {
     this._callback = callback;
 
@@ -49,13 +53,16 @@ exports.NoteEdit.prototype.element = function() {
 }
 
 exports.NoteEdit.prototype._template = function() {
-    this._element = div();
+    this._element = div({ class: 'mainmenu pure-g' });
 
     this._element(this._loadingTemplate());
 }
 
 exports.NoteEdit.prototype._loadingTemplate = function() {
-    p('Loading');
+    div(
+        { class: 'pure-u-1-1' },
+        p('Loading')
+       );
 }
 
 exports.NoteEdit.prototype._editorTemplate = function(title, markdown) {
@@ -68,36 +75,59 @@ exports.NoteEdit.prototype._editorTemplate = function(title, markdown) {
             },
             markdown
             );
-    var statusP = p();
-    form(
-        {
-            class: 'pure-form',
-            onsubmit: (function() {
-                api.updateMarkdownData(
-                    {
-                        'markdown_id': this._markdownId,
-                        'markdown': markdownTextarea().value
-                    },
-                    function(err) {
-                        if(err)
-                            console.log('update markdown: ' + err);
-                        else
-                            statusP().innerHTML = 'Note updated.';
-                    }
-                    );
-                return false;
-            }).bind(this)
-        },
-        p('Title: ' + title),
-        markdownTextarea,
-        br(),
-        input(
+
+    messageBox = new MessageBox();
+
+    div(
+        { class: 'pure-u-18-24' },
+        h2(icon('pencil'), 'Edit Note'),
+        messageBox.element(),
+        form(
             {
-                class: 'pure-button pure-button-primary',
-                type: 'submit',
-                value: 'Save'
-            }
+                class: 'pure-form',
+                onsubmit: (function() {
+                    api.updateMarkdownData(
+                        {
+                            'markdown_id': this._markdownId,
+                            'markdown': markdownTextarea().value
+                        },
+                        function(err) {
+                            if(err)
+                                messageBox.displayError('Updating note: ' + err);
+                            else
+                                messageBox.displaySuccess('Note updated');
+                        }
+                        );
+                    return false;
+                }).bind(this)
+            },
+            p('Title: ' + title),
+            markdownTextarea,
+            br(),
+            input(
+                {
+                    class: 'pure-button pure-button-primary',
+                    type: 'submit',
+                    value: 'Save'
+                }
+                )
             )
         );
+        div(
+            { class: 'pure-u-6-24' },
+            h2(icon('check'), 'Publish Note'),
+            (new ConfirmButton(
+                span(icon('check'), 'Publish'),
+                function() {
+                    if(editorNoteId)
+                        api.publishNote(
+                            editorNoteId,
+                            function(err) {
+                                if(err)
+                                    console.log('publishing note: ' + err);
+                            }
+                            );
+                })).element()
+           );
 }
 

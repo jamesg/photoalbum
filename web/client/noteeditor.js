@@ -1,8 +1,10 @@
 var domjs = require('domjs/lib/html5')(document);
 
-var api = require('./api');
+var api  = require('./api');
 var util = require('./util');
 
+var icon              = require('./ui/icon').icon;
+var ConfirmButton     = require('./ui/confirmbutton').ConfirmButton;
 var NewNoteForm       = require('./ui/note/newnoteform').NewNoteForm;
 var NoteEdit          = require('./ui/note/edit').NoteEdit;
 var NoteList          = require('./ui/note/list').NoteList;
@@ -21,31 +23,40 @@ exports.NoteEditor.prototype.element = function() {
 exports.NoteEditor.prototype._template = function() {
     this._element = div();
 
-    var publishedNoteList = new PublishedNoteList();
-    this._element(div({ class: 'mainmenu' }, publishedNoteList.element()));
+    this._element(
+            div(
+                { class: 'mainmenu pure-g' },
+                div(
+                    { class: 'pure-u-1-1' },
+                    h2(icon('book'), 'Published Notes'),
+                    (new PublishedNoteList()).element()
+                    )
+               )
+            );
+
+    var editorNoteId;
 
     var noteList = new NoteList(
             function(noteId) {
+                editorNoteId = noteId;
                 // draft phase
-                noteEdit.setNote(noteId, 0);
+                noteEdit.setNote(editorNoteId, 0);
             }
             );
-    this._element(
-            div(
-                { class: 'mainmenu' },
-                h2('Notes'),
-                noteList.element()
-                )
-            );
-
     var noteEdit = new NoteEdit();
+
     this._element(
             div(
-                { class: 'mainmenu' },
-                h2('Edit Note'),
-                noteEdit.element()
+                { class: 'mainmenu pure-g' },
+                div(
+                    { class: 'pure-u-1-1' },
+                    h2(icon('text'), 'Draft Notes'),
+                    noteList.element()
+                    )
                )
             );
+
+    this._element(noteEdit.element());
 
     var newNoteForm = new NewNoteForm(
             function(note) {
@@ -61,9 +72,12 @@ exports.NoteEditor.prototype._template = function() {
             );
     this._element(
             div(
-                { class: 'mainmenu' },
-                h2('Create Note'),
-                newNoteForm.element()
+                { class: 'mainmenu pure-g' },
+                div(
+                    { class: 'pure-u-1-1' },
+                    h2(icon('pencil'), 'Create Note'),
+                    newNoteForm.element()
+                   )
                )
             );
 

@@ -1,6 +1,14 @@
 var _ = require('underscore');
 var domjs = require('domjs/lib/html5')(document);
 
+/*!
+ * Button that requests a confirmation from the user when clicked.
+ *
+ * \param text Text or function providing a template element displayed inside
+ * the button.
+ * \param callback Called with no arguments when the user clicks the button and
+ * confirms their choice.
+ */
 exports.ConfirmButton = function(text, callback) {
     this._text = text;
     this._callback = callback;
@@ -32,7 +40,10 @@ exports.ConfirmButton.prototype._buildFirst = function() {
 }
 
 exports.ConfirmButton.prototype._secondTemplate = function() {
-    this._element(this._text + ': ');
+    this._element(
+            _.isFunction(this._text)?this._text():this._text,
+            ': '
+            )
     this._element(
             button(
                 {

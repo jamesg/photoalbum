@@ -99,8 +99,8 @@ bool photoalbum::db::auth::token_valid(
             "AND NOT invalidated ",
             sqlite::row<std::string, std::string, std::string>(
                 token,
-                boost::posix_time::to_simple_string(current_time),
-                boost::posix_time::to_simple_string(current_time)
+                boost::posix_time::to_iso_extended_string(current_time),
+                boost::posix_time::to_iso_extended_string(current_time)
                 ),
             tokens
             );
@@ -126,8 +126,8 @@ void photoalbum::db::auth::issue_token(
             sqlite::row<std::string, int, std::string, std::string>(
                     token,
                     user_id,
-                    boost::posix_time::to_simple_string(current_time),
-                    boost::posix_time::to_simple_string(expires_time)
+                    boost::posix_time::to_iso_extended_string(current_time),
+                    boost::posix_time::to_iso_extended_string(expires_time)
                     ),
             conn
             );
@@ -191,7 +191,7 @@ void photoalbum::db::auth::delete_old_tokens(sqlite::connection& conn)
     sqlite::devoid(
             "DELETE FROM auth_token WHERE expires < ? ",
             sqlite::row<std::string>(
-                boost::posix_time::to_simple_string(current_time)
+                boost::posix_time::to_iso_extended_string(current_time)
                 ),
             conn
             );

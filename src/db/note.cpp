@@ -94,7 +94,7 @@ void photoalbum::db::note::create(sqlite::connection& conn)
             conn
             );
     sqlite::devoid(
-            "CREATE VIEW draft_note AS "
+            "CREATE VIEW IF NOT EXISTS draft_note AS "
             "    SELECT note_id, created, modified, data "
             "    FROM note NATURAL JOIN note_version NATURAL JOIN markdown "
             "    WHERE phase = 0 ",
@@ -102,7 +102,7 @@ void photoalbum::db::note::create(sqlite::connection& conn)
             conn
             );
     sqlite::devoid(
-            "CREATE VIEW published_note AS "
+            "CREATE VIEW IF NOT EXISTS published_note AS "
             "    SELECT note_id, created, modified, data "
             "    FROM note NATURAL JOIN note_version NATURAL JOIN markdown "
             "    WHERE phase = 1 ",

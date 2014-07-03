@@ -11,8 +11,9 @@ project(PhotoAlbum)
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
 file(GLOB exports_sources    src/exports/*.cpp)
-file(GLOB photoalbum_sources src/photoalbum/*.cpp)
-file(GLOB sources            src/*.c src/*.cpp)
+file(GLOB gazetteer_sources  src/os/gazetteer.cpp)
+file(GLOB photoalbum_sources src/*.c src/server.cpp src/photoalbum/*.cpp)
+file(GLOB streetmap_sources  src/os/streetmap.cpp)
 
 file(GLOB api_sources     src/api/*.cpp src/api/*/*.cpp)
 file(GLOB base64_sources  src/base64/*.cpp)
@@ -32,6 +33,11 @@ add_library(jsonrpc ${jsonrpc_sources})
 add_library(uri     ${uri_sources})
 add_library(util    ${util_sources})
 
+target_link_libraries(
+    db
+    base64
+    )
+
 include_directories(src)
 include_directories(commandline/include)
 include_directories(json/include)
@@ -42,7 +48,6 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(
     photoalbum
     ${photoalbum_sources}
-    ${sources}
     )
 
 target_link_libraries(
@@ -65,11 +70,43 @@ target_link_libraries(
 add_executable(
     exports
     ${exports_sources}
-    ${sources}
     )
 
 target_link_libraries(
     exports
+    db
+    util
+    json
+    sqlite
+    "exiv2"
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${Boost_LIBRARIES}
+    ${ImageMagick_LIBRARIES}
+    )
+
+add_executable(
+    gazetteer
+    ${gazetteer_sources}
+    )
+
+target_link_libraries(
+    gazetteer
+    base64
+    db
+    json
+    sqlite
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${Boost_LIBRARIES}
+    )
+
+add_executable(
+    streetmap
+    ${streetmap_sources}
+    )
+
+target_link_libraries(
+    streetmap
+    base64
     db
     util
     json

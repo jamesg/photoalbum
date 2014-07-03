@@ -10,6 +10,7 @@ project(PhotoAlbum)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
+file(GLOB exports_sources    src/exports/*.cpp)
 file(GLOB photoalbum_sources src/photoalbum/*.cpp)
 file(GLOB sources            src/*.c src/*.cpp)
 
@@ -52,13 +53,28 @@ target_link_libraries(
     jsonrpc
     uri
     util
-
     json
     sqlite
-
     "exiv2"
     "ssl"
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${Boost_LIBRARIES}
+    ${ImageMagick_LIBRARIES}
+    )
 
+add_executable(
+    exports
+    ${exports_sources}
+    ${sources}
+    )
+
+target_link_libraries(
+    exports
+    db
+    util
+    json
+    sqlite
+    "exiv2"
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     ${ImageMagick_LIBRARIES}

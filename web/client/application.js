@@ -75,58 +75,63 @@ exports.Application.prototype._toggleEdit = function() {
         _editButton().innerHTML = 'Hide Controls';
         _showEdit = true;
     }
-}
+};
 
 exports.Application.prototype._showElement = function(element) {
     this._container().innerHTML = '';
     this._container(element);
-}
+};
 
 exports.Application.prototype.showMainMenu = function() {
     this._showElement((new MainMenu(this)).element());
-}
+};
 
 exports.Application.prototype.showAlbums = function() {
     this._showElement((new Albums()).element());
-}
+};
 
 exports.Application.prototype.showLocations = function() {
     this._showElement((new Locations()).element());
-}
+};
 
 exports.Application.prototype.showLoginForm = function() {
     this._showElement((new LoginForm(this.showMainMenu.bind(this))).element());
-}
+};
 
 exports.Application.prototype.showTags = function() {
     this._showElement((new Tags()).element());
-}
+};
 
 exports.Application.prototype.showFilters = function() {
     this._showElement((new Filters()).element());
-}
+};
 
 exports.Application.prototype.showNoteEditor = function() {
     this._showElement((new NoteEditor()).element());
-}
+};
 
 exports.Application.prototype.showNotes = function() {
     this._showElement((new Notes()).element());
-}
+};
 
 exports.Application.prototype.showNewPhotograph = function() {
     this._showElement((new NewPhotograph()).element());
-}
+};
 
 exports.Application.prototype.showStatistics = function() {
     this._showElement((new Statistics()).element());
-}
+};
 
 exports.Application.prototype.showMap = function() {
     this._showElement((new Map()).element());
-}
+};
 
 exports.Application.prototype.changePassword = function() {
     this._showElement((new ChangePassword()).element());
-}
+};
+
+exports.Application.prototype.logout = function() {
+    delete window.localStorage['token'];
+    this.showLoginForm();
+};
 

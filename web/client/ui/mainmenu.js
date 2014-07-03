@@ -126,6 +126,11 @@ exports.MainMenu.prototype._buttonsTemplate = function(features) {
                     'key',
                     'Change Password',
                     this._application.changePassword.bind(this._application)
+                    ),
+                this._buttonTemplate(
+                    'account-logout',
+                    'Log Out',
+                    this._application.logout.bind(this._application)
                     )
                 ]
                 )

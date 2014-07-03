@@ -31,8 +31,22 @@ Building
 
 1. Clone the Git repository.  Run git submodule init; git submodule update to
    download the required command line, JSON and SQLite libraries.
-2. Run make.
-3. Change to web/ and run npm install; make to build the web client.
+2. Create a build directory (this could be anywhere, build/ inside the
+   repository root is fine).
+3. Run cmake in the build directory, passing the repository root as the first
+   argument (for instance, "cmake .." fi the build directory is directly inside
+   the repository root).
+4. Build the project using your make tool (probably make).
+
+### Targets
+
+These targets can be built individually:
+
+* photoalbum - The main server.
+* bundle - Web application Javascript bundle.
+* exports - Utility to export photographs as JPEG files.
+* gazetteer - Utility to import Ordnance Survey Gazetteer data.
+* streetmap - Utility to import Ordnance Survey Street Map tile images.
 
 Installation
 ------------

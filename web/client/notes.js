@@ -20,19 +20,23 @@ exports.Notes.prototype.element = function() {
 exports.Notes.prototype._template = function() {
     this._element = div();
 
-    var publishedNoteListCollapsable = new Collapsable('Published Notes', null);
-    this._element(publishedNoteListCollapsable.element());
+    var note = new Note();
     var publishedNoteList = new PublishedNoteList(
             (function(noteId) {
                 note.setNote(noteId, 1); // 1 = published note
             }).bind(this)
             );
-    publishedNoteListCollapsable.setContent(publishedNoteList.element());
 
-    var noteCollapsable = new Collapsable('Note', null);
-    noteCollapsable.hideButton();
-    this._element(noteCollapsable.element());
-    var note = new Note();
-    noteCollapsable.setContent(note.element());
+    this._element = div(
+        { class: 'pure-g' },
+        div(
+            { class: 'pure-u-6-24' },
+            publishedNoteList.element()
+           ),
+        div(
+            { class: 'pure-u-18-24' },
+            note.element()
+           )
+        );
 }
 

@@ -4,6 +4,7 @@ var api = require('../../api');
 
 var icon          = require('../icon').icon;
 var ConfirmButton = require('../confirmbutton').ConfirmButton;
+var confirmButton = require('../confirmbutton').confirmButton;
 var MessageBox    = require('../messagebox').MessageBox;
 
 exports.NoteEdit = function(callback) {
@@ -110,7 +111,13 @@ exports.NoteEdit.prototype._editorTemplate = function(title, markdown) {
                     type: 'submit',
                     value: 'Save'
                 }
-                )
+                ),
+            confirmButton(
+                    'Save & Publish',
+                    function() {
+                        console.log('save');
+                    }
+                    )
             )
         );
         div(

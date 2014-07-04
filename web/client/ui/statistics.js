@@ -3,8 +3,6 @@ var domjs = require('domjs/lib/html5')(document);
 var api  = require('../api');
 var util = require('../util');
 
-var ConfirmButton = require('./confirmbutton').ConfirmButton;
-
 exports.Statistics = function() {
     this._documentFragment = domjs.build(this._template.bind(this));
     this.reload();

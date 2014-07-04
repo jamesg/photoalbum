@@ -47,14 +47,14 @@ exports.passThrough = function() {
         {
             'method': api_function,
             'params': params,
-            token: localStorage.getItem('token')
+            token: window.localStorage.getItem('token')
         }
         );
 
     console.log('api request: ' + requestContent);
 
     req.open('post', '/api_call', true);
-    req.setRequestHeader('Authorization', localStorage.getItem('token'));
+    req.setRequestHeader('Authorization', window.localStorage.getItem('token'));
     req.onload = reqListener;
     req.send(requestContent);
 }

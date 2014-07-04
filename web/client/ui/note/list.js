@@ -3,7 +3,7 @@ var domjs = require('domjs/lib/html5')(document);
 
 var api = require('../../api');
 
-var ConfirmButton = require('./../confirmbutton').ConfirmButton;
+var confirmButton = require('./../confirmbutton').confirmButton;
 var iconTemplate = require('../icon').icon;
 
 /*
@@ -85,10 +85,10 @@ exports.NoteList.prototype._listTemplate = function(notes) {
                 td(n.created),
                 td(n.title),
                 td(
-                    (new ConfirmButton(
+                    confirmButton(
                         function() { return span(iconTemplate('delete'), 'Delete'); },
                         _.partial(deleteFunction, this, n.note_id)
-                        )).element()
+                        )
                   ),
                 td(
                     button(
@@ -101,7 +101,7 @@ exports.NoteList.prototype._listTemplate = function(notes) {
                         )
                   ),
                 td(
-                    (new ConfirmButton(
+                    confirmButton(
                         'Publish',
                         _.partial(
                             function(noteId) {
@@ -115,7 +115,7 @@ exports.NoteList.prototype._listTemplate = function(notes) {
                             },
                             n.note_id
                             )
-                        )).element()
+                        )
                     )
                 );
         }).bind(this)

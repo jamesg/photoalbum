@@ -3,7 +3,7 @@ var domjs = require('domjs/lib/html5')(document);
 var api  = require('../../api');
 var util = require('../../util');
 
-var ConfirmButton = require('../confirmbutton').ConfirmButton;
+var confirmButton = require('../confirmbutton').confirmButton;
 
 exports.AlbumsForm = function(photographId) {
     this._photographId = photographId;
@@ -34,7 +34,7 @@ exports.AlbumsForm.prototype._liTemplate = function(album) {
     return div(
         { class: 'pure-u-1-1' },
         album.name,
-        (new ConfirmButton(
+        confirmButton(
                    'Remove',
                    (function(albumId) {
                        api.removePhotographFromAlbum(
@@ -44,7 +44,6 @@ exports.AlbumsForm.prototype._liTemplate = function(album) {
                            );
                    }).bind(this, album.album_id)
             )
-            ).element()
         );
 }
 

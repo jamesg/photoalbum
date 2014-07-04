@@ -4,7 +4,6 @@ var api  = require('./api');
 var util = require('./util');
 
 var icon              = require('./ui/icon').icon;
-var ConfirmButton     = require('./ui/confirmbutton').ConfirmButton;
 var NewNoteForm       = require('./ui/note/newnoteform').NewNoteForm;
 var NoteEdit          = require('./ui/note/edit').NoteEdit;
 var NoteList          = require('./ui/note/list').NoteList;

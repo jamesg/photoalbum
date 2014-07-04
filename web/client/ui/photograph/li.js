@@ -5,7 +5,7 @@ var api  = require('../../api');
 var util = require('../../util');
 
 var AlbumsForm = require('./albumsform').AlbumsForm;
-var ConfirmButton = require('../confirmbutton').ConfirmButton;
+var confirmButton = require('../confirmbutton').confirmButton;
 var PhotographDetailsForm = require('./detailsform').PhotographDetailsForm;
 var PhotographView = require('./view').PhotographView;
 
@@ -73,12 +73,12 @@ exports.PhotographLi.prototype._template = function() {
 exports.PhotographLi.prototype._deleteTemplate = function(photographId) {
     return div(
             h3('Delete'),
-            (new ConfirmButton(
+            confirmButton(
                 'Delete',
                 (function(photographId) {
                     api.deletePhotograph(photographId, function() {});
                 }).bind(this, photographId)
-                )).element()
+                )
             );
 }
 

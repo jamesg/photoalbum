@@ -3,7 +3,6 @@ var domjs = require('domjs/lib/html5')(document);
 var api = require('../../api');
 
 var icon          = require('../icon').icon;
-var ConfirmButton = require('../confirmbutton').ConfirmButton;
 var confirmButton = require('../confirmbutton').confirmButton;
 var MessageBox    = require('../messagebox').MessageBox;
 
@@ -123,7 +122,7 @@ exports.NoteEdit.prototype._editorTemplate = function(title, markdown) {
         div(
             { class: 'pure-u-6-24' },
             h2(icon('check'), 'Publish Note'),
-            (new ConfirmButton(
+            confirmButton(
                 span(icon('check'), 'Publish'),
                 function() {
                     if(editorNoteId)
@@ -134,7 +133,8 @@ exports.NoteEdit.prototype._editorTemplate = function(title, markdown) {
                                     console.log('publishing note: ' + err);
                             }
                             );
-                })).element()
+                }
+                )
            );
 }
 

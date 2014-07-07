@@ -12,8 +12,13 @@ add_custom_target(
     ${CMAKE_CURRENT_SOURCE_DIR}/client ${CMAKE_CURRENT_BINARY_DIR}/client
     )
 add_custom_target(
+    copy_favicon
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_SOURCE_DIR}/static/favicon.png ${CMAKE_CURRENT_BINARY_DIR}/static/favicon.png
+    )
+add_custom_target(
     bundle
-    DEPENDS node_modules copy_web
+    DEPENDS node_modules copy_favicon copy_web
     COMMAND
         node_modules/webmake/bin/webmake
         ${CMAKE_CURRENT_BINARY_DIR}/client/index.js

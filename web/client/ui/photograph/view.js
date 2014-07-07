@@ -16,7 +16,7 @@ exports.PhotographView.prototype.element = function() {
 exports.PhotographView.prototype._template = function() {
     this._element = img(
         {
-            class: 'pure-img',
+            class: 'pure-img view-image',
             src: '/jpeg_image' +
                 util.queryString(
                     {

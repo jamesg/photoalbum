@@ -53,7 +53,7 @@ exports.NoteEdit.prototype.element = function() {
 }
 
 exports.NoteEdit.prototype._template = function() {
-    this._element = div({ class: 'mainmenu pure-g' });
+    this._element = div({ class: 'content-view pure-g' });
 
     this._element(this._loadingTemplate());
 }

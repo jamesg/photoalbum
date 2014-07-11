@@ -117,10 +117,10 @@ exports.PhotographForm.prototype._template = function() {
         inlineInput(inputs.location, 'Location'),
         inlineInput(inputs.tags, 'Tags'),
         inlineInput(fileInput, 'File'),
-        submitButton
+        inlineInput(submitButton, '')
         );
     this._element = div(
-            { class: 'mainmenu pure-g' },
+            { class: 'content-view pure-g' },
             div(
                 { class: 'pure-u-1-1' },
                 h2(

@@ -15,17 +15,22 @@
     <style type="text/css">
     body {
         background-color: #fff;
+        background-image: url(/handmadepaper.png);
+        background-repeat: repeat-x repeat-y;
         font-family: sans;
     }
-    button, input, select {
+    input, select {
         background-color: #f4f4f4;
         border: 1px solid #ccc;
         margin: 4px;
     }
-    h1 {
-        color: #222;
+    button {
+        margin: 4px;
     }
-
+    h1 {
+        color: #000;
+        margin-bottom: 0px;
+    }
     a {
         cursor: pointer;
     }
@@ -34,7 +39,6 @@
         width: 16px;
         height: 16px;
     }
-
     .icon-delete {
         fill: #f00;
     }
@@ -79,8 +83,21 @@
         padding: 10px;
     }
 
+    .mainmenu {
+    }
+    .mainmenu .pure-button {
+        background-color: #d1e751;
+        border-radius: 75px;
+        width: 150px;
+        height: 150px;
+        margin: 5px;
+        text-align: center;
+    }
+    .mainmenu .mainmenu-section {
+    }
+
     .collapsable {
-        background-color: #e9e9e9;
+        background-color: #fff;
         margin-bottom: 1em;
     }
     .collapsable h2 {
@@ -93,7 +110,7 @@
         font-family: serif;
     }
     .collapsable-inner {
-        background-color: #f4f4f4;
+        background-color: #fff;
     }
     .collapsable-footer {
         padding: 2px;
@@ -142,6 +159,8 @@
         margin: 5px;
         text-align: center;
         display: inline-block;
+        background-color: #fff;
+        border-radius: 0.25em;
     }
     .photographlist .detailli {
         left: 0;
@@ -156,15 +175,20 @@
 
     .mainmenu {
         list-style-type: none;
-        background-color: #e9e9e9;
     }
-    .mainmenu h2 {
-        color: #444;
+
+    .content-view {
+        background-color: #4dbce9;
+        border-radius: 1em;
+    }
+
+    .content-view h2 {
+        color: #d1e751;
         font-family: serif;
-        border-bottom: 1px solid #777;
+        border-bottom: 1px solid #d1e751;
     }
-    .mainmenu h2 > small {
-        color: #777;
+    .content-view h2 > small {
+        color: #d1e751;
     }
 
     .notetable {
@@ -173,6 +197,15 @@
     .note-textarea {
         font-family: monospace;
         font-size: 120%;
+    }
+    .note-list {
+        list-style-type: none;
+        padding: 0;
+        border: 1px solid silver;
+    }
+    .note-list li {
+        border-bottom: 1px solid silver;
+        padding: 1em;
     }
 
     .view-image {

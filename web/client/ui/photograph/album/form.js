@@ -28,6 +28,7 @@ exports.AlbumForm.prototype._template = function(callback) {
 
     this._element = form(
         {
+            class: 'pure-form',
             onsubmit: function() {
                 try {
                     api.insertAlbum(
@@ -46,7 +47,7 @@ exports.AlbumForm.prototype._template = function(callback) {
         table(
             tr(td('Title'),   titleInput),
             tr(td('Caption'), captionInput),
-            tr(td(), input({ type: 'submit', value: 'Create' }))
+            tr(td(), input({ class: 'pure-button', type: 'submit', value: 'Create' }))
             )
         );
 }

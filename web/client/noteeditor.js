@@ -28,7 +28,7 @@ exports.NoteEditor.prototype._template = function() {
             );
     this._element(
             div(
-                { class: 'mainmenu pure-g' },
+                { class: 'pure-g' },
                 div(
                     { class: 'pure-u-18-24' },
                     h2(icon('text'), 'Draft Notes'),
@@ -59,7 +59,7 @@ exports.NoteEditor.prototype._template = function() {
             );
     this._element(
             div(
-                { class: 'mainmenu pure-g' },
+                { class: 'pure-g' },
                 div(
                     { class: 'pure-u-1-1' },
                     h2(icon('pencil'), 'Create Note'),

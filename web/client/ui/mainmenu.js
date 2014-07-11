@@ -21,7 +21,7 @@ exports.MainMenu.prototype.element = function() {
 }
 
 exports.MainMenu.prototype._template = function() {
-    this._element = div({ class: 'mainmenu pure-g' });
+    this._element = div({ class: 'mainmenu content-view pure-g' });
 }
 
 exports.MainMenu.prototype._buttonTemplate = function(icon_, text, callback) {
@@ -35,7 +35,7 @@ exports.MainMenu.prototype._buttonTemplate = function(icon_, text, callback) {
 
 exports.MainMenu.prototype._sectionTemplate = function(icon_, title, subtitle, buttons) {
     return div(
-            { class: 'pure-u-1-1' },
+            { class: 'pure-u-1-1 mainmenu-section' },
             h2(icon(icon_), title, ' ', small(subtitle)),
             buttons
             );
@@ -45,7 +45,7 @@ exports.MainMenu.prototype._buttonsTemplate = function(features) {
     if(features['photographs']) {
         this._element(
             this._sectionTemplate(
-                'camera-slr',
+                'layers',
                 'Photographs',
                 'Browse and upload photographs.',
                 [

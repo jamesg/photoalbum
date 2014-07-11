@@ -25,20 +25,21 @@ exports.PublishedNoteList = function(callback) {
 
     var _listTemplate = function(notes) {
         return div(
-            { class: 'pure-menu pure-menu-open' },
-            span({ class: 'pure-menu-heading' }, 'Notes'),
             ul.apply(
                 this,
-                _.map(
-                    notes,
-                    function(note) {
-                        return li(
-                            a(
-                                { onclick: _.partial(_callback, note.note_id) },
-                                note.created, ' ', note.title
-                                )
-                            );
-                    })
+                [ { class: 'note-list' } ]
+                .concat(
+                    _.map(
+                        notes,
+                        function(note) {
+                            return li(
+                                a(
+                                    { onclick: _.partial(_callback, note.note_id) },
+                                    note.created, br(), note.title
+                                    )
+                                );
+                        })
+                    )
                 )
             );
     }

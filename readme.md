@@ -112,6 +112,12 @@ The client is a single page web application.  It is compiled from sources in
 web/client using Webmake and is delivered to the client as one HTML and one
 Javascript file.
 
+The website theme is based on the Pure CSS library with a few custom colours.
+The Pure CSS grid system is modified slightly to provide padding (gutters)
+around grid column elements.  The [Open Iconic](https://useiconic.com/open/)
+library provides icons in an icon font.  The web page background is 'Handmade
+Paper' from [Subtle Patterns](http://subtlepatterns.com/).
+
 TODO List
 ---------
 

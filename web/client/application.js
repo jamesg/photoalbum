@@ -22,7 +22,7 @@ exports.Application = function() {
     api.tokenValid(
             localStorage.getItem('token'),
             (function(err, result) {
-                if(result) 
+                if(result)
                     this.showMainMenu();
                 else
                     this.showLoginForm();
@@ -30,17 +30,12 @@ exports.Application = function() {
             );
 }
 
-var _editButton;
-
 exports.Application.prototype._template = function() {
-    this._element = div();
-
-    _editButton = button(
-            { onclick: this._toggleEdit.bind(this) },
-            'Hide Controls'
-            );
+    this._element = div({ class: 'pure-g' });
 
     this._element(
+        div(
+            { class: 'pure-u-1-1' },
             h1(
                 span(' '),
                 a(
@@ -48,9 +43,10 @@ exports.Application.prototype._template = function() {
                     icon('layers'),
                     'Photograph Album')
                 )
-            );
+            )
+        );
 
-    this._container = div();
+    this._container = div({ class: 'pure-u-1-1' });
     this._element(this._container);
 }
 

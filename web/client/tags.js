@@ -4,7 +4,6 @@ var api = require('./api');
 var util = require('./util');
 
 var TagList        = require('./ui/taglist').TagList;
-var Collapsable    = require('./ui/collapsable').Collapsable;
 var PhotographList = require('./ui/photograph/list').PhotographList;
 
 exports.Tags = function() {
@@ -57,38 +56,38 @@ exports.Tags.prototype._template = function() {
         );
 
     // Create the tag list.
-    var tagListCollapsable = new Collapsable('Tags', null);
-    this._element(tagListCollapsable.element());
     var tagList = new TagList(
-            function(tag) {
-                api.photographsWithTag(
-                    tag,
-                    function(err, list) {
-                        photographList.setList(list);
-                    }
-                    );
-            }
-            );
+        function(tag) {
+            api.photographsWithTag(
+                tag,
+                function(err, list) {
+                    photographList.setList(list);
+                }
+                );
+        }
+        );
     api.tags(
-            function(err, tags) {
-                if(err)
-                    console.log('retrieving tags list', err);
-                else
-                    tagList.setTagList(tags);
-            }
-            );
-    tagListCollapsable.setContent(tagList.element());
-
-    // Create the photograph list.
-    var photographListCollapsable = new Collapsable('Photographs', null);
-    this._element(photographListCollapsable.element());
+        function(err, tags) {
+            if(err)
+                console.log('retrieving tags list', err);
+            else
+                tagList.setTagList(tags);
+        }
+        );
 
     var photographList = new PhotographList(
-            function(photograph) {
-                console.log('photograph id: ' + photograph.photograph_id);
-            }
-            );
+        function(photograph) {
+            console.log('photograph id: ' + photograph.photograph_id);
+        }
+        );
     photographList.setList([]);
-    photographListCollapsable.setContent(photographList.element());
+
+    this._element(
+        div(
+            { class: 'content-view' },
+            tagList.element(),
+            photographList.element()
+           )
+        );
 }
 

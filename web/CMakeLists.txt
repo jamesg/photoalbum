@@ -26,6 +26,7 @@ add_custom_target(
     )
 
 configure_file(static/index.html static/index.html COPYONLY)
+configure_file(static/handmadepaper.png static/handmadepaper.png COPYONLY)
 configure_file(static/pure-min.css static/pure-min.css COPYONLY)
 configure_file(
     static/open-iconic/font/css/open-iconic.css

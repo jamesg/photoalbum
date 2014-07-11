@@ -5,7 +5,6 @@ var util = require('./util');
 
 var AlbumForm      = require('./ui/photograph/album/form').AlbumForm;
 var AlbumList      = require('./ui/photograph/album/list').AlbumList;
-var Collapsable    = require('./ui/collapsable').Collapsable;
 var PhotographList = require('./ui/photograph/list').PhotographList;
 
 exports.Albums = function() {
@@ -19,11 +18,7 @@ exports.Albums.prototype.element = function() {
 }
 
 exports.Albums.prototype._template = function() {
-    this._element = div();
-
-    // Create the album list.
-    var albumListCollapsable = new Collapsable('Albums', null);
-    this._element(albumListCollapsable.element());
+    this._element = div({ class: 'content-view' });
 
     var albumList = new AlbumList(
         function(albumId) {
@@ -41,11 +36,6 @@ exports.Albums.prototype._template = function() {
             albumList.setAlbumList(albums);
         }
         );
-    albumListCollapsable.setContent(albumList.element());
-
-    // Create the photograph list.
-    var photographListCollapsable = new Collapsable('Photographs', null);
-    this._element(photographListCollapsable.element());
 
     var photographList = new PhotographList(
             function(photograph) {
@@ -53,7 +43,6 @@ exports.Albums.prototype._template = function() {
             }
             );
     photographList.setList([]);
-    photographListCollapsable.setContent(photographList.element());
 
     // Create the new album form.
     var newAlbumForm = new AlbumForm(
@@ -70,8 +59,26 @@ exports.Albums.prototype._template = function() {
                 );
         }
         );
-    var albumFormCollapsable =
-        new Collapsable('New Album', newAlbumForm.element());
-    this._element(albumFormCollapsable.element());
+
+    this._element(
+            div(
+                { class: 'pure-g' },
+                div(
+                    { class: 'pure-u-1-1' },
+                    h2('Albums'),
+                    albumList.element()
+                   ),
+                div(
+                    { class: 'pure-u-1-1' },
+                    h2('Photographs'),
+                    photographList.element()
+                   ),
+                div(
+                    { class: 'pure-u-1-1' },
+                    h2('New Album'),
+                    newAlbumForm.element()
+                   )
+               )
+            );
 }
 

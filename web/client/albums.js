@@ -18,7 +18,7 @@ exports.Albums.prototype.element = function() {
 }
 
 exports.Albums.prototype._template = function() {
-    this._element = div({ class: 'content-view' });
+    this._element = div();
 
     var albumList = new AlbumList(
         function(albumId) {
@@ -62,19 +62,18 @@ exports.Albums.prototype._template = function() {
 
     this._element(
             div(
-                { class: 'pure-g' },
+                { class: 'padded pure-g' },
                 div(
-                    { class: 'pure-u-1-1' },
+                    { class: 'padded content-view pure-u-1-1' },
                     h2('Albums'),
                     albumList.element()
                    ),
                 div(
                     { class: 'pure-u-1-1' },
-                    h2('Photographs'),
                     photographList.element()
                    ),
                 div(
-                    { class: 'pure-u-1-1' },
+                    { class: 'padded content-view pure-u-1-1' },
                     h2('New Album'),
                     newAlbumForm.element()
                    )

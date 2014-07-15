@@ -31,7 +31,7 @@ exports.Application = function() {
 }
 
 exports.Application.prototype._template = function() {
-    this._element = div({ class: 'pure-g' });
+    this._element = div({ class: 'pure-g padded' });
 
     this._element(
         div(

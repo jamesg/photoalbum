@@ -4,7 +4,6 @@ var api = require('./api');
 var util = require('./util');
 
 var LocationList      = require('./ui/locationlist').LocationList;
-var Collapsable       = require('./ui/collapsable').Collapsable;
 var PhotographList    = require('./ui/photograph/list').PhotographList;
 
 exports.Locations = function() {
@@ -18,11 +17,9 @@ exports.Locations.prototype.element = function() {
 }
 
 exports.Locations.prototype._template = function() {
-    this._element = div();
+    this._element = div({ class: 'pure-g padded' });
 
     // Create the location list.
-    var locationListCollapsable = new Collapsable('Locations', null);
-    this._element(locationListCollapsable.element());
     var locationList = new LocationList(
             function(location) {
                 api.photographsWithLocation(
@@ -32,6 +29,13 @@ exports.Locations.prototype._template = function() {
                     }
                     );
             }
+            );
+    this._element(
+            div(
+                { class: 'content-view pure-u-1-1' },
+                h2('Locations'),
+                locationList.element()
+                )
             );
     api.locations(
             function(err, locations) {
@@ -43,18 +47,13 @@ exports.Locations.prototype._template = function() {
                         ) );
             }
             );
-    locationListCollapsable.setContent(locationList.element());
-
-    // Create the photograph list.
-    var photographListCollapsable = new Collapsable('Photographs', null);
-    this._element(photographListCollapsable.element());
 
     var photographList = new PhotographList(
             function(photograph) {
                 console.log('photograph id: ' + photograph.photograph_id);
             }
             );
+    this._element(div({ class: 'pure-u-1-1' }, photographList.element()));
     photographList.setList([]);
-    photographListCollapsable.setContent(photographList.element());
 }
 

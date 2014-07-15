@@ -21,7 +21,7 @@ exports.MainMenu.prototype.element = function() {
 }
 
 exports.MainMenu.prototype._template = function() {
-    this._element = div({ class: 'mainmenu content-view pure-g' });
+    this._element = div({ class: 'mainmenu content-view pure-g padded' });
 }
 
 exports.MainMenu.prototype._buttonTemplate = function(icon_, text, callback) {

@@ -154,7 +154,7 @@ exports.PhotographLi.prototype._detailTemplate = function(photograph) {
     this._element(
         { class: 'detailli' },
         div(
-            { class: 'pure-g' },
+            { class: 'pure-g padded' },
             div({ class: 'pure-u-21-24', style: 'text-align: center' }, photographView.element()),
             div({ class: 'pure-u-3-24', style: 'text-align: right' }, closeButton),
             div({ class: 'pure-u-7-24' }, photographDetailsForm.element()),

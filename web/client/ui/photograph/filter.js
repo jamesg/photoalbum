@@ -13,7 +13,7 @@ exports.PhotographFilter.prototype.element = function() {
 }
 
 exports.PhotographFilter.prototype._template = function() {
-    this._element = div({ class: 'pure-menu pure-menu-open pure-menu-horizontal' });
+    this._element = div({ class: 'menu-horizontal pure-menu pure-menu-open pure-menu-horizontal' });
 
     this._element(
         ul(

@@ -20,7 +20,6 @@ exports.Filters.prototype.element = function() {
 exports.Filters.prototype._template = function() {
     var filters = new PhotographFilter(
             function(apiFunction) {
-                console.log('apiFunction ' + apiFunction);
                 api.passThrough(
                     apiFunction,
                     function(err, list) {
@@ -29,17 +28,13 @@ exports.Filters.prototype._template = function() {
                     );
             }
             );
-    var filtersCollapsable = div(filters.element());
 
     var photographList = new PhotographList(function() {});
-    var photographListCollapsable = div();
-
     photographList.setList([]);
-    photographListCollapsable(photographList.element());
 
     this._element = div(
-        filtersCollapsable,
-        photographListCollapsable
+        filters.element(),
+        photographList.element()
         );
 }
 

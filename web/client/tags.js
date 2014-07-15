@@ -22,7 +22,7 @@ exports.Tags.prototype._template = function() {
     this._element(
         ul(
             {
-                class: 'pure-menu pure-menu-open pure-menu-horizontal'
+                class: 'menu-horizontal pure-menu pure-menu-open pure-menu-horizontal'
             },
             li(a(
                 {
@@ -84,9 +84,9 @@ exports.Tags.prototype._template = function() {
 
     this._element(
         div(
-            { class: 'content-view' },
-            tagList.element(),
-            photographList.element()
+            { class: 'padded pure-g' },
+            div({ class: 'pure-u-1-1' }, tagList.element()),
+            div({ class: 'pure-u-1-1' }, photographList.element())
            )
         );
 }

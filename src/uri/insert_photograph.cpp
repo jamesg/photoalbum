@@ -122,15 +122,15 @@ int photoalbum::uri::insert_photograph(
         }
     }
 
+    typedef boost::tokenizer<boost::escaped_list_separator<char> > tokenizer;
+    tokenizer t(tags, boost::escaped_list_separator<char>());
+    for(auto it = t.begin(); it != t.end(); ++it)
+        photo.tags().append(*it);
+
     int photo_id = db::insert(
             photo,
             photo_db
             );
-
-    typedef boost::tokenizer<boost::escaped_list_separator<char> > tokenizer;
-    tokenizer t(tags, boost::escaped_list_separator<char>("\\", ",", "\""));
-    for(auto it = t.begin(); it != t.end(); ++it)
-        photo.tags().append(*it);
 
     data_db.id() = photo_id;
     db::insert(

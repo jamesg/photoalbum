@@ -24,15 +24,14 @@ exports.PhotographForm.prototype._template = function() {
             inputs,
             function(input) { return input().value; }
             );
-        messageBox.displayInfo('Form submit');
         if(submissionData.title == '')
         {
-            messageBox.displayInfo('Title is required');
+            messageBox.displayWarning('Title is required');
             return false;
         }
         if(submissionData.location == '')
         {
-            messageBox.displayInfo('Location is required');
+            messageBox.displayWarning('Location is required');
             return false;
         }
 
@@ -63,15 +62,6 @@ exports.PhotographForm.prototype._template = function() {
                         var percent = (event.loaded/event.total)*100;
                         console.log('upload percentage', percent);
                     }
-                }
-                );
-        xhr.addEventListener(
-                'load',
-                function(event) {
-                    if(this.response['error'])
-                        messageBox.displayError(this.response.error);
-                    else
-                        messageBox.displaySuccess('Upload complete.');
                 }
                 );
         xhr.send(photographData);

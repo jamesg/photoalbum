@@ -8,6 +8,17 @@ var domjs = require('domjs/lib/html5')(document);
  * close button that can be used to dismiss the message.
  */
 exports.MessageBox = function() {
+    var template = function() {
+        this._element = div();
+    };
+
+    var displayMessage = function(level, message) {
+        this._message = message;
+        var inner = innerMessage(level, message);
+        this._element(inner.element);
+        setTimeout(inner.fadeout, 2000);
+    };
+
     domjs.build(template.bind(this));
 
     this.element = function() {
@@ -21,7 +32,7 @@ exports.MessageBox = function() {
 };
 
 /*
- * Display the inner message in its own box with a close button.
+ * \brief Display the inner message in its own box with a close button.
  */
 var innerMessage = function(style, message) {
     var element;
@@ -36,29 +47,32 @@ var innerMessage = function(style, message) {
             element({ class: 'messagebox messagebox-empty' });
             element().innerHTML = '';
         });
-    }
+    };
+
+    var fadeout = function() {
+        domjs.build(function() {
+            element({ style: 'opacity: 0.0' });
+        });
+        setTimeout(hide, 1000);
+    };
 
     var template = function() {
         element = div(
-                { class: 'messagebox messagebox-' + style },
-                span(
-                    message,
-                    button({ class: 'pure-button', onclick: hide }, 'Close')
-                    )
-                );
+            { class: 'pure-g messagebox messagebox-' + style },
+            div({ class: 'pure-u-4-5' }, message),
+            div(
+                { class: 'pure-u-1-5 messagebox-close' },
+                button({ class: 'pure-button', onclick: hide }, 'Close')
+                )
+            );
     };
 
     domjs.build(template);
 
-    return element;
-};
-
-var template = function() {
-    this._element = div();
-};
-
-var displayMessage = function(level, message) {
-    this._message = message;
-    this._element(innerMessage(level, message));
+    return {
+        element: element,
+        fadeout: fadeout,
+        hide: hide
+    };
 };
 

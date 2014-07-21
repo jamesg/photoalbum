@@ -27,6 +27,9 @@ namespace photoalbum
         std::string& filename() const { return get_string("filename"); }
         std::string& location() const { return get_string("location"); }
         std::string& taken() const { return get_string("taken"); }
+        /*!
+         * \brief List of tags (strings).
+         */
         json::list& tags() const { return get_list("tags"); }
     };
 

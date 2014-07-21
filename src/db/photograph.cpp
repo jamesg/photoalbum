@@ -130,16 +130,16 @@ int photoalbum::db::insert(
             db
             );
 
-    for(json::object p : photo.get_list("tags").objects)
+    for(int i = 0; i < photo.tags().size(); ++i)
         sqlite::insert(
-                "photograph_tagged",
-                { "photograph_id", "tag" },
-                boost::fusion::vector<int, std::string>(
-                    id,
-                    boost::get<std::string>(p)
-                    ),
-                db
-                );
+            "photograph_tagged",
+            { "photograph_id", "tag" },
+            boost::fusion::vector<int, std::string>(
+                id,
+                photo.tags().get<std::string>(i)
+                ),
+            db
+            );
 
     return id;
 }
@@ -170,23 +170,16 @@ void photoalbum::db::update(
             boost::fusion::vector<int>(photo.id()),
             db
             );
-    for(json::object p : photo.get_list("tags").objects)
-    {
-        try
-        {
-            sqlite::insert(
-                    "photograph_tagged",
-                    { "photograph_id", "tag" },
-                    boost::fusion::vector<int, std::string>(
-                        photo.id(), json::cast<std::string>(p)
-                        ),
-                    db
-                    );
-        }
-        catch(const std::exception& e)
-        {
-        }
-    }
+    for(int i = 0; i < photo.tags().size(); ++i)
+        sqlite::insert(
+            "photograph_tagged",
+            { "photograph_id", "tag" },
+            boost::fusion::vector<int, std::string>(
+                photo.id(),
+                photo.tags().get<std::string>(i)
+                ),
+            db
+            );
 }
 
 void photoalbum::db::get_by_id(
@@ -223,14 +216,16 @@ void photoalbum::db::get_by_id(
             );
 
     // And the tags
-    sqlite::select<photograph_tagged>(
+    std::vector<sqlite::row<std::string>> tags;
+    sqlite::select<sqlite::row<std::string>>(
             db,
-            "SELECT photograph_id, tag "
-            "FROM photograph_tagged "
+            "SELECT tag FROM photograph_tagged "
             "WHERE photograph_id = ?",
             boost::fusion::vector<int>(id),
-            photo.get_list("tags")
+            tags
             );
+    for(const sqlite::row<std::string>& row : tags)
+        photo.tags().append(sqlite::column<0>(row));
 }
 
 void photoalbum::db::get_photograph_list(

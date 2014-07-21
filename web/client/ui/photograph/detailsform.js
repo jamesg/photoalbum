@@ -3,6 +3,8 @@ var domjs = require('domjs/lib/html5')(document);
 var api  = require('../../api');
 var util = require('../../util');
 
+var MessageBox = require('../messagebox').MessageBox;
+
 exports.PhotographDetailsForm = function(photograph) {
     this._documentFragment = domjs.build(this._template.bind(this, photograph));
 }
@@ -16,9 +18,7 @@ exports.PhotographDetailsForm.prototype.element = function() {
  * caption, date taken and comma-separated list of tags.
  */
 exports.PhotographDetailsForm.prototype._template = function(photograph) {
-    var tags = [];
-    for(tagI in photograph.tags)
-        tags.push(photograph.tags[tagI].tag);
+    var messageBox = new MessageBox();
 
     var inputs = {
         title:    input({ name: 'title',    value: photograph.title    }),
@@ -28,7 +28,7 @@ exports.PhotographDetailsForm.prototype._template = function(photograph) {
         tags:     input({
             name: 'tags',
             placeholder: 'Comma-separated tags',
-            value: tags.join(', ')
+            value: photograph['tags']?photograph.tags.join(', '):''
             })
     };
 
@@ -56,44 +56,50 @@ exports.PhotographDetailsForm.prototype._template = function(photograph) {
                     // Validate submissionData.
                     if(submissionData.title == '')
                     {
-                        messageBox().innerHTML = 'Title is required';
+                        messageBox.displayWarning('Title is required');
                         return false;
                     }
                     if(submissionData.location == '')
                     {
-                        messageBox().innerHTML = 'Location is required';
+                        messageBox.displayWarning('Location is required');
                         return false;
                     }
                     if(submissionData.taken == '')
                     {
-                        messageBox().innerHTML = 'Date is required';
+                        messageBox.displayWarning('Date is required');
                         return false;
                     }
-                    api.updatePhotograph(submissionData, function() {});
+                    api.updatePhotograph(
+                        submissionData,
+                        function() {
+                            messageBox.displayInfo('Photograph updated.');
+                        }
+                        );
                     return false;
                 }
             },
             div(
-                    h3(
-                        'Photograph Details ',
-                        small('Change basic details')
+                h3(
+                    'Photograph Details ',
+                    small('Change basic details')
+                    ),
+                messageBox.element(),
+                inlineInput(inputs.title, 'Title'),
+                inlineInput(inputs.location, 'Location'),
+                inlineInput(inputs.caption, 'Caption'),
+                inlineInput(inputs.taken, 'Taken'),
+                inlineInput(inputs.tags, 'Tags'),
+                inlineInput(
+                    input(
+                        {
+                            class: 'pure-button pure-button-primary',
+                            type: 'submit',
+                            value: 'Save'
+                        }
                         ),
-                    inlineInput(inputs.title, 'Title'),
-                    inlineInput(inputs.location, 'Location'),
-                    inlineInput(inputs.caption, 'Caption'),
-                    inlineInput(inputs.taken, 'Taken'),
-                    inlineInput(inputs.tags, 'Tags'),
-                    inlineInput(
-                        input(
-                            {
-                                class: 'pure-button pure-button-primary',
-                                type: 'submit',
-                                value: 'Save'
-                            }
-                            ),
-                        ''
-                        )
+                    ''
                     )
+                )
             );
 
     this._element = _form;

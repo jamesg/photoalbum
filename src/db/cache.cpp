@@ -11,7 +11,7 @@
 void photoalbum::db::cache::create(sqlite::connection& cache_db)
 {
     sqlite::devoid(
-            "CREATE TABLE jpeg_cache ( "
+            "CREATE TABLE IF NOT EXISTS jpeg_cache ( "
             " photograph_id INTEGER, "
             " width INTEGER, "
             " height INTEGER, "

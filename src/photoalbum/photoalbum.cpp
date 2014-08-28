@@ -72,13 +72,15 @@ int main(int argc, const char* argv[])
         document_root,
         pem_file,
         port = "4008",
-        auth_db_file;
+        auth_db_file,
+        cache_db_file;
 
     std::vector<commandline::option> options{
         commandline::flag("help", show_help, "Print a help message"),
         commandline::parameter("db", db_file, "Path to the photograph database"),
         commandline::parameter("mapdb", map_db_file, "Path to a read-only map database"),
         commandline::parameter("authdb", auth_db_file, "Path to the authentication database"),
+        commandline::parameter("cachedb", cache_db_file, "Path to the cache database"),
         commandline::parameter("document-root", document_root, "HTML document root"),
         commandline::parameter("pem", pem_file, "PEM file"),
         commandline::parameter("port", port, "Port number to bind on")
@@ -114,7 +116,10 @@ int main(int argc, const char* argv[])
         auth_db_file.length()?
         sqlite::connection(auth_db_file):
         sqlite::connection::in_memory_database();
-    sqlite::connection cache_db = sqlite::connection::in_memory_database();
+    sqlite::connection cache_db =
+        cache_db_file.length()?
+        sqlite::connection(cache_db_file):
+        sqlite::connection::in_memory_database();
 
     photoalbum::db::photograph::create(db);
     photoalbum::db::note::create(db);
